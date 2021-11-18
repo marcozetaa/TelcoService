@@ -2,6 +2,9 @@ package it.polimi.telcoservice;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
+@Entity
 public class MobilePhone{
 
     @Id
@@ -9,9 +12,8 @@ public class MobilePhone{
     private int mobilePhoneID;
 
 
-    @ManyToOne
-    @JoinColumn(name = "packageID")
-    private ServicePackage servicePackage;
+    @ManyToMany(mappedBy = "offer_package", fetch = FetchType.LAZY)
+    private List<ServicePackage> servicePackage;
 
     private int num_min;
     private int num_sms;

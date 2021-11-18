@@ -2,16 +2,18 @@ package it.polimi.telcoservice;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
+@Entity
 public class MobileInternet{
 
     @Id
     @GeneratedValue( strategy = GenerationType.AUTO )
-    private int MobileInternetID;
+    private int mobileInternetID;
 
 
-    @ManyToOne
-    @JoinColumn(name = "packageID")
-    private ServicePackage servicePackage;
+    @ManyToMany(mappedBy = "mobileInternets")
+    private List<ServicePackage> servicePackage;
 
     private int numGB;
     private int extraGB;

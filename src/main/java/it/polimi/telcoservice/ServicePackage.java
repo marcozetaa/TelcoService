@@ -2,8 +2,6 @@ package it.polimi.telcoservice;
 
 import jakarta.persistence.*;
 
-import java.util.AbstractList;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -13,24 +11,30 @@ public class ServicePackage {
     private String name;
     private boolean fixed_phone;
 
-    @ManyToOne
-    @JoinColumn(name = "MobileInternetID")
-    private ServicePackage MobileInternet;
 
-    @ManyToOne
-    @JoinColumn(name = "mobilePhoneID")
-    private ServicePackage mobilePhone;
-
-    @ManyToOne
-    @JoinColumn(name = "fixedInternetID")
-    private ServicePackage fixedInternet;
+    //aggiungere in name il nome della tabella nel db
+    @ManyToMany( fetch = FetchType.EAGER )
+    @JoinTable(
+            name = "fixed_internet_package",
+            joinColumns = { @JoinColumn(name = "name") },
+            inverseJoinColumns = { @JoinColumn(name = "fixed_internetID") }
+    )
+    private List<FixedInternet> fixedInternets;
 
     @ManyToMany( fetch = FetchType.EAGER )
     @JoinTable(
-            name = "service_product",
+            name = "mobile_internet_package",
             joinColumns = { @JoinColumn(name = "name") },
-            inverseJoinColumns = { @JoinColumn(name = "serviceID") }
+            inverseJoinColumns = { @JoinColumn(name = "mobile_InternetID") }
     )
-    private List<OptionalProduct> optional_products;
+    private List<MobileInternet> mobileInternets;
+
+    @ManyToMany( fetch = FetchType.EAGER )
+    @JoinTable(
+            name = "mobile_phone_package",
+            joinColumns = { @JoinColumn(name = "name") },
+            inverseJoinColumns = { @JoinColumn(name = "mobile_PhoneID") }
+    )
+    private List<MobileInternet> mobilePhones;
 
 }

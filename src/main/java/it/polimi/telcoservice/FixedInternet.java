@@ -2,16 +2,19 @@ package it.polimi.telcoservice;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
+@Entity
 public class FixedInternet{
+
 
     @Id
     @GeneratedValue( strategy = GenerationType.AUTO )
     private int fixedInternetID;
 
 
-    @ManyToOne
-    @JoinColumn(name = "packageID")
-    private ServicePackage servicePackage;
+    @ManyToMany(mappedBy = "fixedInternets")
+    private List<ServicePackage> servicePackage;
 
     private int numGB;
     private int extraGB;
