@@ -17,4 +17,7 @@ public class Order {
     @JoinColumn(name = "UserID")
     private User user;
 
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Subscription subscription;
+
 }

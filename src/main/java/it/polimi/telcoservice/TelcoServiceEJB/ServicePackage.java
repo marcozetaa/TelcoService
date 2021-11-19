@@ -11,8 +11,10 @@ public class ServicePackage {
     private String name;
     private boolean fixed_phone;
 
-
     //aggiungere in name il nome della tabella nel db
+    @OneToOne(mappedBy = "package", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Subscription subscription;
+
     @ManyToMany( fetch = FetchType.EAGER )
     @JoinTable(
             name = "fixed_internet_package",
