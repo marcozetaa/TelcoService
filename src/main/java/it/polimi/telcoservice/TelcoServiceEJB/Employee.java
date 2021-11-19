@@ -1,4 +1,4 @@
-package it.polimi.telcoservice;
+package it.polimi.telcoservice.TelcoServiceEJB;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -12,5 +12,4 @@ public class Employee {
     @Id
     private String username;
     private String password;
-
 }

@@ -1,19 +1,18 @@
-package it.polimi.telcoservice;
+package it.polimi.telcoservice.TelcoServiceEJB;
 
 import jakarta.persistence.*;
 
 import java.util.List;
 
 @Entity
-public class FixedInternet{
-
+public class MobileInternet{
 
     @Id
     @GeneratedValue( strategy = GenerationType.AUTO )
-    private int fixedInternetID;
+    private int mobileInternetID;
 
 
-    @ManyToMany(mappedBy = "fixedInternets")
+    @ManyToMany(mappedBy = "mobileInternets")
     private List<ServicePackage> servicePackage;
 
     private int numGB;

@@ -1,4 +1,4 @@
-package it.polimi.telcoservice;
+package it.polimi.telcoservice.TelcoServiceEJB;
 
 import jakarta.persistence.*;
 
@@ -13,7 +13,7 @@ public class User {
     private String email;
     private boolean insolvent;
 
-    @OneToMany(mappedBy ="Order", fetch = FetchType.EAGER , cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy ="user", fetch = FetchType.LAZY , cascade = CascadeType.REMOVE)
     private List<Order> orders;
 
 }

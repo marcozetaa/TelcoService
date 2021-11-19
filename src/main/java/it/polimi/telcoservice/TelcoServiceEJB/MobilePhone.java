@@ -1,4 +1,4 @@
-package it.polimi.telcoservice;
+package it.polimi.telcoservice.TelcoServiceEJB;
 
 import jakarta.persistence.*;
 
@@ -11,14 +11,12 @@ public class MobilePhone{
     @GeneratedValue( strategy = GenerationType.AUTO )
     private int mobilePhoneID;
 
-
-    @ManyToMany(mappedBy = "offer_package", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "mobilePhones")
     private List<ServicePackage> servicePackage;
 
     private int num_min;
     private int num_sms;
     private int extra_min;
     private int extra_sms;
-
 
 }

@@ -1,4 +1,4 @@
-package it.polimi.telcoservice;
+package it.polimi.telcoservice.TelcoServiceEJB;
 
 import jakarta.persistence.*;
 
@@ -35,6 +35,14 @@ public class ServicePackage {
             joinColumns = { @JoinColumn(name = "name") },
             inverseJoinColumns = { @JoinColumn(name = "mobile_PhoneID") }
     )
-    private List<MobileInternet> mobilePhones;
+    private List<MobilePhone> mobilePhones;
+
+    @ManyToMany( fetch = FetchType.EAGER )
+    @JoinTable(
+            name = "optional_package",
+            joinColumns = { @JoinColumn(name = "name") },
+            inverseJoinColumns = { @JoinColumn(name = "optional_name") }
+    )
+    private List<OptionalProduct> optionalProducts;
 
 }

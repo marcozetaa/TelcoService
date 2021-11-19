@@ -1,4 +1,4 @@
-package it.polimi.telcoservice;
+package it.polimi.telcoservice.TelcoServiceEJB;
 
 import jakarta.persistence.*;
 
@@ -11,7 +11,6 @@ public class OptionalProduct {
     private String name;
     private float monthly_fee;
 
-    @ManyToMany( mappedBy = "optional_products", fetch = FetchType.EAGER)
-    private List<Order> orders;
-
+    @ManyToMany(mappedBy = "optionalProducts")
+    private List<ServicePackage> servicePackage;
 }
