@@ -19,4 +19,43 @@ public class MobilePhone{
     private int extra_min;
     private int extra_sms;
 
+    public int getMobilePhoneID() {
+        return mobilePhoneID;
+    }
+
+    public void setMobilePhoneID(int mobilePhoneID) {
+        this.mobilePhoneID = mobilePhoneID;
+    }
+
+    public int getNum_min() {
+        return num_min;
+    }
+
+    public void setNum_min(int num_min) {
+        this.num_min = num_min;
+    }
+
+    public int getNum_sms() {
+        return num_sms;
+    }
+
+    public void setNum_sms(int num_sms) {
+        this.num_sms = num_sms;
+    }
+
+    public int getExtra_min() {
+        return extra_min;
+    }
+
+    public void setExtra_min(int extra_min) {
+        this.extra_min = extra_min;
+    }
+
+    public int getExtra_sms() {
+        return extra_sms;
+    }
+
+    public void setExtra_sms(int extra_sms) {
+        this.extra_sms = extra_sms;
+    }
 }

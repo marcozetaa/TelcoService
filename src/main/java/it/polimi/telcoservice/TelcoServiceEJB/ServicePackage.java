@@ -47,4 +47,27 @@ public class ServicePackage {
     )
     private List<OptionalProduct> optionalProducts;
 
+    public int getPackageID() {
+        return packageID;
+    }
+
+    public void setPackageID(int packageID) {
+        this.packageID = packageID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isFixed_phone() {
+        return fixed_phone;
+    }
+
+    public void setFixed_phone(boolean fixed_phone) {
+        this.fixed_phone = fixed_phone;
+    }
 }
