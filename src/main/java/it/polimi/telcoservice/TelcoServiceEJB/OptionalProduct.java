@@ -29,4 +29,13 @@ public class OptionalProduct {
     public void setMonthly_fee(float monthly_fee) {
         this.monthly_fee = monthly_fee;
     }
+
+    public List<ServicePackage> getServicePackage() {
+        return servicePackage;
+    }
+
+    public void addServicePackage(ServicePackage sp){
+        getServicePackage().add(sp);
+        sp.getOptionalProducts().add(this);
+    }
 }

@@ -70,4 +70,49 @@ public class ServicePackage {
     public void setFixed_phone(boolean fixed_phone) {
         this.fixed_phone = fixed_phone;
     }
+
+    public List<OptionalProduct> getOptionalProducts() {
+        return optionalProducts;
+    }
+
+    public void addOptionalProduct(OptionalProduct op){
+        getOptionalProducts().add(op);
+        op.getServicePackage().add(this);
+    }
+
+    public void removeOptionalProduct(OptionalProduct op){
+        getOptionalProducts().remove(op);
+    }
+
+    public List<FixedInternet> getFixedInternets() {
+        return fixedInternets;
+    }
+
+    public void addFixedInternet (FixedInternet fi){
+        getFixedInternets().add(fi);
+    }
+
+    public List<MobileInternet> getMobileInternets() {
+        return mobileInternets;
+    }
+
+    public void addMobileInternet(MobileInternet mi){
+        getMobileInternets().add(mi);
+    }
+
+    public List<MobilePhone> getMobilePhones() {
+        return mobilePhones;
+    }
+
+    public void addMobilePhone(MobilePhone mp){
+        getMobilePhones().add(mp);
+    }
+
+    public Subscription getSubscription() {
+        return subscription;
+    }
+
+    public void setSubscription(Subscription subscription) {
+        this.subscription = subscription;
+    }
 }

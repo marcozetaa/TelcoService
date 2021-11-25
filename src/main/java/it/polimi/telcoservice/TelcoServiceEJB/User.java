@@ -55,4 +55,17 @@ public class User {
     public void setInsolvent(boolean insolvent) {
         this.insolvent = insolvent;
     }
+
+    public List<Order> getOrders(){
+        return orders;
+    }
+
+    public void addOrder(Order order){
+        getOrders().add((order));
+        order.setUser(this);
+    }
+
+    public void deleteOrder(Order order){
+        getOrders().remove(order);
+    }
 }

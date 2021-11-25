@@ -7,11 +7,9 @@ import java.util.List;
 @Entity
 public class FixedInternet{
 
-
     @Id
     @GeneratedValue( strategy = GenerationType.AUTO )
     private int fixedInternetID;
-
 
     @ManyToMany(mappedBy = "fixedInternets")
     private List<ServicePackage> servicePackage;

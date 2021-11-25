@@ -51,4 +51,20 @@ public class Order {
     public void setTot_value(float tot_value) {
         this.tot_value = tot_value;
     }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user){
+        this.user = user;
+    }
+
+    public Subscription getSubscription() {
+        return subscription;
+    }
+
+    public void setSubscription(Subscription subscription) {
+        this.subscription = subscription;
+    }
 }
