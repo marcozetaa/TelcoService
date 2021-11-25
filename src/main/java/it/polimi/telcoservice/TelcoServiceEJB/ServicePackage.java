@@ -2,42 +2,34 @@ package it.polimi.telcoservice.TelcoServiceEJB;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "service_package", schema = "telco_service_db")
+@NamedQueries({
+        @NamedQuery(name = "ServicePackage.findByOptional", query = "SELECT sp FROM ServicePackage sp")
+})
 public class ServicePackage {
     @Id @GeneratedValue( strategy = GenerationType.AUTO)
     private int packageID;
     private String name;
     private boolean fixed_phone;
 
-    //aggiungere in name il nome della tabella nel db
-    @OneToOne(mappedBy = "package", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Subscription subscription;
+    @OneToMany(mappedBy = "package", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Subscription> subscriptions;
 
-    @ManyToMany( fetch = FetchType.EAGER )
-    @JoinTable(
-            name = "fixed_internet_package",
-            joinColumns = { @JoinColumn(name = "name") },
-            inverseJoinColumns = { @JoinColumn(name = "fixed_internetID") }
-    )
-    private List<FixedInternet> fixedInternets;
+    @ManyToOne( fetch = FetchType.EAGER )
+    @JoinTable(name = "fixed_internetID")
+    private FixedInternet fixedInternet;
 
-    @ManyToMany( fetch = FetchType.EAGER )
-    @JoinTable(
-            name = "mobile_internet_package",
-            joinColumns = { @JoinColumn(name = "name") },
-            inverseJoinColumns = { @JoinColumn(name = "mobile_InternetID") }
-    )
-    private List<MobileInternet> mobileInternets;
+    @ManyToOne( fetch = FetchType.EAGER )
+    @JoinTable(name = "mobile_internetID")
+    private MobileInternet mobileInternet;
 
-    @ManyToMany( fetch = FetchType.EAGER )
-    @JoinTable(
-            name = "mobile_phone_package",
-            joinColumns = { @JoinColumn(name = "name") },
-            inverseJoinColumns = { @JoinColumn(name = "mobile_PhoneID") }
-    )
-    private List<MobilePhone> mobilePhones;
+    @ManyToOne( fetch = FetchType.EAGER )
+    @JoinTable(name = "mobile_phoneID")
+    private MobilePhone mobilePhone;
 
     @ManyToMany( fetch = FetchType.EAGER )
     @JoinTable(
@@ -45,7 +37,7 @@ public class ServicePackage {
             joinColumns = { @JoinColumn(name = "name") },
             inverseJoinColumns = { @JoinColumn(name = "optional_name") }
     )
-    private List<OptionalProduct> optionalProducts;
+    private ArrayList<OptionalProduct> optionalProducts;
 
     public int getPackageID() {
         return packageID;
@@ -84,35 +76,35 @@ public class ServicePackage {
         getOptionalProducts().remove(op);
     }
 
-    public List<FixedInternet> getFixedInternets() {
-        return fixedInternets;
+    public FixedInternet getFixedInternet() {
+        return fixedInternet;
     }
 
-    public void addFixedInternet (FixedInternet fi){
-        getFixedInternets().add(fi);
+    public void setFixedInternet(FixedInternet fixedInternet) {
+        this.fixedInternet = fixedInternet;
     }
 
-    public List<MobileInternet> getMobileInternets() {
-        return mobileInternets;
+    public MobileInternet getMobileInternet() {
+        return mobileInternet;
     }
 
-    public void addMobileInternet(MobileInternet mi){
-        getMobileInternets().add(mi);
+    public void setMobileInternet(MobileInternet mobileInternet) {
+        this.mobileInternet = mobileInternet;
     }
 
-    public List<MobilePhone> getMobilePhones() {
-        return mobilePhones;
+    public MobilePhone getMobilePhone() {
+        return mobilePhone;
     }
 
-    public void addMobilePhone(MobilePhone mp){
-        getMobilePhones().add(mp);
+    public void setMobilePhone(MobilePhone mobilePhone) {
+        this.mobilePhone = mobilePhone;
     }
 
-    public Subscription getSubscription() {
-        return subscription;
+    public List<Subscription> getSubscriptions() {
+        return subscriptions;
     }
 
-    public void setSubscription(Subscription subscription) {
-        this.subscription = subscription;
+    public void addSubscriptions(Subscription subscriptions) {
+        this.subscriptions.add(subscriptions);
     }
 }

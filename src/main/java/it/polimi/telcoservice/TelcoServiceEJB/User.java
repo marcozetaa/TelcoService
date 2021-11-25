@@ -5,6 +5,11 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
+@Table(name = "user", schema = "telco_service_db")
+@NamedQueries({
+        @NamedQuery(name = "User.checkCredentials", query = "SELECT r FROM User r  WHERE r.username = ?1 and r.password = ?2"),
+        @NamedQuery(name = "User.checkAlreadyRegistered", query = "SELECT r FROM User r WHERE r.email = ?1 or r.username = ?2")
+})
 public class User {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private int userID;
