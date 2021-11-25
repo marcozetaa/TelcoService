@@ -6,6 +6,11 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
+@Table(name = "order", schema = "telco_service_db")
+@NamedQueries({
+        @NamedQuery(name = "Order.findByUser", query = "SELECT o FROM Order o WHERE o.user = ?1"),
+})
+
 public class Order {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private int orderID;
