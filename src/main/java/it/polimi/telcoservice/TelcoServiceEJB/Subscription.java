@@ -3,6 +3,11 @@ package it.polimi.telcoservice.TelcoServiceEJB;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "subscription", schema = "telco_service_db")
+@NamedQueries({
+        @NamedQuery(name = "Subscription.findByPackage", query = "SELECT s FROM Subscription s WHERE s.servicePackage = ?1"),
+        @NamedQuery(name = "Subscription.findByPackageAndPeriod", query = "SELECT s FROM Subscription s WHERE s.servicePackage = ?1 and s.validity_period = ?2")
+})
 public class Subscription {
 
     @Id
@@ -16,7 +21,7 @@ public class Subscription {
     @JoinColumn(name = "order")
     private Order order;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "package")
     private ServicePackage servicePackage;
 

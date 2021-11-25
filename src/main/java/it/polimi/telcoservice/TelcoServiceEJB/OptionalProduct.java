@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
+@Table(name = "optional_product", schema = "telco_service_db")
 public class OptionalProduct {
 
     @Id

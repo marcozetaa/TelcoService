@@ -5,13 +5,14 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
+@Table(name = "mobile_phone", schema = "telco_service_db")
 public class MobilePhone{
 
     @Id
     @GeneratedValue( strategy = GenerationType.AUTO )
     private int mobilePhoneID;
 
-    @ManyToMany(mappedBy = "mobilePhones")
+    @OneToMany(mappedBy = "mobilePhone")
     private List<ServicePackage> servicePackage;
 
     private int num_min;
