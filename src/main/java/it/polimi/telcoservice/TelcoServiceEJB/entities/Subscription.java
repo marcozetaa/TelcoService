@@ -1,4 +1,4 @@
-package it.polimi.telcoservice.TelcoServiceEJB;
+package it.polimi.telcoservice.TelcoServiceEJB.entities;
 
 import jakarta.persistence.*;
 
@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 @Table(name = "subscription", schema = "telco_service_db")
 @NamedQueries({
         @NamedQuery(name = "Subscription.findByPackage", query = "SELECT s FROM Subscription s WHERE s.servicePackage = ?1"),
+        @NamedQuery(name = "Subscription.findByOrder", query = "SELECT s FROM Subscription s WHERE s.order = ?1"),
         @NamedQuery(name = "Subscription.findByPackageAndPeriod", query = "SELECT s FROM Subscription s WHERE s.servicePackage = ?1 and s.validity_period = ?2")
 })
 public class Subscription {
@@ -24,6 +25,16 @@ public class Subscription {
     @ManyToOne
     @JoinColumn(name = "package")
     private ServicePackage servicePackage;
+
+    public Subscription(){
+    }
+
+    public Subscription(int validity_period, float fee,Order order,ServicePackage servicePackage){
+        this.validity_period = validity_period;
+        this.fee = fee;
+        this.order = order;
+        this.servicePackage = servicePackage;
+    }
 
     public int getSubID() {
         return subID;

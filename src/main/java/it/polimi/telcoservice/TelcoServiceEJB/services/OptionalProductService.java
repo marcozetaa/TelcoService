@@ -1,0 +1,55 @@
+package it.polimi.telcoservice.TelcoServiceEJB.services;
+
+import it.polimi.telcoservice.TelcoServiceEJB.entities.OptionalProduct;
+import it.polimi.telcoservice.TelcoServiceEJB.entities.ServicePackage;
+import it.polimi.telcoservice.TelcoServiceEJB.entities.Subscription;
+import it.polimi.telcoservice.TelcoServiceEJB.entities.User;
+import it.polimi.telcoservice.TelcoServiceEJB.exceptions.BadOrderClient;
+import it.polimi.telcoservice.TelcoServiceEJB.exceptions.OptionalProductException;
+import it.polimi.telcoservice.TelcoServiceEJB.exceptions.SubscriptionException;
+import jakarta.ejb.Stateless;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.PersistenceException;
+
+import java.util.List;
+
+@Stateless
+public class OptionalProductService {
+    @PersistenceContext(unitName = "telcoServiceEJB")
+    private EntityManager em;
+
+    public  OptionalProductService(){
+    }
+
+    public void createOptionalProduct(String name, float monthly_fee){
+        OptionalProduct op = new OptionalProduct(name,monthly_fee);
+
+        System.out.println("Method createOrder before em.persist()");
+        System.out.println("Is mission object managed?  " + em.contains(op));
+
+        em.persist(op); // makes also order object managed via cascading
+
+        System.out.println("Method createOrder after em.persist()");
+        System.out.println("Is mission object managed?  " + em.contains(op));
+    }
+
+    public List<OptionalProduct> findByPackage(int id) throws OptionalProductException {
+        List<OptionalProduct> opList = null;
+        try {
+            opList = em.createNamedQuery("OptionalProduct.findByPackage", OptionalProduct.class).setParameter(1,id).getResultList();
+        } catch (PersistenceException e){
+            throw new OptionalProductException("Could not load optional products");
+        }
+        return opList;
+    }
+
+    public void deleteOptionalProduct(int optionalProductId, int servicePackageId)  {
+        ServicePackage sp = em.find(ServicePackage.class, servicePackageId);
+        OptionalProduct op = em.find(OptionalProduct.class, optionalProductId);
+
+        sp.removeOptionalProduct(op); // this updates both directions of the associations
+        em.remove(op);
+    }
+
+}

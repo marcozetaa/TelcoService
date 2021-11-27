@@ -1,4 +1,4 @@
-package it.polimi.telcoservice.TelcoServiceEJB;
+package it.polimi.telcoservice.TelcoServiceEJB.entities;
 
 import jakarta.persistence.*;
 
@@ -14,6 +14,14 @@ public class FixedInternet{
 
     @OneToMany(mappedBy = "fixedInternet")
     private List<ServicePackage> servicePackage;
+
+    public FixedInternet(){
+    }
+
+    public FixedInternet(int numGB, int extraGB){
+        this.numGB = numGB;
+        this.extraGB = extraGB;
+    }
 
     private int numGB;
     private int extraGB;

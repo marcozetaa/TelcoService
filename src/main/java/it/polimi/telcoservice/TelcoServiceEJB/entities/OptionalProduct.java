@@ -1,11 +1,15 @@
-package it.polimi.telcoservice.TelcoServiceEJB;
+package it.polimi.telcoservice.TelcoServiceEJB.entities;
 
+import it.polimi.telcoservice.TelcoServiceEJB.exceptions.BadOrderClient;
 import jakarta.persistence.*;
 
 import java.util.List;
 
 @Entity
 @Table(name = "optional_product", schema = "telco_service_db")
+@NamedQueries({
+        @NamedQuery(name = "OptionalProduct.findByPackage", query = "SELECT s FROM Subscription s WHERE s.servicePackage = ?1"),
+})
 public class OptionalProduct {
 
     @Id
@@ -14,6 +18,14 @@ public class OptionalProduct {
 
     @ManyToMany(mappedBy = "optionalProducts")
     private List<ServicePackage> servicePackage;
+
+    public OptionalProduct(){
+    }
+
+    public OptionalProduct(String name, float monthly_fee){
+        this.name = name;
+        this.monthly_fee = monthly_fee;
+    }
 
     public String getName() {
         return name;
@@ -38,5 +50,10 @@ public class OptionalProduct {
     public void addServicePackage(ServicePackage sp){
         getServicePackage().add(sp);
         sp.getOptionalProducts().add(this);
+    }
+
+    public void removeServicePackage(ServicePackage sp){
+        getServicePackage().remove(sp);
+        sp.getSubscriptions().remove(this);
     }
 }

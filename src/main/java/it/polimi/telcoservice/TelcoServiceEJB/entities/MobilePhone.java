@@ -1,4 +1,4 @@
-package it.polimi.telcoservice.TelcoServiceEJB;
+package it.polimi.telcoservice.TelcoServiceEJB.entities;
 
 import jakarta.persistence.*;
 
@@ -14,6 +14,16 @@ public class MobilePhone{
 
     @OneToMany(mappedBy = "mobilePhone")
     private List<ServicePackage> servicePackage;
+
+    public MobilePhone(){
+    }
+
+    public MobilePhone(int num_min, int num_sms, int extra_min, int extra_sms){
+        this.num_min = num_min;
+        this.num_sms = num_sms;
+        this.extra_min = extra_min;
+        this.extra_sms = extra_sms;
+    }
 
     private int num_min;
     private int num_sms;

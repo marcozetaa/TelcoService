@@ -1,4 +1,4 @@
-package it.polimi.telcoservice.TelcoServiceEJB;
+package it.polimi.telcoservice.TelcoServiceEJB.entities;
 
 import jakarta.persistence.*;
 
@@ -16,10 +16,21 @@ public class User {
     private String username;
     private String password;
     private String email;
-    private boolean insolvent;
+    private UserStatus status;
 
     @OneToMany(mappedBy ="user", fetch = FetchType.LAZY , cascade = CascadeType.REMOVE)
     private List<Order> orders;
+
+    public User() {
+    }
+
+    public User(List<Order> orders, String username, String password, String email){
+        this.orders = orders;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.status = UserStatus.SOLVENT;
+    }
 
     public int getUserID() {
         return userID;
@@ -53,12 +64,12 @@ public class User {
         this.email = email;
     }
 
-    public boolean isInsolvent() {
-        return insolvent;
+    public UserStatus isInsolvent() {
+        return status;
     }
 
-    public void setInsolvent(boolean insolvent) {
-        this.insolvent = insolvent;
+    public void setInsolvent(UserStatus status) {
+        this.status = status;
     }
 
     public List<Order> getOrders(){

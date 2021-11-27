@@ -1,4 +1,4 @@
-package it.polimi.telcoservice.TelcoServiceEJB;
+package it.polimi.telcoservice.TelcoServiceEJB.entities;
 
 import jakarta.persistence.*;
 
@@ -17,6 +17,14 @@ public class MobileInternet{
 
     private int numGB;
     private int extraGB;
+
+    public MobileInternet(){
+    }
+
+    public  MobileInternet(int numGB, int extraGB){
+        this.numGB = numGB;
+        this.extraGB = extraGB;
+    }
 
     public int getMobileInternetID() {
         return mobileInternetID;
