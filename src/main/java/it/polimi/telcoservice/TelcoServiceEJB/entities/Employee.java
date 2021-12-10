@@ -1,8 +1,7 @@
 package it.polimi.telcoservice.TelcoServiceEJB.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 import java.util.List;
 

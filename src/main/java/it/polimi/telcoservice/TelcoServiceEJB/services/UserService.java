@@ -4,8 +4,8 @@ import it.polimi.telcoservice.TelcoServiceEJB.entities.Order;
 import it.polimi.telcoservice.TelcoServiceEJB.entities.User;
 import it.polimi.telcoservice.TelcoServiceEJB.exceptions.CredentialException;
 import it.polimi.telcoservice.TelcoServiceEJB.exceptions.UpdateProfileException;
-import jakarta.ejb.Stateless;
-import jakarta.persistence.*;
+import javax.ejb.Stateless;
+import javax.persistence.*;
 
 import java.util.List;
 

@@ -7,10 +7,10 @@ import it.polimi.telcoservice.TelcoServiceEJB.exceptions.BadOrderClient;
 import it.polimi.telcoservice.TelcoServiceEJB.exceptions.BadOrderStatusChange;
 import it.polimi.telcoservice.TelcoServiceEJB.exceptions.InvalidStatusChange;
 import it.polimi.telcoservice.TelcoServiceEJB.exceptions.OrderException;
-import jakarta.ejb.Stateless;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.PersistenceException;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

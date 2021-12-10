@@ -1,7 +1,6 @@
 package it.polimi.telcoservice.TelcoServiceEJB.entities;
 
-import jakarta.persistence.*;
-
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +14,8 @@ import java.util.List;
         @NamedQuery(name = "ServicePackage.findByMP", query = "SELECT sp FROM ServicePackage sp WHERE sp.mobilePhone=?1")
 })
 public class ServicePackage {
-    @Id @GeneratedValue( strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue( strategy = GenerationType.AUTO)
     private int packageID;
     private String name;
     private FixedPhoneStatus fixed_phone;

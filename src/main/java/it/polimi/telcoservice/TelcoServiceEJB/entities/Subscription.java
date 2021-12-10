@@ -1,6 +1,6 @@
 package it.polimi.telcoservice.TelcoServiceEJB.entities;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "subscription", schema = "telco_service_db")

@@ -1,7 +1,6 @@
 package it.polimi.telcoservice.TelcoServiceEJB.entities;
 
-import it.polimi.telcoservice.TelcoServiceEJB.exceptions.BadOrderClient;
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 import java.util.List;
 

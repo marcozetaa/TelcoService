@@ -2,13 +2,13 @@ package it.polimi.telcoservice.TelcoServiceEJB.services;
 
 import it.polimi.telcoservice.TelcoServiceEJB.entities.FixedInternet;
 import it.polimi.telcoservice.TelcoServiceEJB.entities.MobileInternet;
-import jakarta.ejb.Stateless;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 @Stateless
 public class FixedInternetService {
-    @PersistenceContext(unitName = "telcoServiceEJB")
+    @PersistenceContext(unitName = "TelcoServiceEJB")
     private EntityManager em;
 
     public FixedInternetService(){

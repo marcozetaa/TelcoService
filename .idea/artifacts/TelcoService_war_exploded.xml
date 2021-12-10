@@ -1,22 +1,27 @@
 <component name="ArtifactManager">
   <artifact type="exploded-war" name="TelcoService:war exploded">
-    <output-path>$PROJECT_DIR$/target/TelcoService-1.0-SNAPSHOT</output-path>
-    <properties id="maven-jee-properties">
-      <options>
-        <exploded>true</exploded>
-        <module>TelcoService</module>
-        <packaging>war</packaging>
-        <unpackNestedArchives>false</unpackNestedArchives>
-      </options>
-    </properties>
+    <output-path>$PROJECT_DIR$/out/artifacts/TelcoService_war_exploded</output-path>
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="TelcoService" />
+          <element id="jpa-descriptors" facet="TelcoService/jpa/JPA" />
         </element>
-      </element>
-      <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/target/TelcoService-1.0-SNAPSHOT/META-INF/MANIFEST.MF" />
+        <element id="directory" name="lib">
+          <element id="library" level="application" name="mysql-connector-java-8.0.27" />
+          <element id="library" level="project" name="Maven: javax.persistence:javax.persistence-api:2.2" />
+          <element id="library" level="project" name="Maven: org.thymeleaf:thymeleaf:3.0.12.RELEASE" />
+          <element id="library" level="project" name="Maven: ognl:ognl:3.1.26" />
+          <element id="library" level="project" name="Maven: org.javassist:javassist:3.20.0-GA" />
+          <element id="library" level="project" name="Maven: org.attoparser:attoparser:2.0.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.unbescape:unbescape:1.1.6.RELEASE" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.25" />
+          <element id="library" level="project" name="Maven: commons-lang:commons-lang:2.6" />
+          <element id="library" level="project" name="Maven: com.sun.mail:javax.mail:1.6.2" />
+          <element id="library" level="project" name="Maven: javax.activation:activation:1.1" />
+          <element id="library" level="project" name="Java EE 6-Java EE 6" />
+          <element id="library" level="project" name="Maven: javax:javaee-api:8.0.1" />
+        </element>
       </element>
       <element id="javaee-facet-resources" facet="TelcoService/web/Web" />
     </root>

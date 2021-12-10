@@ -1,6 +1,6 @@
 package it.polimi.telcoservice.TelcoServiceEJB.entities;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

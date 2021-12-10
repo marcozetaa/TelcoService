@@ -7,16 +7,16 @@ import it.polimi.telcoservice.TelcoServiceEJB.entities.User;
 import it.polimi.telcoservice.TelcoServiceEJB.exceptions.BadOrderClient;
 import it.polimi.telcoservice.TelcoServiceEJB.exceptions.OptionalProductException;
 import it.polimi.telcoservice.TelcoServiceEJB.exceptions.SubscriptionException;
-import jakarta.ejb.Stateless;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.PersistenceException;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 
 import java.util.List;
 
 @Stateless
 public class OptionalProductService {
-    @PersistenceContext(unitName = "telcoServiceEJB")
+    @PersistenceContext(unitName = "TelcoServiceEJB")
     private EntityManager em;
 
     public  OptionalProductService(){

@@ -5,10 +5,10 @@ import it.polimi.telcoservice.TelcoServiceEJB.entities.ServicePackage;
 import it.polimi.telcoservice.TelcoServiceEJB.entities.Subscription;
 import it.polimi.telcoservice.TelcoServiceEJB.exceptions.OrderException;
 import it.polimi.telcoservice.TelcoServiceEJB.exceptions.SubscriptionException;
-import jakarta.ejb.Stateless;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.PersistenceException;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 
 import java.util.List;
 
