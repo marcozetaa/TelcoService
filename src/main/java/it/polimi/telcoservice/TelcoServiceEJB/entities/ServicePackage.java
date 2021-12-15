@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "service_package", schema = "telco_service_db")
+@Table(name = "package", schema = "telco_service_db")
 @NamedQueries({
         @NamedQuery(name = "ServicePackage.findByOptionalProduct", query = "SELECT sp FROM ServicePackage sp WHERE sp.optionalProducts=?1"),
         @NamedQuery(name = "ServicePackage.findByID", query = "SELECT sp FROM ServicePackage sp WHERE sp.packageID=?1"),
@@ -27,22 +27,22 @@ public class ServicePackage {
     private List<Subscription> subscriptions;
 
     @ManyToOne( fetch = FetchType.EAGER )
-    @JoinTable(name = "fixed_internetID")
+    @JoinTable(name = "fixed_internet")
     private FixedInternet fixedInternet;
 
     @ManyToOne( fetch = FetchType.EAGER )
-    @JoinTable(name = "mobile_internetID")
+    @JoinTable(name = "mobile_internet")
     private MobileInternet mobileInternet;
 
     @ManyToOne( fetch = FetchType.EAGER )
-    @JoinTable(name = "mobile_phoneID")
+    @JoinTable(name = "mobile_phone")
     private MobilePhone mobilePhone;
 
     @ManyToMany( fetch = FetchType.EAGER )
     @JoinTable(
-            name = "optional_package",
+            name = "package",
             joinColumns = { @JoinColumn(name = "name") },
-            inverseJoinColumns = { @JoinColumn(name = "optional_name") }
+            inverseJoinColumns = { @JoinColumn(name = "name") }
     )
     private ArrayList<OptionalProduct> optionalProducts;
 

@@ -4,11 +4,12 @@ import it.polimi.telcoservice.TelcoServiceEJB.entities.User;
 import it.polimi.telcoservice.TelcoServiceEJB.services.UserService;
 import it.polimi.telcoservice.TelcoServiceEJB.exceptions.CredentialException;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
+
 
 import javax.ejb.EJB;
 import javax.persistence.NonUniqueResultException;
@@ -20,15 +21,16 @@ import java.io.IOException;
 @WebServlet(name = "CheckLogin", value = "/CheckLogin")
 public class CheckLogin extends HttpServlet{
     private static final long serialVersionUID = 1L;
-    private TemplateEngine templateEngine;
     @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/UserService")
     private UserService usrService;
+    private TemplateEngine templateEngine;
 
     public CheckLogin() { super(); }
 
     public void init() throws ServletException {
         ServletContext servletContext = getServletContext();
-        ServletContextTemplateResolver templateResolver =  new ServletContextTemplateResolver(servletContext);
+
+        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
         templateResolver.setTemplateMode(TemplateMode.HTML);
         this.templateEngine = new TemplateEngine();
         this.templateEngine.setTemplateResolver(templateResolver);
@@ -62,11 +64,11 @@ public class CheckLogin extends HttpServlet{
         // show login page with error message
 
         String path;
+        ServletContext servletContext = getServletContext();
+        final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+
         if( user == null ){
-            ServletContext servletContext = getServletContext();
-            final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-            ctx.setVariable("errorMsg","Incorrect username or password");
-            path = "/index.html";
+            path = "/WEB-INF/AdminPage.html";
             templateEngine.process(path, ctx, response.getWriter());
         }
         else {

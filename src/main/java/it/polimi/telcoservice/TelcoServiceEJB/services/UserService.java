@@ -52,6 +52,26 @@ public class UserService {
         throw  new NonUniqueResultException("More than one user registered");
     }
 
+    public void registrateUser(String username, String password, String email) throws CredentialException {
+        long userInstances = 0;
+
+        try {
+            userInstances = (long) em.createNamedQuery("User.checkAlreadyRegistered").setParameter(1, email).setParameter(2, username).getSingleResult();
+        }catch (PersistenceException e) {
+            throw new CredentialException("Could not verify credentals");
+        }
+
+        if(userInstances != 0) {
+            throw new CredentialException("username or email already in use");
+        }
+        else {
+            User newU = new User(username, password, email);
+            em.persist(newU);
+            em.flush(); //to ensure that the new inserted user can be used in the next login, even though the login uses a (SELECT) JPQL query which by rule force a flush before beign executed
+        }
+
+    }
+
     public void UpdateProfile(User u) throws UpdateProfileException{
         try {
             em.merge(u);

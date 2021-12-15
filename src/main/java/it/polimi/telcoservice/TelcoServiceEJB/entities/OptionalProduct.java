@@ -5,7 +5,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "optional_product", schema = "telco_service_db")
+@Table(name = "product", schema = "telco_service_db")
 @NamedQueries({
         @NamedQuery(name = "OptionalProduct.findByPackage", query = "SELECT s FROM Subscription s WHERE s.servicePackage = ?1"),
 })

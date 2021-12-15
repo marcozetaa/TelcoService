@@ -8,7 +8,7 @@ import java.util.List;
 @Table(name = "user", schema = "telco_service_db")
 @NamedQueries({
         @NamedQuery(name = "User.checkCredentials", query = "SELECT r FROM User r  WHERE r.username = ?1 and r.password = ?2"),
-        @NamedQuery(name = "User.checkAlreadyRegistered", query = "SELECT r FROM User r WHERE r.email = ?1 or r.username = ?2")
+        @NamedQuery(name = "User.checkAlreadyRegistered", query = "SELECT COUNT(r) FROM User r WHERE r.email = ?1 or r.username = ?2")
 })
 public class User {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,7 +24,7 @@ public class User {
     public User() {
     }
 
-    public User(List<Order> orders, String username, String password, String email){
+    public User(String username, String password, String email){
         this.orders = orders;
         this.username = username;
         this.password = password;
