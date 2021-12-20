@@ -5,19 +5,14 @@
 </head>
 <body>
 
-    <h1>"Welcome to Telco Service!!!
-
-
-
-        "</h1>
-
-    <form action="CheckLogin" method="POST">
+    <h1>Welcome to Telco Service!!!</h1>
+    <form th:action="@{CheckLogin}" method="POST">
         Username: <input type="text" name="username" required> <br>
         Password: <input type="password" name="pwd" required><br>
-        <input type="submit" value="login">
-        <p th:text=" ${errorMsg}"></p>
+        <input type="submit" value="Login">
+        <p th:text="${errorMsg}"></p>
     </form>
-    <h2>Already registered ?<a href="Registration.html">Click here to register now</a></h2>
+    <h3>Not registered? <a th:href="@{CheckRegistration}"> Register</a></h3>
 
 </body>
 </html>

@@ -45,10 +45,10 @@ public class OrderService {
         System.out.println("Is mission object managed?  " + em.contains(order));
     }
 
-    public List<Order> findByUser(String usr) throws OrderException {
+    public List<Order> findByUserNoCache(int userid, OrderStatus status) throws OrderException {
         List<Order> oList = null;
         try {
-            oList = em.createNamedQuery("Order.findByUser", Order.class).setParameter(1,usr).getResultList();
+            oList = em.createNamedQuery("Order.findByUser", Order.class).setHint("javax.persistence.cache.storeMode", "REFRESH").setParameter(1,userid).setParameter(2, status).getResultList();
         } catch (PersistenceException e){
             throw new OrderException("Could not load orders");
         }

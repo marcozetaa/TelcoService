@@ -6,6 +6,7 @@ import it.polimi.telcoservice.TelcoServiceEJB.entities.Subscription;
 import it.polimi.telcoservice.TelcoServiceEJB.entities.User;
 import it.polimi.telcoservice.TelcoServiceEJB.exceptions.BadOrderClient;
 import it.polimi.telcoservice.TelcoServiceEJB.exceptions.OptionalProductException;
+import it.polimi.telcoservice.TelcoServiceEJB.exceptions.OrderException;
 import it.polimi.telcoservice.TelcoServiceEJB.exceptions.SubscriptionException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -32,6 +33,16 @@ public class OptionalProductService {
 
         System.out.println("Method createOrder after em.persist()");
         System.out.println("Is mission object managed?  " + em.contains(op));
+    }
+
+    public List<OptionalProduct> findAll() throws OrderException {
+        List<OptionalProduct> opList = null;
+        try {
+            opList = em.createNamedQuery("OptionalProduct.findAll", OptionalProduct.class).getResultList();
+        } catch (PersistenceException e){
+            throw new OrderException("Could not load packages");
+        }
+        return opList;
     }
 
     public List<OptionalProduct> findByPackage(int id) throws OptionalProductException {

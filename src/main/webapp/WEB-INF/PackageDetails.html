@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Packages</title>
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../css/style.css" th:href="@{../css/style.css}" />
+</head>
+<body>
+    <div align="right">
+        <a th:href="@{/GoToHomePage}">Homepage</a>
+    </div>
+    <div align="right">
+        <a th:href="@{/Logout}">Logout</a>
+    </div>
+    <h1> Package Details</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Fixed Phone</th>
+            <th>12Fee</th>
+            <th>24Fee</th>
+            <th>36Fee</th>
+            <th>Mobile Phone</th>
+            <th>Fixed Internet</th>
+            <th>Mobile Internet</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="sp : ${packages}">
+            <td th:text="${sp.name}"></td>
+            <td th:text="${sp.fixed_phone}"></td>
+            <td th:text="${sp.fee12}"></td>
+            <td th:text="${sp.fee24}"></td>
+            <td th:text="${sp.fee36}"></td>
+            <td th:text="${sp.mobilePhone}"></td>
+            <td th:text="${sp.fixedInternet}"></td>
+            <td th:text="${sp.mobileInternet}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

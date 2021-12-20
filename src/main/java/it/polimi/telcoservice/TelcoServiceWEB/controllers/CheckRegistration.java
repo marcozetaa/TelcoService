@@ -10,7 +10,6 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import javax.ejb.EJB;
-import javax.persistence.PersistenceException;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
@@ -21,7 +20,7 @@ import java.io.IOException;
 public class CheckRegistration extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private TemplateEngine templateEngine;
-    @EJB(name = "it.polimi.db2.questionnaire.services/UserService")
+    @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/UserService")
     private UserService usrService;
 
     @Override
@@ -36,12 +35,20 @@ public class CheckRegistration extends HttpServlet {
     }
 
     @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String path = "/WEB-INF/Registration.html";
+        ServletContext servletContext = getServletContext();
+        final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+
+        templateEngine.process(path, ctx, response.getWriter());
+    }
+
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 // obtain and escape params
         String usrn = null;
         String pwd = null;
         String email = null;
-        String adm = "N";
 
         try {
 

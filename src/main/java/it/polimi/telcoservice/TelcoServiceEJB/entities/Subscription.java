@@ -19,20 +19,19 @@ public class Subscription {
     private float fee;
 
     @OneToOne
-    @JoinColumn(name = "order")
+    @JoinColumn(name = "id_order")
     private Order order;
 
     @ManyToOne
-    @JoinColumn(name = "package")
+    @JoinColumn(name = "id_package")
     private ServicePackage servicePackage;
 
     public Subscription(){
     }
 
-    public Subscription(int validity_period, float fee,Order order,ServicePackage servicePackage){
+    public Subscription(int validity_period, float fee, ServicePackage servicePackage){
         this.validity_period = validity_period;
         this.fee = fee;
-        this.order = order;
         this.servicePackage = servicePackage;
     }
 

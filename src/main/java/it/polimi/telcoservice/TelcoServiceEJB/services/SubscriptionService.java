@@ -20,20 +20,13 @@ public class SubscriptionService {
     public SubscriptionService(){
     }
 
-    public void createSubscription(int validity_period, float fee, int orderId, int serviceID) {
-        Order order = em.find(Order.class, orderId);
+    public void createSubscription(int validity_period, float fee, int serviceID) {
         ServicePackage servicePackage = em.find(ServicePackage.class, serviceID);
 
-        Subscription subscription = new Subscription(validity_period, fee, order, servicePackage);
+        Subscription subscription = new Subscription(validity_period, fee, servicePackage);
 
         // for debugging: let's check if subscription is managed
-        System.out.println("Method createSubscription before order.setSubscription(subscription)");
-        System.out.println("Is subscription object managed?  " + em.contains(subscription));
-
-        order.setSubscription(subscription);
-
-        System.out.println("Method createSubscription before servicePackage.addSubscription(subscription)"
-                + "and after order.setSubscription()");
+        System.out.println("Method createSubscription before servicePackage.addSubscription(subscription)");
         System.out.println("Is subscription object managed?  " + em.contains(subscription));
 
         servicePackage.addSubscriptions(subscription);
@@ -42,9 +35,6 @@ public class SubscriptionService {
         System.out.println("Is subscription object managed?  " + em.contains(subscription));
 
         em.persist(subscription);
-
-        System.out.println("Method createSubscription after em.persist()");
-        System.out.println("Is subscription object managed?  " + em.contains(order));
     }
 
     public List<Subscription> findByPackage(int id) throws SubscriptionException {

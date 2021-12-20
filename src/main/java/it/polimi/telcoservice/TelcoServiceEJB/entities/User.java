@@ -18,7 +18,7 @@ public class User {
     private String email;
     private UserStatus status;
 
-    @OneToMany(mappedBy ="user", fetch = FetchType.LAZY , cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy ="client", fetch = FetchType.LAZY , cascade = CascadeType.REMOVE)
     private List<Order> orders;
 
     public User() {

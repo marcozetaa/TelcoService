@@ -37,6 +37,16 @@ public class CheckLogin extends HttpServlet{
         templateResolver.setSuffix(".html");
     }
 
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String path = "/index.html";
+        ServletContext servletContext = getServletContext();
+        final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+
+        templateEngine.process(path, ctx, response.getWriter());
+    }
+
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //obtain and escape params
         String usrn = null;
@@ -68,7 +78,7 @@ public class CheckLogin extends HttpServlet{
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 
         if( user == null ){
-            path = "/WEB-INF/AdminPage.html";
+            path = getServletContext().getContextPath() + "/index.html";;
             templateEngine.process(path, ctx, response.getWriter());
         }
         else {

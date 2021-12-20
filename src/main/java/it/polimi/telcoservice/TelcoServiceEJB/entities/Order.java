@@ -8,8 +8,8 @@ import java.time.LocalTime;
 @Entity
 @Table(name = "order", schema = "telco_service_db")
 @NamedQueries({
-        @NamedQuery(name = "Order.findByUser", query = "SELECT o FROM Order o WHERE o.client = ?1"),
-        @NamedQuery(name = "Order.findByID", query = "SELECT o FROM Order o WHERE o.orderID = ?1")
+        @NamedQuery(name = "Order.findByUser", query = "SELECT o FROM Order o WHERE o.client.userID = ?1 AND o.status = ?2 ORDER BY o.date_of_creation DESC"),
+        @NamedQuery(name = "Order.findByID", query = "SELECT o FROM Order o WHERE o.orderID = ?1 ORDER BY o.date_of_creation DESC")
 })
 
 public class Order {
@@ -22,7 +22,7 @@ public class Order {
     private OrderStatus status;
 
     @ManyToOne
-    @JoinColumn(name = "user")
+    @JoinColumn(name = "id_costumer")
     private User client;
 
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)

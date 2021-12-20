@@ -29,12 +29,22 @@ public class ServicePackageService {
         System.out.println("Is servicePackage object managed?  " + em.contains(servicePackage));
     }
 
-    public List<ServicePackage> findByID(String id) throws OrderException {
+    public List<ServicePackage> findAll() throws OrderException {
+        List<ServicePackage> spList = null;
+        try {
+            spList = em.createNamedQuery("ServicePackage.findAll", ServicePackage.class).getResultList();
+        } catch (PersistenceException e){
+            throw new OrderException("Could not load packages");
+        }
+        return spList;
+    }
+
+    public List<ServicePackage> findByID(int id) throws OrderException {
         List<ServicePackage> spList = null;
         try {
             spList = em.createNamedQuery("ServicePackage.findByID", ServicePackage.class).setParameter(1,id).getResultList();
         } catch (PersistenceException e){
-            throw new OrderException("Could not load packages");
+            throw new OrderException("Could not load selected packages");
         }
         return spList;
     }

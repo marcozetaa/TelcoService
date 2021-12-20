@@ -1,6 +1,7 @@
 package it.polimi.telcoservice.TelcoServiceWEB.controllers;
 
-import it.polimi.telcoservice.TelcoServiceEJB.entities.ServicePackage;
+import it.polimi.telcoservice.TelcoServiceEJB.entities.*;
+import it.polimi.telcoservice.TelcoServiceEJB.services.OptionalProductService;
 import it.polimi.telcoservice.TelcoServiceEJB.services.ServicePackageService;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -15,16 +16,16 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "Homepage", value = "/Homepage")
-public class GoToHomepage extends HttpServlet {
+@WebServlet(name = "GoToPurchase", value = "/GoToPurchase")
+public class GoToPurchase extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private TemplateEngine templateEngine;
     @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/ServicePackageService")
     private ServicePackageService pService;
+    @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/OptionalProductService")
+    private OptionalProductService opService;
 
-    public GoToHomepage(){
-        super();
-    }
+    public GoToPurchase(){ super(); }
 
     @Override
     public void init() throws ServletException {
@@ -39,28 +40,41 @@ public class GoToHomepage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        String path = "/Home.html";
-        ServletContext servletContext = getServletContext();
-        final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+        ServicePackage sel_package = null;
+        List<OptionalProduct> o_products = null;
 
-        List<ServicePackage> packages = null;
+        // get and check params
+        Integer packageId = null;
+        try {
+            packageId = Integer.parseInt(request.getParameter("packageID"));
+        } catch (NumberFormatException | NullPointerException e) {
+            // only for debugging e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect param values");
+            return;
+        }
 
         try{
 
-            packages = pService.findAll();
+            sel_package = (ServicePackage) opService.findByPackage(packageId);
+            o_products = opService.findAll();
 
         } catch (Exception e) {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,"Not possible to get services");
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,"Not possible to get Package offer");
         }
 
-        ctx.setVariable("packages", packages);
+        String path = "/Purchase.html";
+        ServletContext servletContext = getServletContext();
+        final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+        ctx.setVariable("package", sel_package);
+        ctx.setVariable("products", o_products);
 
         templateEngine.process(path, ctx, response.getWriter());
+
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
+        doGet(request,response);
     }
 
     @Override
