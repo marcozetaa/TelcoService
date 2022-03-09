@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../css/style.css"/>
+</head>
+<body>
+    <h1>Packages List</h1>
+    <p
+            th:text="${'Nice to see you again ' + session.user.username}"></p>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Fixed Phone</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="sp : ${packages}">
+            <td th:text="${sp.name}"></td>
+            <td th:text="${sp.fixed_phone}"></td>
+            <td><a th:href="@{../../java/it/polimi/telcoservice/TelcoServiceWEB/controllers/GoToPackageDetails.java(packageid=${sp.packageID})}">Details</a></td>
+            <td><a th:href="@{../../java/it/polimi/telcoservice/TelcoServiceWEB/controllers/GoToPurchase(packageid=${sp.packageID})}">Buy</a></td>
+        </tr>
+        </tbody>
+    </table>
+</body>
+</html>

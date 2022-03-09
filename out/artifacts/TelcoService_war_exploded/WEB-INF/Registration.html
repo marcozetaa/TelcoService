@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+</head>
+<body>
+    <h1>"Register to Telco Service"</h1>
+
+    <form th:action="@{../../java/it/polimi/telcoservice/TelcoServiceWEB/controllers/CheckRegistration.java}" method="POST">
+        Email: <input type="text" name="email" required> <br>
+        Username: <input type="text" name="username" required> <br>
+        Password: <input type="password" name="pwd" required><br>
+        <input type="submit" value="Register">
+        <p th:text=" ${errorMsg}"></p>
+    </form>
+    <h3>Already registered?<a href="../index.html">Login now</a></h3>
+
+</body>
+</html>

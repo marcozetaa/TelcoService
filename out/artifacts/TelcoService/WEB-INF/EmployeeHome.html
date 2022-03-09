@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;
+      charset=UTF-8" />
+    <title>Work Homepage</title>
+</head>
+<body>
+
+    <h1>Packages List</h1>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Fixed Phone</th>
+            <th>fee12</th>
+            <th>fee24</th>
+            <th>fee36</th>
+            <th>mobileInternet</th>
+            <th>mobilePhone</th>
+            <th>fixedInternet</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="sp : ${packages}">
+            <td th:text="${sp.name}"></td>
+            <td th:text="${sp.fixed_phone}"></td>
+            <td th:text="${sp.fee12}"></td>
+            <td th:text="${sp.fee24}"></td>
+            <td th:text="${sp.fee36}"></td>
+            <td th:text="${sp.mobileInternet.numGB}"></td>
+            <td th:text="${sp.mobilePhone.extra_min}"></td>
+            <td th:text="${sp.fixedInternet.numGB}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h1>Create a Service Package</h1>
+
+    <form th:action="@{CreatePackage}" method="POST">
+        Name: <input type="text" name="name" required> <br>
+        Fixed Phone Included:
+        <select name="fixed_phone">
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+        </select>
+        <br>
+        12Fee: <input type="text" name="fee12" required> Euros/Month <br>
+        24Fee: <input type="text" name="fee24" required> Euros/Month <br>
+        36Fee: <input type="text" name="fee36" required> Euros/Month <br>
+        Mobile Phone:
+        <select name="mobile_phone">
+            <option th:disabled="disabled" selected="true" value="">Choose Offer</option>
+            <option value="-1">No</option>
+            <option th:each="mp : ${MobilePhoneList}"
+                    th:value="${mp.getid()}"
+                    th:text="${mp.num_min} + ' Minutes/Month,' + ${mp.num_sms} + ' SMS/Month, ' + ${mp.extra_min} + ' Euro/Minute,' +
+                     ${mp.extra_sms} + ' Euro/SMS'">
+        </select>
+        <br>
+        Fixed Internet:
+        <select name="fixed_internet">
+            <option th:disabled="disabled" selected="true" value="">Choose Offer</option>
+            <option value="-1">No</option>
+            <option th:each="fi : ${FixedInternetList}"
+                    th:value="${fi.getid()}"
+                    th:text="${fi.numGB} + ' GB/Month, ' + ${fi.extraGB} + ' Euro/GB'">
+        </select>
+        <br>
+        Mobile Internet:
+        <select name="mobile_internet">
+            <option th:disabled="disabled" selected="true" value="">Choose Offer</option>
+            <option value="-1">No</option>
+            <option th:each="mi : ${MobileInternetList}"
+                    th:value="${mi.getid()}"
+                    th:text="${mi.numGB} + ' GB/Month, ' + ${mi.extraGB} + ' Euro/GB'">
+        </select>
+        <br>
+        <input type="submit" value="Create Package">
+    </form>
+
+    <h1>Create a Mobile Internet Offer</h1>
+
+    <form th:action="@{CreateMI}" method="POST">
+        Numero di Gigabyte: <input type="number" name="num_gb" required> GB <br>
+        Extra fee for a Gigabyte: <input type="number" name="fee_extra_gb" required> Euros/GB <br>
+        <input type="submit" value="Create Offer">
+    </form>
+
+    <h1>Create a Mobile Phone Offer</h1>
+
+    <form th:action="@{CreateMP}" method="POST">
+        Number of minutes: <input type="number" name="num_min" required> Minutes<br>
+        Number of SMS: <input type="number" name="num_sms" required> SMS<br>
+        Fee Extra minutes: <input type="number" name="fee_extra_min" required> Euros/Minute<br>
+        Fee Extra SMS: <input type="number" name="fee_extra_sms" required> Euros/SMS <br>
+        <input type="submit" value="Create Offer">
+    </form>
+
+    <h1>Create a Fixed Internet Offer</h1>
+
+    <form th:action="@{CreateFI}" method="POST">
+        Number of Gigabyte: <input type="number" name="num_gb" required> Euros/GB <br>
+        Fee extra Gigabyte: <input type="number" name="fee_extra_gb" required> Euros/GB <br>
+        <input type="submit" value="Create Offer">
+    </form>
+
+</body>
+</html>

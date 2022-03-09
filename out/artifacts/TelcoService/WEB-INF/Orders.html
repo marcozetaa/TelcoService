@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Orders</title>
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../css/style.css" th:href="@{../css/style.css}" />
+</head>
+<body>
+    <div align="right">
+        <a th:href="@{../../java/it/polimi/telcoservice/TelcoServiceWEB/controllers/Logout}">Logout</a>
+    </div>
+    <div align="right">
+        <a th:href="@{../../java/it/polimi/telcoservice/TelcoServiceWEB/controllers/GoToHomePage}">Back</a>
+    </div>
+<h1>Orders List</h1>
+<p
+        th:text="${'Nice to see you again ' + session.user.username}"></p>
+
+<table>
+    <thead>
+    <tr> Active Orders
+        <th>Date</th>
+        <th>Subscription</th>
+        <th>Price</th>
+        <th>Details</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="o : ${valid_orders}">
+        <td th:text="${o.date_of_creation}"></td>
+        <td th:text="${o.subscription}"></td>
+        <td th:text="${o.tot_value}"></td>
+        <td>TODO <a th:href="@{../../java/it/polimi/telcoservice/TelcoServiceWEB/controllers/DeleteOrder(missionid= ${o.orderID})}">Delete</a></td>
+    </tr>
+    </tbody>
+</table>
+
+<table>
+    <thead>
+    <tr> Rejected Orders
+        <th>Date</th>
+        <th>Subscription</th>
+        <th>Price</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="o : ${invalid_orders}">
+        <td th:text="${o.date_of_creation}"></td>
+        <td th:text="${o.subscription}"></td>
+        <td th:text="${o.getTot_value()}"></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd"
+             version="2.2">
+    <persistence-unit name="TelcoServiceEJB">
+        <description>Listed are all the class participating on the web-app</description>
+
+        <class>it.polimi.telcoservice.TelcoServiceEJB.entities.User</class>
+        <class>it.polimi.telcoservice.TelcoServiceEJB.entities.UserStatus</class>
+        <class>it.polimi.telcoservice.TelcoServiceEJB.entities.Employee</class>
+        <class>it.polimi.telcoservice.TelcoServiceEJB.entities.Order</class>
+        <class>it.polimi.telcoservice.TelcoServiceEJB.entities.OrderStatus</class>
+        <class>it.polimi.telcoservice.TelcoServiceEJB.entities.ServicePackage</class>
+        <class>it.polimi.telcoservice.TelcoServiceEJB.entities.OptionalProduct</class>
+        <class>it.polimi.telcoservice.TelcoServiceEJB.entities.MobilePhone</class>
+        <class>it.polimi.telcoservice.TelcoServiceEJB.entities.MobileInternet</class>
+        <class>it.polimi.telcoservice.TelcoServiceEJB.entities.FixedInternet</class>
+        <class>it.polimi.telcoservice.TelcoServiceEJB.entities.FixedPhoneStatus</class>
+        <class>it.polimi.telcoservice.TelcoServiceEJB.entities.Subscription</class>
+
+        <properties>
+            <property name="eclipselink.target-database" value="MySQL"/>
+        </properties>
+
+    </persistence-unit>
+</persistence>
