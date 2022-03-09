@@ -8,7 +8,9 @@
     <h1>"Register to Telco Service"</h1>
 
     <form th:action="@{CheckRegistration}" method="POST">
-        Email: <input type="text" name="email" required> <br>
+        Name: <input type="text" name="name" required> <br>
+        Surname: <input type="text" name="surname" required> <br>
+        Email: <input type="email" name="email" required> <br>
         Username: <input type="text" name="username" required> <br>
         Password: <input type="password" name="pwd" required><br>
         <input type="submit" value="Register">

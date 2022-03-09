@@ -11,11 +11,13 @@ import java.util.List;
         @NamedQuery(name = "User.checkAlreadyRegistered", query = "SELECT COUNT(r) FROM User r WHERE r.email = ?1 or r.username = ?2")
 })
 public class User {
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userID;
     private String username;
     private String password;
     private String email;
+    private String name;
+    private String surname;
     private UserStatus status;
 
     @OneToMany(mappedBy ="client", fetch = FetchType.LAZY , cascade = CascadeType.REMOVE)
@@ -24,10 +26,12 @@ public class User {
     public User() {
     }
 
-    public User(String username, String password, String email){
+    public User(String username, String password, String email, String name, String surname){
         this.orders = orders;
         this.username = username;
         this.password = password;
+        this.name = name;
+        this.surname = surname;
         this.email = email;
         this.status = UserStatus.SOLVENT;
     }

@@ -10,6 +10,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import javax.ejb.EJB;
+import javax.persistence.NonUniqueResultException;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
@@ -45,16 +46,20 @@ public class CheckRegistration extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-// obtain and escape params
+        // obtain and escape params
         String usrn = null;
         String pwd = null;
         String email = null;
+        String name = null;
+        String surname = null;
 
         try {
 
             usrn = StringEscapeUtils.escapeJava(request.getParameter("username"));
             pwd = StringEscapeUtils.escapeJava(request.getParameter("pwd"));
             email = StringEscapeUtils.escapeJava(request.getParameter("email"));
+            name = StringEscapeUtils.escapeJava(request.getParameter("name"));
+            surname = StringEscapeUtils.escapeJava(request.getParameter("surname"));
 
             if (usrn == null || pwd == null || usrn.isEmpty() || pwd.isEmpty() || email == null || email.isEmpty()) { throw new Exception("Missing or empty credential value");}
 
@@ -65,30 +70,31 @@ public class CheckRegistration extends HttpServlet {
         }
 
         User user;
-        String path = null;
-        ServletContext servletContext = getServletContext();
-        final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-        
-        try{
-            user = usrService.checkAlreadyRegistered(email, usrn);
-
-            if( user != null) {
-                ctx.setVariable("errorMsg", "Username or email already in use");
-                path = "/Registration.html";
-            }
-        } catch (CredentialException e) {
-            e.printStackTrace();
-        }
-
         try {
-            usrService.registrateUser(usrn, pwd, email);
-            path = "/index.html";
-
-        }catch (CredentialException e){
+            // query db to authenticate for user
+            user = usrService.registrateUser(usrn, pwd, email, name, surname);
+        } catch (NonUniqueResultException | CredentialException e) {
             e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Could not register user");
+            return;
         }
 
-        templateEngine.process(path, ctx, response.getWriter());
+        // If the user is correctly registered, add info to the session and go to home page, otherwise
+        // show login page with error message
+
+        String path;
+        if (user == null) {
+            ServletContext servletContext = getServletContext();
+            final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+            ctx.setVariable("errorMsg", "Incorrect registration");
+            path = "WEB-INF/Registration.html";
+            templateEngine.process(path, ctx, response.getWriter());
+        } else {
+            request.getSession().setAttribute("user", user);
+            path = getServletContext().getContextPath() + "/Home";
+            response.sendRedirect(path);
+        }
+
     }
 
     @Override

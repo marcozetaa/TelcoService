@@ -17,7 +17,7 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "GoToOrders", value = "/GoToOrders")
+@WebServlet(name = "GoToOrders", value = "/Orders")
 public class GoToOrders extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private TemplateEngine templateEngine;
@@ -64,7 +64,7 @@ public class GoToOrders extends HttpServlet {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,"Not possible to get user orders");
         }
 
-        String path = "/Orders.html";
+        String path = "WEB-INF/Orders.html";
         ServletContext servletContext = getServletContext();
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
         ctx.setVariable("valid_orders", valid_orders);

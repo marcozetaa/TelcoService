@@ -5,20 +5,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "package", schema = "telco_service_db")
+@Table(name = "packages", schema = "telco_service_db")
 @NamedQueries({
         @NamedQuery(name = "ServicePackage.findAll", query = "SELECT sp FROM ServicePackage sp"),
         @NamedQuery(name = "ServicePackage.findByOptionalProduct", query = "SELECT sp FROM ServicePackage sp WHERE sp.optionalProducts=?1"),
-        @NamedQuery(name = "ServicePackage.findByID", query = "SELECT sp FROM ServicePackage sp WHERE sp.packageID=?1"),
-        @NamedQuery(name = "ServicePackage.findByFI", query = "SELECT sp FROM ServicePackage sp WHERE sp.fixedInternet=?1"),
-        @NamedQuery(name = "ServicePackage.findByMI", query = "SELECT sp FROM ServicePackage sp WHERE sp.mobileInternet=?1"),
-        @NamedQuery(name = "ServicePackage.findByMP", query = "SELECT sp FROM ServicePackage sp WHERE sp.mobilePhone=?1")
+        @NamedQuery(name = "ServicePackage.findByID", query = "SELECT sp FROM ServicePackage sp WHERE sp.id=?1"),
+        @NamedQuery(name = "ServicePackage.findByFI", query = "SELECT sp FROM ServicePackage sp WHERE sp.fixed_internet=?1"),
+        @NamedQuery(name = "ServicePackage.findByMI", query = "SELECT sp FROM ServicePackage sp WHERE sp.mobile_internet=?1"),
+        @NamedQuery(name = "ServicePackage.findByMP", query = "SELECT sp FROM ServicePackage sp WHERE sp.mobile_phone=?1")
 })
 
 public class ServicePackage {
     @Id
-    @GeneratedValue( strategy = GenerationType.AUTO)
-    private int packageID;
+    @GeneratedValue( strategy = GenerationType.IDENTITY)
+    private int id;
     private String name;
     private FixedPhoneStatus fixed_phone;
     private double fee12;
@@ -28,17 +28,21 @@ public class ServicePackage {
     @OneToMany(mappedBy = "servicePackage", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Subscription> subscriptions;
 
-    @ManyToOne( fetch = FetchType.EAGER )
+
+    @ManyToOne(targetEntity = FixedInternet.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "fixed_internet")
-    private FixedInternet fixedInternet;
+    @JoinColumn(name = "fixed_internet_id", referencedColumnName = "id", nullable = false)
+    private FixedInternet fixed_internet;
 
-    @ManyToOne( fetch = FetchType.EAGER )
+    @ManyToOne(targetEntity = MobileInternet.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "mobile_internet")
-    private MobileInternet mobileInternet;
+    @JoinColumn(name = "mobile_internet_id", referencedColumnName = "id", nullable = false)
+    private MobileInternet mobile_internet;
 
-    @ManyToOne( fetch = FetchType.EAGER )
+    @ManyToOne(targetEntity = MobilePhone.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "mobile_phone")
-    private MobilePhone mobilePhone;
+    @JoinColumn(name = "mobile_phone_id", referencedColumnName = "id", nullable = false)
+    private MobilePhone mobile_phone;
 
     @ManyToMany( fetch = FetchType.EAGER )
     @JoinTable(
@@ -59,12 +63,12 @@ public class ServicePackage {
         this.fixed_phone = fixed_phone;
     }
 
-    public int getPackageID() {
-        return packageID;
+    public int getid() {
+        return id;
     }
 
-    public void setPackageID(int packageID) {
-        this.packageID = packageID;
+    public void setid(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -121,27 +125,27 @@ public class ServicePackage {
     }
 
     public FixedInternet getFixedInternet() {
-        return fixedInternet;
+        return this.fixed_internet;
     }
 
     public void setFixedInternet(FixedInternet fixedInternet) {
-        this.fixedInternet = fixedInternet;
+        this.fixed_internet = fixedInternet;
     }
 
     public MobileInternet getMobileInternet() {
-        return mobileInternet;
+        return mobile_internet;
     }
 
     public void setMobileInternet(MobileInternet mobileInternet) {
-        this.mobileInternet = mobileInternet;
+        this.mobile_internet = mobileInternet;
     }
 
     public MobilePhone getMobilePhone() {
-        return mobilePhone;
+        return mobile_phone;
     }
 
     public void setMobilePhone(MobilePhone mobilePhone) {
-        this.mobilePhone = mobilePhone;
+        this.mobile_phone = mobilePhone;
     }
 
     public List<Subscription> getSubscriptions() {

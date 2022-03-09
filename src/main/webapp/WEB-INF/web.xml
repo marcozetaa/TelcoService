@@ -37,6 +37,26 @@
         <servlet-name>GoToPurchase</servlet-name>
         <servlet-class>it.polimi.telcoservice.TelcoServiceWEB.controllers.GoToPurchase</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>WorkArea</servlet-name>
+        <servlet-class>it.polimi.telcoservice.TelcoServiceWEB.controllers.WorkArea</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreatePackage</servlet-name>
+        <servlet-class>it.polimi.telcoservice.TelcoServiceWEB.controllers.CreatePackage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateMI</servlet-name>
+        <servlet-class>it.polimi.telcoservice.TelcoServiceWEB.controllers.CreateMI</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateMP</servlet-name>
+        <servlet-class>it.polimi.telcoservice.TelcoServiceWEB.controllers.CreateMP</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateFI</servlet-name>
+        <servlet-class>it.polimi.telcoservice.TelcoServiceWEB.controllers.CreateFI</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>CheckLogin</servlet-name>
@@ -48,11 +68,11 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>GoToHomepage</servlet-name>
-        <url-pattern>/GoToHomepage</url-pattern>
+        <url-pattern>/Home</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>GoToOrders</servlet-name>
-        <url-pattern>/GoToOrders</url-pattern>
+        <url-pattern>/Orders</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>GoToPackageDetails</servlet-name>
@@ -62,5 +82,29 @@
         <servlet-name>GoToPurchase</servlet-name>
         <url-pattern>/GoTOPurchase</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>WorkArea</servlet-name>
+        <url-pattern>/WorkArea</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreatePackage</servlet-name>
+        <url-pattern>/CreatePackage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateMI</servlet-name>
+        <url-pattern>/CreateMI</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateMP</servlet-name>
+        <url-pattern>/CreateMP</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateFI</servlet-name>
+        <url-pattern>/CreateFI</url-pattern>
+    </servlet-mapping>
+
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
 
 </web-app>

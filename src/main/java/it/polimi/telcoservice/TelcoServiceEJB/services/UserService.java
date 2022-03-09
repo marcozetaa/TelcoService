@@ -34,49 +34,31 @@ public class UserService {
         throw  new NonUniqueResultException("More than one user registered");
     }
 
-    public User checkAlreadyRegistered(String email, String usr) throws CredentialException {
-        List<User> uList = null;
-
-        try {
-            em.createNamedQuery("User.checkAlreadyRegistered",User.class)
-                    .setParameter(1,email).setParameter(2,usr).getResultList();
-        } catch (PersistenceException e){
-            throw new CredentialException("Could not verify registration");
-        }
-
-        if (uList.isEmpty()){
-            return null;
-        }
-        else if (uList.size() == 1)
-            return uList.get(0);
-        throw  new NonUniqueResultException("More than one user registered");
-    }
-
-    public void registrateUser(String username, String password, String email) throws CredentialException {
+    public User registrateUser(String username, String password, String email, String name, String surname) throws CredentialException {
         long userInstances = 0;
 
         try {
             userInstances = (long) em.createNamedQuery("User.checkAlreadyRegistered").setParameter(1, email).setParameter(2, username).getSingleResult();
         }catch (PersistenceException e) {
-            throw new CredentialException("Could not verify credentals");
+            throw new CredentialException("Could not verify credentials");
         }
 
         if(userInstances != 0) {
             throw new CredentialException("username or email already in use");
         }
         else {
-            User newU = new User(username, password, email);
+            User newU = new User(username, password, email, name, surname);
             em.persist(newU);
             em.flush(); //to ensure that the new inserted user can be used in the next login, even though the login uses a (SELECT) JPQL query which by rule force a flush before beign executed
+            return newU;
         }
-
     }
 
     public void UpdateProfile(User u) throws UpdateProfileException{
         try {
             em.merge(u);
         } catch (PersistenceException e){
-            throw new UpdateProfileException("Could not change prifole");
+            throw new UpdateProfileException("Could not change profile");
         }
     }
 }

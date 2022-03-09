@@ -15,7 +15,7 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "Homepage", value = "/Homepage")
+@WebServlet(name = "GoToHomepage", value = "/Home")
 public class GoToHomepage extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private TemplateEngine templateEngine;
@@ -39,7 +39,7 @@ public class GoToHomepage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        String path = "/Home.html";
+        String path = "WEB-INF/Home.html";
         ServletContext servletContext = getServletContext();
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 
@@ -54,7 +54,6 @@ public class GoToHomepage extends HttpServlet {
         }
 
         ctx.setVariable("packages", packages);
-
         templateEngine.process(path, ctx, response.getWriter());
     }
 

@@ -14,37 +14,63 @@ public class ServicePackageService {
     @PersistenceContext(unitName = "TelcoServiceEJB")
     private EntityManager em;
 
-    private ServicePackageService(){
+    public ServicePackageService(){
     }
 
-    private void createPackage(String name, FixedPhoneStatus status, int  fee12, int fee24, int fee36){
+    public void createPackage(String name, FixedPhoneStatus status, int  fee12, int fee24, int fee36, int mobile_phone_id, int mobile_internet_id, int fixed_internet_id){
 
         ServicePackage servicePackage = new ServicePackage(name,status,fee12, fee24, fee36);
 
-        //TODO: Should we add also optional product and all other services lists?
-
         em.persist(servicePackage);
+
+        if(mobile_internet_id != -1) {
+            MobileInternet mi = em.find(MobileInternet.class, mobile_internet_id);
+            servicePackage.setMobileInternet(mi);
+            System.out.println("Method createPackage after em.persist()");
+            System.out.println("Is MobileInternet object managed?  " + em.contains(mi));
+
+        }
+        if(fixed_internet_id != -1){
+            FixedInternet fi = em.find(FixedInternet.class, fixed_internet_id);
+            servicePackage.setFixedInternet(fi);
+            System.out.println("Method createPackage after em.persist()");
+            System.out.println("Is FixedInternet object managed?  " + em.contains(fi));
+
+        }
+        if(mobile_phone_id != -1){
+            MobilePhone mp = em.find(MobilePhone.class, mobile_phone_id);
+            servicePackage.setMobilePhone(mp);
+            System.out.println("Method createPackage after em.persist()");
+            System.out.println("Is MobilePhone object managed?  " + em.contains(mp));
+
+        }
+
+        em.merge(servicePackage);
+
+        //TODO: Should we add also optional product and all other services lists?
 
         System.out.println("Method createPackage after em.persist()");
         System.out.println("Is servicePackage object managed?  " + em.contains(servicePackage));
+
     }
 
-    public List<ServicePackage> findAll() throws OrderException {
-        List<ServicePackage> spList = null;
+    public List<ServicePackage> findAll() throws ServicePackageException {
+        List<ServicePackage> spList;
         try {
             spList = em.createNamedQuery("ServicePackage.findAll", ServicePackage.class).getResultList();
         } catch (PersistenceException e){
-            throw new OrderException("Could not load packages");
+            throw new ServicePackageException("Could not load packages");
         }
+
         return spList;
     }
 
-    public List<ServicePackage> findByID(int id) throws OrderException {
+    public List<ServicePackage> findByID(int id) throws ServicePackageException {
         List<ServicePackage> spList = null;
         try {
             spList = em.createNamedQuery("ServicePackage.findByID", ServicePackage.class).setParameter(1,id).getResultList();
         } catch (PersistenceException e){
-            throw new OrderException("Could not load selected packages");
+            throw new ServicePackageException("Could not load selected packages");
         }
         return spList;
     }

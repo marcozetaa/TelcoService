@@ -7,6 +7,7 @@
           href="../css/style.css"/>
 </head>
 <body>
+
     <h1>Packages List</h1>
     <p
             th:text="${'Nice to see you again ' + session.user.username}"></p>
@@ -24,8 +25,8 @@
         <tr th:each="sp : ${packages}">
             <td th:text="${sp.name}"></td>
             <td th:text="${sp.fixed_phone}"></td>
-            <td><a th:href="@{../../java/it/polimi/telcoservice/TelcoServiceWEB/controllers/GoToPackageDetails.java(packageid=${sp.packageID})}">Details</a></td>
-            <td><a th:href="@{../../java/it/polimi/telcoservice/TelcoServiceWEB/controllers/GoToPurchase(packageid=${sp.packageID})}">Buy</a></td>
+            <td><a th:href="@{/GoToPackageDetails(packageid=${sp.getid()})}">Details</a></td>
+            <td><a th:href="@{/GoToPurchase(packageid=${sp.getid()})}">Buy</a></td>
         </tr>
         </tbody>
     </table>

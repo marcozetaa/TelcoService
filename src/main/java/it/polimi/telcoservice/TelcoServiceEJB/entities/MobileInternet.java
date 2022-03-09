@@ -2,51 +2,58 @@ package it.polimi.telcoservice.TelcoServiceEJB.entities;
 
 import javax.persistence.*;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+
 
 @Entity
 @Table(name = "mobile_internet", schema = "telco_service_db")
+@NamedQueries({
+        @NamedQuery(name = "MobileInternet.findAll", query = "SELECT mi FROM MobileInternet mi"),
+})
 public class MobileInternet{
 
     @Id
-    @GeneratedValue( strategy = GenerationType.AUTO )
-    private int mobileInternetID;
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    private int id;
 
-    @OneToMany(mappedBy = "mobileInternet")
-    private List<ServicePackage> servicePackage;
-
-    private int numGB;
-    private int extraGB;
+    private int num_gb;
+    private int fee_extra_gb;
 
     public MobileInternet(){
     }
 
     public  MobileInternet(int numGB, int extraGB){
-        this.numGB = numGB;
-        this.extraGB = extraGB;
+        this.num_gb = numGB;
+        this.fee_extra_gb = extraGB;
     }
 
-    public int getMobileInternetID() {
-        return mobileInternetID;
+    public int getid() {
+        return id;
     }
 
-    public void setMobileInternetID(int mobileInternetID) {
-        this.mobileInternetID = mobileInternetID;
+    public void setid(int id) {
+        this.id = id;
     }
 
     public int getNumGB() {
-        return numGB;
+        return num_gb;
     }
 
     public void setNumGB(int numGB) {
-        this.numGB = numGB;
+        this.num_gb = numGB;
     }
 
     public int getExtraGB() {
-        return extraGB;
+        return fee_extra_gb;
     }
 
     public void setExtraGB(int extraGB) {
-        this.extraGB = extraGB;
+        this.fee_extra_gb = extraGB;
     }
+
+
+
+
 }
