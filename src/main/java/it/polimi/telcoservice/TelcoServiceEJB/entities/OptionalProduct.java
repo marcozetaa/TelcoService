@@ -7,8 +7,8 @@ import java.util.List;
 @Entity
 @Table(name = "product", schema = "telco_service_db")
 @NamedQueries({
-        @NamedQuery(name = "OptionalProduct.findAll", query = "SELECT s FROM Subscription s"),
-        @NamedQuery(name = "OptionalProduct.findByPackage", query = "SELECT s FROM Subscription s WHERE s.servicePackage = ?1"),
+        @NamedQuery(name = "OptionalProduct.findAll", query = "SELECT op FROM OptionalProduct op"),
+        @NamedQuery(name = "OptionalProduct.findByName", query = "SELECT op FROM OptionalProduct op WHERE op.name = ?1"),
 })
 public class OptionalProduct {
 

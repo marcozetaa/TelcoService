@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
 <meta charset="UTF-8">
     <title>Home</title>
@@ -28,7 +28,7 @@
             <td th:text="${sp.name}"></td>
             <td th:text="${sp.fixed_phone}"></td>
             <td><a th:href="@{/GoToPackageDetails(packageid=${sp.getid()})}">Details</a></td>
-            <td><a th:href="@{/GoToPurchase(packageid=${sp.getid()})}">Buy</a></td>
+            <td><a th:href="@{/Purchase(packageid=${sp.getid()})}" th:value="package_id">Buy</a></td>
         </tr>
         </tbody>
     </table>

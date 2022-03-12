@@ -14,7 +14,7 @@
     <form action="#" th:action="@{/GoToConfirm}" method="POST">
         <fieldset>
             <p>
-                Package:  <input type="text" name="packageId" th:id="${package.packageID}" th:value="${package.name}" disabled> <br>
+                Package:  <input type="text" name="package_id" th:id="${package.getid()}" th:value="${package.name}" disabled> <br>
             </p>
 
             <p>

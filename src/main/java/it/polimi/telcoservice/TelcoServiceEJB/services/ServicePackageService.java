@@ -65,14 +65,14 @@ public class ServicePackageService {
         return spList;
     }
 
-    public List<ServicePackage> findByID(int id) throws ServicePackageException {
-        List<ServicePackage> spList = null;
+    public ServicePackage findByID(int id) throws ServicePackageException {
+        ServicePackage sp = null;
         try {
-            spList = em.createNamedQuery("ServicePackage.findByID", ServicePackage.class).setParameter(1,id).getResultList();
+            sp = em.createNamedQuery("ServicePackage.findByID", ServicePackage.class).setParameter(1,id).getSingleResult();
         } catch (PersistenceException e){
             throw new ServicePackageException("Could not load selected packages");
         }
-        return spList;
+        return sp;
     }
 
     public List<ServicePackage> findByOptionalProduct(OptionalProduct sp) throws OrderException {

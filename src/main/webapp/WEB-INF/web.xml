@@ -80,7 +80,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>GoToPurchase</servlet-name>
-        <url-pattern>/GoTOPurchase</url-pattern>
+        <url-pattern>/Purchase</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>WorkArea</servlet-name>
