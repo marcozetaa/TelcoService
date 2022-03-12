@@ -29,17 +29,17 @@ public class ServicePackage {
     private List<Subscription> subscriptions;
 
 
-    @ManyToOne(targetEntity = FixedInternet.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = FixedInternet.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "fixed_internet")
     @JoinColumn(name = "fixed_internet_id", referencedColumnName = "id", nullable = false)
     private FixedInternet fixed_internet;
 
-    @ManyToOne(targetEntity = MobileInternet.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = MobileInternet.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "mobile_internet")
     @JoinColumn(name = "mobile_internet_id", referencedColumnName = "id", nullable = false)
     private MobileInternet mobile_internet;
 
-    @ManyToOne(targetEntity = MobilePhone.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = MobilePhone.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "mobile_phone")
     @JoinColumn(name = "mobile_phone_id", referencedColumnName = "id", nullable = false)
     private MobilePhone mobile_phone;

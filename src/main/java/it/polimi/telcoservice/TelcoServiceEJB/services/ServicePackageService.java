@@ -45,7 +45,7 @@ public class ServicePackageService {
 
         }
 
-        em.merge(servicePackage);
+        em.persist(servicePackage);
 
         //TODO: Should we add also optional product and all other services lists?
 
