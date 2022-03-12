@@ -1,6 +1,8 @@
 package it.polimi.telcoservice.TelcoServiceWEB.controllers;
 
+import it.polimi.telcoservice.TelcoServiceEJB.entities.Employee;
 import it.polimi.telcoservice.TelcoServiceEJB.entities.User;
+import it.polimi.telcoservice.TelcoServiceEJB.services.EmployeeService;
 import it.polimi.telcoservice.TelcoServiceEJB.services.UserService;
 import it.polimi.telcoservice.TelcoServiceEJB.exceptions.CredentialException;
 
@@ -23,6 +25,9 @@ public class CheckLogin extends HttpServlet{
     private static final long serialVersionUID = 1L;
     @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/UserService")
     private UserService usrService;
+    @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/EmployeeService")
+    private EmployeeService empService;
+
     private TemplateEngine templateEngine;
 
     public CheckLogin() { super(); }
@@ -51,9 +56,11 @@ public class CheckLogin extends HttpServlet{
         //obtain and escape params
         String usrn = null;
         String pwd = null;
+        String is_emp = null;
         try{
             usrn = StringEscapeUtils.escapeJava(request.getParameter("username"));
             pwd = StringEscapeUtils.escapeJava(request.getParameter("pwd"));
+            is_emp = StringEscapeUtils.escapeJava(request.getParameter("emp"));
             if(usrn == null || pwd == null || usrn.isEmpty() || pwd.isEmpty()){
                 throw new Exception("Missing or empty credential value");
             }
@@ -61,31 +68,48 @@ public class CheckLogin extends HttpServlet{
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing credential value");
         }
 
-        User user;
-        try {
-            user = usrService.checkCredentials(usrn,pwd);
-        } catch (CredentialException | NonUniqueResultException e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Could not check credentials");
-            return;
+        User user = null;
+        Employee employee = null;
+
+        if(is_emp == null){
+            try {
+                user = usrService.checkCredentials(usrn,pwd);
+            } catch (CredentialException | NonUniqueResultException e) {
+                e.printStackTrace();
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Could not check credentials");
+                return;
+            }
+        } else{
+            try {
+                employee = empService.checkCredentials(Integer.parseInt(usrn),pwd);
+            } catch (CredentialException | NonUniqueResultException e) {
+                e.printStackTrace();
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Could not check credentials");
+                return;
+            }
         }
 
         // If the user exists, add info to the session and go to home page, otherwise
         // show login page with error message
 
-        String path;
+        String path = "";
         ServletContext servletContext = getServletContext();
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 
-        if( user == null ){
-            path = getServletContext().getContextPath() + "/index.html";;
-            templateEngine.process(path, ctx, response.getWriter());
+        if( user == null && employee == null ){
+            path = "index.html";;
         }
         else {
-            request.getSession().setAttribute("user", user);
-            path = getServletContext().getContextPath()+"/Home";
-            response.sendRedirect(path);
+            if( employee == null) {
+                path= "WEB-INF/Home.html";
+                request.getSession().setAttribute("user", user);
+            }
+            if( user == null) {
+                path   = "WEB-INF/EmployeeHome.html";
+                request.getSession().setAttribute("employee", employee);
+            }
         }
+        templateEngine.process(path, ctx, response.getWriter());
     }
 
     public void destroy(){

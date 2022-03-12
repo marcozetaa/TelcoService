@@ -56,15 +56,14 @@ public class CreatePackage extends HttpServlet {
 
         // obtain and escape params
 
-        String name = "";
-        FixedPhoneStatus status = FixedPhoneStatus.INCLUDED;
-        Integer fixed_phone = null;
-        Integer fee12 = 0;
-        Integer fee24 = 0;
-        Integer fee36 = 0;
-        Integer mobile_phone = 0;
-        Integer fixed_internet = 0;
-        Integer mobile_internet = 0;
+        String name;
+        Integer fixed_phone;
+        Integer fee12;
+        Integer fee24;
+        Integer fee36;
+        Integer mobile_phone;
+        Integer fixed_internet;
+        Integer mobile_internet;
 
         try {
 
@@ -89,7 +88,13 @@ public class CreatePackage extends HttpServlet {
             return;
         }
 
-        List<ServicePackage> packages = null;
+        FixedPhoneStatus status;
+        if(fixed_phone == 0)
+            status = FixedPhoneStatus.EXCLUDED;
+        else
+            status = FixedPhoneStatus.INCLUDED;
+
+        List<ServicePackage> packages;
         try {
             // query db to authenticate for user
             pService.createPackage(name,status,fee12,fee24,fee36,mobile_phone,mobile_internet,fixed_internet);

@@ -53,7 +53,4 @@ public class MobileInternet{
         this.fee_extra_gb = extraGB;
     }
 
-
-
-
 }
