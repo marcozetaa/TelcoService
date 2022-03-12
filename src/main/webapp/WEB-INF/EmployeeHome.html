@@ -5,10 +5,8 @@
       charset=UTF-8" />
     <title>Work Homepage</title>
 </head>
-    <body>
-    <div align="right">
-        <a th:href="@{Logout}">Logout</a>
-    </div>
+<body>
+
     <h1>Packages List</h1>
 
     <table>
@@ -22,6 +20,7 @@
             <th>mobileInternet</th>
             <th>mobilePhone</th>
             <th>fixedInternet</th>
+            <th>optionalProduct</th>
         </tr>
         </thead>
         <tbody>
@@ -31,9 +30,10 @@
             <td th:text="${sp.fee12}"></td>
             <td th:text="${sp.fee24}"></td>
             <td th:text="${sp.fee36}"></td>
-            <td th:text="${sp.mobileInternet.numGB}"></td>
-            <td th:text="${sp.mobilePhone.num_min}"></td>
-            <td th:text="${sp.fixedInternet.numGB}"></td>
+            <td th:text="${sp.mobileInternet != null} ? ${sp.mobileInternet.numGB} : 'NO'"></td>
+            <td th:text="${sp.mobilePhone != null} ? ${sp.mobilePhone.extra_min} : 'NO'"></td>
+            <td th:text="${sp.fixedInternet != null} ? ${sp.fixedInternet.getNumGB()} : 'NO'"></td>
+
         </tr>
         </tbody>
     </table>
@@ -103,9 +103,17 @@
     <h1>Create a Fixed Internet Offer</h1>
 
     <form th:action="@{CreateFI}" method="POST">
-        Number of Gigabyte: <input type="number" name="num_gb" required> Euros/GB <br>
+        Number of Gigabyte: <input type="number" name="num_gb" required> GB <br>
         Fee extra Gigabyte: <input type="number" name="fee_extra_gb" required> Euros/GB <br>
         <input type="submit" value="Create Offer">
+    </form>
+
+    <h1>Create an Optional Product</h1>
+
+    <form th:action="@{CreateOP}" method="POST">
+        Name: <input type="text" name="prod_name" required> <br>
+        Monthly Fee: <input type="number" name="monthly_fee" required> Euros/Month <br>
+        <input type="submit" value="Create Product">
     </form>
 
 </body>
