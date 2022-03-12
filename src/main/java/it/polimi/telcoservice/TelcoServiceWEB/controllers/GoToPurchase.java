@@ -16,12 +16,12 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "GoToPurchase", value = "/GoToPurchase")
+@WebServlet(name = "GoToPurchase", value = "/Purchase")
 public class GoToPurchase extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private TemplateEngine templateEngine;
     @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/ServicePackageService")
-    private ServicePackageService pService;
+    private ServicePackageService spService;
     @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/OptionalProductService")
     private OptionalProductService opService;
 
@@ -40,31 +40,29 @@ public class GoToPurchase extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        ServicePackage sel_package = null;
-        List<OptionalProduct> o_products = null;
-
         // get and check params
-        Integer packageId = null;
+        Integer package_id;
         try {
-            packageId = Integer.parseInt(request.getParameter("packageID"));
+            package_id = Integer.parseInt(request.getParameter("packageid"));
         } catch (NumberFormatException | NullPointerException e) {
             // only for debugging e.printStackTrace();
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect param values");
             return;
         }
 
-        try{
-
-            sel_package = (ServicePackage) opService.findByPackage(packageId);
+        ServicePackage sel_package = null;
+        List<OptionalProduct> o_products = null;
+        try {
+            sel_package = spService.findByID(package_id);
             o_products = opService.findAll();
-
         } catch (Exception e) {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,"Not possible to get Package offer");
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to get Package offer");
         }
 
-        String path = "/Purchase.html";
+        String path = "WEB-INF/Purchase.html";
         ServletContext servletContext = getServletContext();
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+        ctx.setVariable("package_id", sel_package.getid());
         ctx.setVariable("package", sel_package);
         ctx.setVariable("products", o_products);
 

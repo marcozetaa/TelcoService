@@ -5,8 +5,10 @@
       charset=UTF-8" />
     <title>Work Homepage</title>
 </head>
-<body>
-
+    <body>
+    <div align="right">
+        <a th:href="@{Logout}">Logout</a>
+    </div>
     <h1>Packages List</h1>
 
     <table>
@@ -30,7 +32,7 @@
             <td th:text="${sp.fee24}"></td>
             <td th:text="${sp.fee36}"></td>
             <td th:text="${sp.mobileInternet.numGB}"></td>
-            <td th:text="${sp.mobilePhone.extra_min}"></td>
+            <td th:text="${sp.mobilePhone.num_min}"></td>
             <td th:text="${sp.fixedInternet.numGB}"></td>
         </tr>
         </tbody>

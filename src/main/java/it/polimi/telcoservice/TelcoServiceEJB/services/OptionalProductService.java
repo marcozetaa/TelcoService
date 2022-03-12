@@ -45,10 +45,10 @@ public class OptionalProductService {
         return opList;
     }
 
-    public List<OptionalProduct> findByPackage(int id) throws OptionalProductException {
+    public List<OptionalProduct> findByName(String name) throws OptionalProductException {
         List<OptionalProduct> opList = null;
         try {
-            opList = em.createNamedQuery("OptionalProduct.findByPackage", OptionalProduct.class).setParameter(1,id).getResultList();
+            opList = em.createNamedQuery("OptionalProduct.findByName", OptionalProduct.class).setParameter(1,name).getResultList();
         } catch (PersistenceException e){
             throw new OptionalProductException("Could not load optional products");
         }

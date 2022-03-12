@@ -50,5 +50,4 @@ public class FixedInternet{
     public void setExtraGB(int extraGB) {
         this.fee_extra_gb = extraGB;
     }
-
 }

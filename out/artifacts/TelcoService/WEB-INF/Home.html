@@ -7,7 +7,12 @@
           href="../css/style.css"/>
 </head>
 <body>
-
+    <div align="right">
+        <a th:href="@{Logout}">Logout</a>
+    </div>
+    <div align="right">
+        <a th:href="@{Purchase}">Purchase</a>
+    </div>
     <h1>Packages List</h1>
     <p
             th:text="${'Nice to see you again ' + session.user.username}"></p>
@@ -26,7 +31,7 @@
             <td th:text="${sp.name}"></td>
             <td th:text="${sp.fixed_phone}"></td>
             <td><a th:href="@{/GoToPackageDetails(packageid=${sp.getid()})}">Details</a></td>
-            <td><a th:href="@{/GoToPurchase(packageid=${sp.getid()})}">Buy</a></td>
+            <td><a th:href="@{/Purchase(packageid=${sp.getid()})}" th:value="package_id">Buy</a></td>
         </tr>
         </tbody>
     </table>

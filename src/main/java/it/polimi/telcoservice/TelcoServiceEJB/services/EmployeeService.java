@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 @Stateless
@@ -20,11 +21,12 @@ public class EmployeeService {
     public EmployeeService() {
     }
 
-    public Employee checkCredentials(String email, String pwd) throws CredentialException {
+    public Employee checkCredentials(Integer id, String pwd) throws CredentialException {
+
         List<Employee> eList = null;
         try{
             eList = em.createNamedQuery("Employee.checkCredentials", Employee.class)
-                    .setParameter(1,email).setParameter(2,pwd).getResultList();
+                    .setParameter(1,id).setParameter(2,pwd).getResultList();
         } catch (PersistenceException e) {
             throw new CredentialException("Could not verify credentials");
         }

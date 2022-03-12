@@ -48,17 +48,11 @@ public class WorkArea extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+
         String path = "WEB-INF/EmployeeHome.html";
         ServletContext servletContext = getServletContext();
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-
-
-        List<ServicePackage> packages = null;
-        try {
-            packages = pService.findAll();
-        } catch (ServicePackageException e) {
-            e.printStackTrace();
-        }
 
         List<FixedInternet> fiList = null;
         try {
@@ -77,6 +71,13 @@ public class WorkArea extends HttpServlet {
         List<MobilePhone> mpList = null;
         try {
             mpList = mpService.findAll();
+        } catch (ServicePackageException e) {
+            e.printStackTrace();
+        }
+
+        List<ServicePackage> packages = null;
+        try {
+            packages = pService.findAll();
         } catch (ServicePackageException e) {
             e.printStackTrace();
         }
