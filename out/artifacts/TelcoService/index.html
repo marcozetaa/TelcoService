@@ -4,14 +4,12 @@
     <title>Login Page</title>
 </head>
 <body>
-    <div align="right">
-        <a th:href="@{WorkArea}">Work Area</a>
-    </div>
-
     <h1>Welcome to Telco Service!!!</h1>
     <form th:action="@{CheckLogin}" method="POST">
         Username: <input type="text" name="username" required> <br>
         Password: <input type="password" name="pwd" required><br>
+        <input type="checkbox" id="emp" name="emp" value="1">
+        <label for="emp">Employee</label><br>
         <input type="submit" value="Login">
         <p th:text="${errorMsg}"></p>
     </form>

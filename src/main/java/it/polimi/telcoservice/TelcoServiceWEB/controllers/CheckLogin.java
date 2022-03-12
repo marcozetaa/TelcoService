@@ -81,11 +81,19 @@ public class CheckLogin extends HttpServlet{
             }
         } else{
             try {
-                employee = empService.checkCredentials(Integer.parseInt(usrn),pwd);
+                Integer badge;
+                if (isNumeric(usrn))
+                    badge = Integer.parseInt(usrn);
+                else{
+                    throw new Exception("Username not a numeric badge");
+                }
+                employee = empService.checkCredentials(badge,pwd);
             } catch (CredentialException | NonUniqueResultException e) {
                 e.printStackTrace();
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Could not check credentials");
                 return;
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 
@@ -93,23 +101,29 @@ public class CheckLogin extends HttpServlet{
         // show login page with error message
 
         String path = "";
-        ServletContext servletContext = getServletContext();
-        final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-
         if( user == null && employee == null ){
-            path = "index.html";;
+            path = getServletContext().getContextPath()+"index.html";;
         }
         else {
             if( employee == null) {
-                path= "WEB-INF/Home.html";
+                path= getServletContext().getContextPath()+"/Home";
                 request.getSession().setAttribute("user", user);
             }
             if( user == null) {
-                path   = "WEB-INF/EmployeeHome.html";
+                path   = getServletContext().getContextPath()+"/WorkArea";
                 request.getSession().setAttribute("employee", employee);
             }
         }
-        templateEngine.process(path, ctx, response.getWriter());
+        response.sendRedirect(path);
+    }
+
+    public static boolean isNumeric(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch(NumberFormatException e){
+            return false;
+        }
     }
 
     public void destroy(){
