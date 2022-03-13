@@ -13,12 +13,26 @@ import java.util.List;
 public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userID;
+    @JoinColumn(name = "username")
     private String username;
+
+    @JoinColumn(name = "password")
     private String password;
+
+    @JoinColumn(name = "email")
     private String email;
+
+    @JoinColumn(name = "name")
     private String name;
+
+    @JoinColumn(name = "surname")
     private String surname;
+
+    @JoinColumn(name = "status")
     private UserStatus status;
+
+    @JoinColumn(name = "num_failed_payments")
+    private int num_failed_payments;
 
     @OneToMany(mappedBy ="client", fetch = FetchType.LAZY , cascade = CascadeType.REMOVE)
     private List<Order> orders;
@@ -34,6 +48,7 @@ public class User {
         this.surname = surname;
         this.email = email;
         this.status = UserStatus.SOLVENT;
+        this.num_failed_payments = 0;
     }
 
     public int getUserID() {
@@ -88,4 +103,17 @@ public class User {
     public void deleteOrder(Order order){
         getOrders().remove(order);
     }
+
+    public int getNumFailedPayments() {
+        return num_failed_payments;
+    }
+
+    public void setNumFailedPayments(int num_failed_payments) {
+        this.num_failed_payments = num_failed_payments;
+    }
+
+    public void incrementFailedPayments() {
+        this.num_failed_payments++;
+    }
+
 }

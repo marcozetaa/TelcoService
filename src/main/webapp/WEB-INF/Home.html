@@ -28,7 +28,7 @@
             <td th:text="${sp.name}"></td>
             <td th:text="${sp.fixed_phone}"></td>
             <td><a th:href="@{/GoToPackageDetails(packageid=${sp.getid()})}">Details</a></td>
-            <td><a th:href="@{/Purchase(packageid=${sp.getid()})}" th:value="package_id">Buy</a></td>
+            <td><a th:href="@{/Purchase(id=${sp.getid()})}" th:value="package_id">Buy</a></td>
         </tr>
         </tbody>
     </table>

@@ -1,7 +1,6 @@
 package it.polimi.telcoservice.TelcoServiceEJB.services;
 
 import it.polimi.telcoservice.TelcoServiceEJB.entities.Employee;
-import it.polimi.telcoservice.TelcoServiceEJB.entities.Employee;
 import it.polimi.telcoservice.TelcoServiceEJB.exceptions.CredentialException;
 
 import javax.ejb.Stateless;
@@ -9,7 +8,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 @Stateless

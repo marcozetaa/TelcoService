@@ -8,6 +8,7 @@ import javax.ejb.Stateless;
 import javax.persistence.*;
 
 import java.util.List;
+import java.util.Random;
 
 @Stateless
 public class UserService {
@@ -60,5 +61,25 @@ public class UserService {
         } catch (PersistenceException e){
             throw new UpdateProfileException("Could not change profile");
         }
+    }
+
+    public User incrementsFailedPayments(User u){
+        User user = em.find(User.class, u.getUserID());
+        user.incrementFailedPayments();
+        em.merge(user);
+        return user;
+    }
+
+    public User setNumFailedPayments(User u){
+        User user = em.find(User.class, u.getUserID());
+        user.setNumFailedPayments(0);
+        em.merge(user);
+        return user;
+
+    }
+
+    public boolean randomPayment(){
+        Random rd = new Random();
+        return rd.nextBoolean();
     }
 }

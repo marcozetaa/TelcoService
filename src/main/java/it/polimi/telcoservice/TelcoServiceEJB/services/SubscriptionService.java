@@ -20,8 +20,8 @@ public class SubscriptionService {
     public SubscriptionService(){
     }
 
-    public void createSubscription(int validity_period, float fee, int serviceID) {
-        ServicePackage servicePackage = em.find(ServicePackage.class, serviceID);
+    public void createSubscription(int validity_period, float fee, int package_id) {
+        ServicePackage servicePackage = em.find(ServicePackage.class, package_id);
 
         Subscription subscription = new Subscription(validity_period, fee, servicePackage);
 

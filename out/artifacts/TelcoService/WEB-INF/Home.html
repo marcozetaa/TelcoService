@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
 <meta charset="UTF-8">
     <title>Home</title>
@@ -9,9 +9,6 @@
 <body>
     <div align="right">
         <a th:href="@{Logout}">Logout</a>
-    </div>
-    <div align="right">
-        <a th:href="@{Purchase}">Purchase</a>
     </div>
     <h1>Packages List</h1>
     <p
@@ -31,7 +28,7 @@
             <td th:text="${sp.name}"></td>
             <td th:text="${sp.fixed_phone}"></td>
             <td><a th:href="@{/GoToPackageDetails(packageid=${sp.getid()})}">Details</a></td>
-            <td><a th:href="@{/Purchase(packageid=${sp.getid()})}" th:value="package_id">Buy</a></td>
+            <td><a th:href="@{/Purchase(id=${sp.getid()})}" th:value="package_id">Buy</a></td>
         </tr>
         </tbody>
     </table>
