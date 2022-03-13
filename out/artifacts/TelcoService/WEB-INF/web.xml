@@ -10,7 +10,7 @@
         <class-name>com.mysql.cj.jdbc.Driver</class-name>
         <url>jdbc:mysql://localhost:3306/telco_service_db</url>
         <user>root</user>
-        <password>MySQLServer_009!</password>
+        <password>Micheke99</password>
     </data-source>
 
     <servlet>
