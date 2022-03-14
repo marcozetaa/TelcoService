@@ -1,11 +1,9 @@
 package it.polimi.telcoservice.TelcoServiceWEB.controllers;
 
 import it.polimi.telcoservice.TelcoServiceEJB.entities.*;
+import it.polimi.telcoservice.TelcoServiceEJB.exceptions.OrderException;
 import it.polimi.telcoservice.TelcoServiceEJB.exceptions.ServicePackageException;
-import it.polimi.telcoservice.TelcoServiceEJB.services.FixedInternetService;
-import it.polimi.telcoservice.TelcoServiceEJB.services.MobileInternetService;
-import it.polimi.telcoservice.TelcoServiceEJB.services.MobilePhoneService;
-import it.polimi.telcoservice.TelcoServiceEJB.services.ServicePackageService;
+import it.polimi.telcoservice.TelcoServiceEJB.services.*;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -31,6 +29,8 @@ public class CreatePackage extends HttpServlet {
     private MobileInternetService miService;
     @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/MobilePhoneService")
     private MobilePhoneService mpService;
+    @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/OptionalProductService")
+    private OptionalProductService opService;
 
     public CreatePackage() { super(); }
 
@@ -56,7 +56,7 @@ public class CreatePackage extends HttpServlet {
 
         // obtain and escape params
 
-        String name;
+        String name, o_product;
         Integer fixed_phone;
         Integer fee12;
         Integer fee24;
@@ -75,7 +75,7 @@ public class CreatePackage extends HttpServlet {
             mobile_phone = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("mobile_phone")));
             fixed_internet = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("fixed_internet")));
             mobile_internet = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("mobile_internet")));
-
+            o_product = StringEscapeUtils.escapeJava(request.getParameter("optional_product"));
 /*
             if (name == null || fixed_phone == null || mobile_phone == null || fixed_internet == null || mobile_internet == null ||
                     name.isEmpty() || fixed_phone.isEmpty() ||  mobile_phone.isEmpty() || fixed_internet.isEmpty() || mobile_internet.isEmpty()) {
@@ -97,7 +97,7 @@ public class CreatePackage extends HttpServlet {
         List<ServicePackage> packages;
         try {
             // query db to authenticate for user
-            pService.createPackage(name,status,fee12,fee24,fee36,mobile_phone,mobile_internet,fixed_internet);
+            pService.createPackage(name,status,fee12,fee24,fee36,mobile_phone,mobile_internet,fixed_internet, o_product);
             packages =  pService.findAll();
         } catch (Exception e) {
             e.printStackTrace();
@@ -126,11 +126,18 @@ public class CreatePackage extends HttpServlet {
             e.printStackTrace();
         }
 
+        List<OptionalProduct> opList = null;
+        try {
+            opList = opService.findAll();
+        } catch (OrderException e) {
+            e.printStackTrace();
+        }
 
         ctx.setVariable("packages", packages);
         ctx.setVariable("FixedInternetList", fiList);
         ctx.setVariable("MobileInternetList", miList);
         ctx.setVariable("MobilePhoneList", mpList);
+        ctx.setVariable("OptionalProductList", opList);
 
         templateEngine.process(path, ctx, response.getWriter());
     }

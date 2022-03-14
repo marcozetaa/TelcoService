@@ -33,7 +33,7 @@
             <td th:text="${sp.mobileInternet != null} ? ${sp.mobileInternet.numGB} : 'NO'"></td>
             <td th:text="${sp.mobilePhone != null} ? ${sp.mobilePhone.extra_min} : 'NO'"></td>
             <td th:text="${sp.fixedInternet != null} ? ${sp.fixedInternet.getNumGB()} : 'NO'"></td>
-
+            <td th:text="${!sp.optionalProducts.isEmpty()} ? ${sp.optionalProducts.get(0).name} : 'NO'"></td>
         </tr>
         </tbody>
     </table>
@@ -57,8 +57,8 @@
             <option value="-1">No</option>
             <option th:each="mp : ${MobilePhoneList}"
                     th:value="${mp.getid()}"
-                    th:text="${mp.num_min} + ' Minutes/Month,' + ${mp.num_sms} + ' SMS/Month, ' + ${mp.extra_min} + ' Euro/Minute,' +
-                     ${mp.extra_sms} + ' Euro/SMS'">
+                    th:text="${mp.num_min} + ' Minutes/Month,' + ${mp.num_sms} + ' SMS/Month, ' + ${mp.extra_min} + ' EUR/Minute,' +
+                     ${mp.extra_sms} + ' EUR/SMS'">
         </select>
         <br>
         Fixed Internet:
@@ -67,7 +67,7 @@
             <option value="-1">No</option>
             <option th:each="fi : ${FixedInternetList}"
                     th:value="${fi.getid()}"
-                    th:text="${fi.numGB} + ' GB/Month, ' + ${fi.extraGB} + ' Euro/GB'">
+                    th:text="${fi.numGB} + ' GB/Month, ' + ${fi.extraGB} + ' EUR/GB'">
         </select>
         <br>
         Mobile Internet:
@@ -76,10 +76,20 @@
             <option value="-1">No</option>
             <option th:each="mi : ${MobileInternetList}"
                     th:value="${mi.getid()}"
-                    th:text="${mi.numGB} + ' GB/Month, ' + ${mi.extraGB} + ' Euro/GB'">
+                    th:text="${mi.numGB} + ' EUR/Month, ' + ${mi.extraGB} + ' EUR/GB'">
         </select>
         <br>
-        <input type="submit" value="Create Package">
+        <br>
+        Optional Product:
+        <select name="optional_product">
+            <option th:disabled="disabled" selected="true" value="">Choose Product</option>
+            <option value="No">No</option>
+            <option th:each="op : ${OptionalProductList}"
+                    th:value="${op.getName()}"
+                    th:text="${op.name} + ' - ' + ${op.monthly_fee} + ' EUR/Month'">
+        </select>
+        <br>
+        <input type="submit" value="Create Product">
     </form>
 
     <h1>Create a Mobile Internet Offer</h1>

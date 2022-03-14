@@ -50,7 +50,7 @@ public class ServicePackage {
             joinColumns = { @JoinColumn(name = "id_package") },
             inverseJoinColumns = { @JoinColumn(name = "name_product") }
     )
-    private ArrayList<OptionalProduct> optionalProducts;
+    private ArrayList<OptionalProduct> optionalProducts = new ArrayList<>();
 
     public ServicePackage(){
     }

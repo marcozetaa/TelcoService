@@ -1,12 +1,9 @@
 package it.polimi.telcoservice.TelcoServiceWEB.controllers;
 
-import it.polimi.telcoservice.TelcoServiceEJB.entities.FixedInternet;
-import it.polimi.telcoservice.TelcoServiceEJB.entities.MobileInternet;
-import it.polimi.telcoservice.TelcoServiceEJB.entities.MobilePhone;
+import it.polimi.telcoservice.TelcoServiceEJB.entities.*;
+import it.polimi.telcoservice.TelcoServiceEJB.exceptions.OrderException;
 import it.polimi.telcoservice.TelcoServiceEJB.exceptions.ServicePackageException;
-import it.polimi.telcoservice.TelcoServiceEJB.services.FixedInternetService;
-import it.polimi.telcoservice.TelcoServiceEJB.services.MobileInternetService;
-import it.polimi.telcoservice.TelcoServiceEJB.services.MobilePhoneService;
+import it.polimi.telcoservice.TelcoServiceEJB.services.*;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -24,12 +21,16 @@ import java.util.List;
 public class CreateMP extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private TemplateEngine templateEngine;
+    @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/ServicePackageService")
+    private ServicePackageService pService;
     @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/MobilePhoneService")
     private MobilePhoneService mpService;
     @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/FixedInternetService")
     private FixedInternetService fiService;
     @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/MobileInternetService")
     private MobileInternetService miService;
+    @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/OptionalProductService")
+    private OptionalProductService opService;
 
     public CreateMP() { super(); }
 
@@ -97,9 +98,25 @@ public class CreateMP extends HttpServlet {
             e.printStackTrace();
         }
 
+        List<ServicePackage> packages = null;
+        try {
+            packages = pService.findAll();
+        } catch (ServicePackageException e) {
+            e.printStackTrace();
+        }
+
+        List<OptionalProduct> opList = null;
+        try {
+            opList = opService.findAll();
+        } catch (OrderException e) {
+            e.printStackTrace();
+        }
+
+        ctx.setVariable("packages", packages);
         ctx.setVariable("FixedInternetList", fiList);
         ctx.setVariable("MobileInternetList", miList);
         ctx.setVariable("MobilePhoneList", mpList);
+        ctx.setVariable("OptionalProductList", opList);
         templateEngine.process(path, ctx, response.getWriter());
     }
 }
