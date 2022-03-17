@@ -2,6 +2,7 @@ package it.polimi.telcoservice.TelcoServiceEJB.services;
 
 import it.polimi.telcoservice.TelcoServiceEJB.entities.Order;
 import it.polimi.telcoservice.TelcoServiceEJB.entities.User;
+import it.polimi.telcoservice.TelcoServiceEJB.entities.UserStatus;
 import it.polimi.telcoservice.TelcoServiceEJB.exceptions.CredentialException;
 import it.polimi.telcoservice.TelcoServiceEJB.exceptions.UpdateProfileException;
 import javax.ejb.Stateless;
@@ -55,7 +56,7 @@ public class UserService {
         }
     }
 
-    public void UpdateProfile(User u) throws UpdateProfileException{
+    public void updateProfile(User u) throws UpdateProfileException{
         try {
             em.merge(u);
         } catch (PersistenceException e){
@@ -63,23 +64,23 @@ public class UserService {
         }
     }
 
-    public User incrementsFailedPayments(User u){
+    public void incrementsFailedPayments(User u){
         User user = em.find(User.class, u.getUserID());
         user.incrementFailedPayments();
-        em.merge(user);
-        return user;
     }
 
-    public User setNumFailedPayments(User u){
+    public void setNumFailedPayments(User u){
         User user = em.find(User.class, u.getUserID());
         user.setNumFailedPayments(0);
-        em.merge(user);
-        return user;
-
     }
 
     public boolean randomPayment(){
         Random rd = new Random();
         return rd.nextBoolean();
+    }
+
+    public void setInsolvent(User u, UserStatus status){
+        User user = em.find(User.class,u.getUserID());
+        user.setInsolvent(status);
     }
 }

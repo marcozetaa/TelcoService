@@ -15,10 +15,17 @@ import java.time.LocalTime;
 public class Order {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private int orderID;
+
+    @JoinColumn(name = "date_of_creation")
     private LocalDate date_of_creation;
+
+    @JoinColumn(name = "hour_of_creation")
     private LocalTime hour_of_creation;
+
+    @JoinColumn(name = "total value")
     private float tot_value;
 
+    @JoinColumn(name = "valid")
     private OrderStatus status;
 
     @ManyToOne

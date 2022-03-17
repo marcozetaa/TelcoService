@@ -1,22 +1,37 @@
 package it.polimi.telcoservice.TelcoServiceWEB.controllers;
 
 import it.polimi.telcoservice.TelcoServiceEJB.entities.*;
+import it.polimi.telcoservice.TelcoServiceEJB.exceptions.OptionalProductException;
 import it.polimi.telcoservice.TelcoServiceEJB.exceptions.OrderException;
-import it.polimi.telcoservice.TelcoServiceEJB.services.OrderService;
-import it.polimi.telcoservice.TelcoServiceEJB.services.SubscriptionService;
-import it.polimi.telcoservice.TelcoServiceEJB.services.UserService;
+import it.polimi.telcoservice.TelcoServiceEJB.exceptions.ServicePackageException;
+import it.polimi.telcoservice.TelcoServiceEJB.exceptions.UpdateProfileException;
+import it.polimi.telcoservice.TelcoServiceEJB.services.*;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import javax.ejb.EJB;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.security.Provider;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @WebServlet(name = "Confirmation", value = "/Confirmation")
 public class Confirmation extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+    private TemplateEngine templateEngine;
 
     @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/UserService")
     private UserService userService;
@@ -27,30 +42,89 @@ public class Confirmation extends HttpServlet {
     @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/SubscriptionService")
     private SubscriptionService subService;
 
-    Subscription subscription;
-    boolean creatingPackage = true;
-    String rejectedOrderID;
+    @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/ServicePackageService")
+    private ServicePackageService spService;
 
+    @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/OptionalProductService")
+    private OptionalProductService optionalProductService;
+
+    @Override
+    public void init() {
+        ServletContext servletContext = getServletContext();
+
+        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
+        templateResolver.setTemplateMode(TemplateMode.HTML);
+        this.templateEngine = new TemplateEngine();
+        this.templateEngine.setTemplateResolver(templateResolver);
+        templateResolver.setSuffix(".html");
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String path = "WEB-INF/Home.html";
+        ServletContext servletContext = getServletContext();
+        final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-        List<Order> orders;
 
+        //In case of explicit buying commands
+        //String result = request.getParameter("result");
+
+        ServicePackage servicePackage = null;
+        int service_package_id = Integer.parseInt(request.getParameter("package_id"));
         try {
-            orders = oService.findByUserNoCache(user.getUserID(), OrderStatus.VALID);
-        } catch (OrderException e) {
+            servicePackage = spService.findByID(service_package_id);
+        } catch (ServicePackageException e) {
             e.printStackTrace();
         }
 
-        String result = request.getParameter("result");
+        String o_products[] = request.getParameterValues("optional_products");
+        List<OptionalProduct> opList = new ArrayList<>();
+        for(int i = 0; i < o_products.length; i++) {
+            OptionalProduct op = null;
+            try {
+                op = optionalProductService.findByName(o_products[i]);
+            } catch (OptionalProductException e) {
+                e.printStackTrace();
+            }
+            opList.add(op);
+        }
 
-        String destServlet;
-        Order order;
+        int period = Integer.parseInt("val_period");
+        float fee = 0;
+        switch (period){
+            case 12:
+                assert servicePackage != null;
+                fee = (float) servicePackage.getFee12();
+                break;
+            case 24:
+                assert servicePackage != null;
+                fee = (float) servicePackage.getFee24();
+                break;
+            case 36:
+                assert servicePackage != null;
+                fee = (float) servicePackage.getFee36();
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + period);
+        }
 
-        boolean isValid;
+        float tot_value = fee;
+
+        for (int i = 0; i < opList.size(); i++){
+            tot_value += opList.get(i).getMonthly_fee();
+        }
+
+        LocalDate date = LocalDate.parse(request.getParameter("date"), DateTimeFormatter.ofPattern("EE, d MMM yyyy hh:mm a"));
+        LocalTime time = LocalTime.now();
+
+        Order order = new Order(user,date,time,tot_value);
+
+        user.addOrder(order);
+
+        boolean isValid = true;
+        /* IN CASE OF EXPLICIT COMMANDS
         switch (result) {
             case "success":
                 isValid = true;
@@ -64,73 +138,45 @@ public class Confirmation extends HttpServlet {
             default:
                 throw new IllegalStateException("Unexpected value: " + result);
         }
-
-/*
-        if(creatingPackage){
-            // get and check params
-            Integer package_id;
-            try {
-                package_id = Integer.parseInt(request.getParameter("id"));
-            } catch (NumberFormatException | NullPointerException e) {
-                // only for debugging e.printStackTrace();
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect param values");
-                return;
-            }
-            try {
-                subscription = subService.createSubscription();
-                        //userService.createSubscription(Subscription, user);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-            order = oService.createOrder();
-        }
-        else {
-            //order = oService.findByID(Integer.parseInt(rejectedOrderID)).get();
-            //order = userService.updateOrder(order, isValid);
-        }
-
-        if(!isValid) user = userService.incrementsFailedPayments(user);
-
-        if(user.getNumFailedPayments()==3){
-            AlertEntity alert = new AlertEntity(order.getTotalValueOrder(), order.getDateAndHour(), user);
-            userService.createAlert(alert);
-            user = userService.setNumFailedPayments(user);
-        }
-
-        // if the user has rejected orders we set him to insolvent
-        if(userService.findRejectedOrdersByUser(user.getUser_id()).size()>=1) userService.setUserInsolvent(user, true);
-        else userService.setUserInsolvent(user, false);
-
-        if(userService.findOrdersToActivate(user.getUser_id()).size()>0) destServlet = "serviceActivationSchedule";
-        else destServlet = "homePageCustomer";
-
-        resp.sendRedirect(destServlet);
-
 */
+        if(!isValid) {
+            userService.incrementsFailedPayments(user);
+            try {
+                userService.updateProfile(user);
+            } catch (UpdateProfileException e) {
+                e.printStackTrace();
+            }
+        }else{
+            //TODO: CREATE Subscription
+        }
+
+        if(user.getNumFailedPayments() == 3 && user.isInsolvent() == UserStatus.SOLVENT){
+            user.setInsolvent(UserStatus.INSOLVENT);
+            userService.setNumFailedPayments(user);
+            try {
+                userService.updateProfile(user);
+            } catch (UpdateProfileException e) {
+                e.printStackTrace();
+            }
+        }
+
+        List<ServicePackage> packages = null;
+        try{
+
+            packages = spService.findAll();
+
+        } catch (Exception e) {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,"Not possible to get services");
+        }
+
+        ctx.setVariable("user",user);
+        ctx.setVariable("packages", packages);
+        templateEngine.process(path, ctx, response.getWriter());
+
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        rejectedOrderID = req.getParameter("rejectedOrder");
-/*
-        if(rejectedOrderID!=null){
-            Subscription = userService.findOrderByID(Long.parseLong(rejectedOrderID)).get().getSubscription();
-            creatingPackage = false;
-        }
-        else{
-            Subscription = (SubscriptionEntity) req.getSession(false).getAttribute("Subscription");
-            creatingPackage = true;
-        }
-
-        req.setAttribute("Subscription", Subscription);
-
-        RequestDispatcher dispatcher = req.getRequestDispatcher("confirmationPage.jsp");
-        dispatcher.forward(req, resp);
-*/
     }
-
-
-
 }
 

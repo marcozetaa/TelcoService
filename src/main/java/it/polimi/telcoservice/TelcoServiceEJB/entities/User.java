@@ -3,6 +3,7 @@ package it.polimi.telcoservice.TelcoServiceEJB.entities;
 import javax.persistence.*;
 
 import java.util.List;
+import java.util.Random;
 
 @Entity
 @Table(name = "user", schema = "telco_service_db")

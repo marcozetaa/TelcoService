@@ -86,7 +86,7 @@
             <option value="No">No</option>
             <option th:each="op : ${OptionalProductList}"
                     th:value="${op.getName()}"
-                    th:text="${op.name} + '' + ${op.monthly_fee} + ' EUR/Month'">
+                    th:text="${op.name} + ' - ' + ${op.monthly_fee} + ' EUR/Month'">
         </select>
         <br>
         <input type="submit" value="Create Product">
