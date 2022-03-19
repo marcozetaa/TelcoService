@@ -24,15 +24,17 @@ DROP TABLE IF EXISTS `order`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `order` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `costumer` int NOT NULL DEFAULT '999999',
-  `subscription` varchar(45) NOT NULL,
+  `id_costumer` int DEFAULT NULL,
+  `id_subscription` int DEFAULT NULL,
   `date_of_creation` date NOT NULL,
   `hour_of_creation` time NOT NULL,
   `total value` decimal(10,0) NOT NULL,
   `valid` binary(1) NOT NULL,
-  `id_costumer` int DEFAULT NULL,
-  `id_subscription` int DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `costumer_fk` (`id_costumer`),
+  KEY `subscription_fk` (`id_subscription`),
+  CONSTRAINT `costumer_fk` FOREIGN KEY (`id_costumer`) REFERENCES `user` (`userid`),
+  CONSTRAINT `subscription_fk` FOREIGN KEY (`id_subscription`) REFERENCES `subscription` (`idsubscription`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -54,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-20 19:10:30
+-- Dump completed on 2022-03-19 14:51:48

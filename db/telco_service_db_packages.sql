@@ -16,33 +16,40 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `user`
+-- Table structure for table `packages`
 --
 
-DROP TABLE IF EXISTS `user`;
+DROP TABLE IF EXISTS `packages`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `user` (
-  `userid` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(45) NOT NULL,
-  `password` varchar(45) NOT NULL,
-  `email` varchar(45) NOT NULL,
-  `name` varchar(45) NOT NULL,
-  `surname` varchar(45) NOT NULL,
-  `status` binary(1) NOT NULL,
-  `num_failed_payments` int NOT NULL DEFAULT '0',
-  PRIMARY KEY (`userid`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `packages` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL DEFAULT '999999',
+  `fixed_phone` decimal(1,0) NOT NULL,
+  `fee12` decimal(10,0) NOT NULL,
+  `fee24` decimal(10,0) NOT NULL,
+  `fee36` decimal(10,0) NOT NULL,
+  `mobile_phone_id` int DEFAULT NULL,
+  `fixed_internet_id` int DEFAULT NULL,
+  `mobile_internet_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `mobile_phone_fk` (`mobile_phone_id`),
+  KEY `mobile_internet_fk` (`mobile_internet_id`),
+  KEY `fixed_internet_fk` (`fixed_internet_id`),
+  CONSTRAINT `fixed_internet_fk` FOREIGN KEY (`fixed_internet_id`) REFERENCES `fixed_internet` (`id`),
+  CONSTRAINT `mobile_internet_fk` FOREIGN KEY (`mobile_internet_id`) REFERENCES `mobile_internet` (`id`),
+  CONSTRAINT `mobile_phone_fk` FOREIGN KEY (`mobile_phone_id`) REFERENCES `mobile_phone` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user`
+-- Dumping data for table `packages`
 --
 
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (2,'MaxEcho','admin','marco.zanghieri19@gmail.com','Marco','Zanghieri',_binary '0',0);
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+LOCK TABLES `packages` WRITE;
+/*!40000 ALTER TABLE `packages` DISABLE KEYS */;
+INSERT INTO `packages` VALUES (47,'Summer Young',0,10,15,20,5,4,3),(48,'Michele Terziani Special',0,2,1,1,5,4,3),(49,'Michele Terziani Special',0,2,1,1,5,4,3);
+/*!40000 ALTER TABLE `packages` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

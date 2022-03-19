@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.26, for macos11 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.26, for Win64 (x86_64)
 --
 -- Host: localhost    Database: telco_service_db
 -- ------------------------------------------------------
@@ -16,33 +16,27 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `package`
+-- Table structure for table `employee`
 --
 
-DROP TABLE IF EXISTS `package`;
+DROP TABLE IF EXISTS `employee`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `package` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) NOT NULL DEFAULT '999999',
-  `fixed_phone` binary(1) NOT NULL,
-  `12Fee` decimal(10,0) NOT NULL,
-  `24Fee` decimal(10,0) NOT NULL,
-  `36Fee` decimal(10,0) NOT NULL,
-  `mobile_phone_id` int DEFAULT NULL,
-  `fixed_internet_id` int DEFAULT NULL,
-  `mobile_internet_id` int DEFAULT NULL,
-  PRIMARY KEY (`id`)
+CREATE TABLE `employee` (
+  `employeeid` int NOT NULL,
+  `password` varchar(30) NOT NULL,
+  PRIMARY KEY (`employeeid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `package`
+-- Dumping data for table `employee`
 --
 
-LOCK TABLES `package` WRITE;
-/*!40000 ALTER TABLE `package` DISABLE KEYS */;
-/*!40000 ALTER TABLE `package` ENABLE KEYS */;
+LOCK TABLES `employee` WRITE;
+/*!40000 ALTER TABLE `employee` DISABLE KEYS */;
+INSERT INTO `employee` VALUES (10588478,'firstemp');
+/*!40000 ALTER TABLE `employee` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -54,4 +48,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-11-25 17:59:30
+-- Dump completed on 2022-03-19 14:51:48

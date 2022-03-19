@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.26, for macos11 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.26, for Win64 (x86_64)
 --
 -- Host: localhost    Database: telco_service_db
 -- ------------------------------------------------------
@@ -24,11 +24,15 @@ DROP TABLE IF EXISTS `subscription`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `subscription` (
   `idsubscription` int NOT NULL AUTO_INCREMENT,
-  `id_order` int NOT NULL,
-  `id_package` int NOT NULL,
   `validity_period` decimal(10,0) NOT NULL,
   `fee` decimal(10,0) NOT NULL,
-  PRIMARY KEY (`idsubscription`)
+  `id_package` int NOT NULL,
+  `id_order` int NOT NULL,
+  PRIMARY KEY (`idsubscription`),
+  KEY `package_fk` (`id_order`),
+  KEY `service_fk` (`id_package`),
+  CONSTRAINT `order_fk` FOREIGN KEY (`id_order`) REFERENCES `order` (`id`),
+  CONSTRAINT `service_fk` FOREIGN KEY (`id_package`) REFERENCES `packages` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -50,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-11-25 17:59:30
+-- Dump completed on 2022-03-19 14:51:48

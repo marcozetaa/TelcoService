@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.26, for macos11 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.26, for Win64 (x86_64)
 --
 -- Host: localhost    Database: telco_service_db
 -- ------------------------------------------------------
@@ -29,7 +29,7 @@ CREATE TABLE `mobile_phone` (
   `fee_extra_minutes` decimal(10,0) NOT NULL,
   `fee_extra_sms` decimal(10,0) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,6 +38,7 @@ CREATE TABLE `mobile_phone` (
 
 LOCK TABLES `mobile_phone` WRITE;
 /*!40000 ALTER TABLE `mobile_phone` DISABLE KEYS */;
+INSERT INTO `mobile_phone` VALUES (5,200,100,2,1),(6,1000,1000,2,1),(8,1000,2000,1,1);
 /*!40000 ALTER TABLE `mobile_phone` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -50,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-11-25 17:59:30
+-- Dump completed on 2022-03-19 14:51:48

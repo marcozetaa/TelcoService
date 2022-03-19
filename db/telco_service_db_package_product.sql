@@ -26,7 +26,11 @@ CREATE TABLE `package_product` (
   `id` int NOT NULL AUTO_INCREMENT,
   `id_package` int NOT NULL,
   `name_product` varchar(45) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `product_fk` (`name_product`),
+  KEY `package_fk` (`id_package`),
+  CONSTRAINT `package_fk` FOREIGN KEY (`id_package`) REFERENCES `packages` (`id`),
+  CONSTRAINT `product_fk` FOREIGN KEY (`name_product`) REFERENCES `product` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -48,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-20 19:10:30
+-- Dump completed on 2022-03-19 14:51:48
