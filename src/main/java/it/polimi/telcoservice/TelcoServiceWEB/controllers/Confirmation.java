@@ -48,6 +48,18 @@ public class Confirmation extends HttpServlet {
     @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/OptionalProductService")
     private OptionalProductService optionalProductService;
 
+    @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/FixedInternetService")
+    private FixedInternetService fiService;
+
+    @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/MobileInternetService")
+    private MobileInternetService miService;
+
+    @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/MobilePhoneService")
+    private MobilePhoneService mpService;
+
+    @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/OptionalProductService")
+    private OptionalProductService opService;
+
     @Override
     public void init() {
         ServletContext servletContext = getServletContext();
@@ -139,6 +151,7 @@ public class Confirmation extends HttpServlet {
                 throw new IllegalStateException("Unexpected value: " + result);
         }
 */
+        Subscription subscription;
         if(!isValid) {
             userService.incrementsFailedPayments(user);
             try {
@@ -147,7 +160,8 @@ public class Confirmation extends HttpServlet {
                 e.printStackTrace();
             }
         }else{
-            //TODO: CREATE Subscription
+            subscription = new Subscription(period,fee,servicePackage);
+            subscription.setOrder(order);
         }
 
         if(user.getNumFailedPayments() == 3 && user.isInsolvent() == UserStatus.SOLVENT){
@@ -169,8 +183,42 @@ public class Confirmation extends HttpServlet {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,"Not possible to get services");
         }
 
+        List<FixedInternet> fiList = null;
+        try {
+            fiList = fiService.findAll();
+        } catch (ServicePackageException e) {
+            e.printStackTrace();
+        }
+
+        List<MobileInternet> miList = null;
+        try {
+            miList = miService.findAll();
+        } catch (ServicePackageException e) {
+            e.printStackTrace();
+        }
+
+        List<MobilePhone> mpList = null;
+        try {
+            mpList = mpService.findAll();
+        } catch (ServicePackageException e) {
+            e.printStackTrace();
+        }
+
+        List<OptionalProduct> productList = null;
+        try {
+            productList = opService.findAll();
+        } catch (OrderException e) {
+            e.printStackTrace();
+        }
+
+
         ctx.setVariable("user",user);
         ctx.setVariable("packages", packages);
+        ctx.setVariable("FixedInternetList", fiList);
+        ctx.setVariable("MobileInternetList", miList);
+        ctx.setVariable("MobilePhoneList", mpList);
+        ctx.setVariable("OptionalProductList", productList);
+        ctx.setVariable("payment",isValid);
         templateEngine.process(path, ctx, response.getWriter());
 
     }

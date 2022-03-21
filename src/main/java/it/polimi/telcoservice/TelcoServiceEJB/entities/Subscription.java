@@ -65,6 +65,7 @@ public class Subscription {
 
     public void setOrder(Order order) {
         this.order = order;
+        order.setSubscription(this);
     }
 
     public ServicePackage getServicePackage() {
