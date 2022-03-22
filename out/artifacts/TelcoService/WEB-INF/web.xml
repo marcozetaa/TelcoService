@@ -46,16 +46,8 @@
         <servlet-class>it.polimi.telcoservice.TelcoServiceWEB.controllers.CreatePackage</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>CreateMI</servlet-name>
-        <servlet-class>it.polimi.telcoservice.TelcoServiceWEB.controllers.CreateMI</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>CreateMP</servlet-name>
-        <servlet-class>it.polimi.telcoservice.TelcoServiceWEB.controllers.CreateMP</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>CreateFI</servlet-name>
-        <servlet-class>it.polimi.telcoservice.TelcoServiceWEB.controllers.CreateFI</servlet-class>
+        <servlet-name>Confirmation</servlet-name>
+        <servlet-class>it.polimi.telcoservice.TelcoServiceWEB.controllers.Confirmation</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -91,16 +83,8 @@
         <url-pattern>/CreatePackage</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>CreateMI</servlet-name>
-        <url-pattern>/CreateMI</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>CreateMP</servlet-name>
-        <url-pattern>/CreateMP</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>CreateFI</servlet-name>
-        <url-pattern>/CreateFI</url-pattern>
+        <servlet-name>Confirmation</servlet-name>
+        <url-pattern>/Confirmation</url-pattern>
     </servlet-mapping>
 
     <welcome-file-list>

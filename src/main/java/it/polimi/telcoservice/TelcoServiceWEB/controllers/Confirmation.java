@@ -79,7 +79,7 @@ public class Confirmation extends HttpServlet {
             e.printStackTrace();
         }
 
-        String o_products[] = request.getParameterValues("optional_products");
+        String[] o_products = request.getParameterValues("optional_products");
         List<OptionalProduct> opList = new ArrayList<>();
         for(int i = 0; i < o_products.length; i++) {
             OptionalProduct op = null;

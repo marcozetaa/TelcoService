@@ -14,13 +14,13 @@
         <tr>
             <th>Name</th>
             <th>Fixed Phone</th>
-            <th>fee12</th>
-            <th>fee24</th>
-            <th>fee36</th>
-            <th>mobileInternet</th>
-            <th>mobilePhone</th>
-            <th>fixedInternet</th>
-            <th>optionalProduct</th>
+            <th>Fee12</th>
+            <th>Fee24</th>
+            <th>Fee36</th>
+            <th>Mobile Internet</th>
+            <th>Mobile Phone</th>
+            <th>Fixed Internet</th>
+            <th>Optional Products</th>
         </tr>
         </thead>
         <tbody>
@@ -33,7 +33,8 @@
             <td th:text="${sp.mobileInternet != null} ? ${sp.mobileInternet.numGB} : 'NO'"></td>
             <td th:text="${sp.mobilePhone != null} ? ${sp.mobilePhone.extra_min} : 'NO'"></td>
             <td th:text="${sp.fixedInternet != null} ? ${sp.fixedInternet.getNumGB()} : 'NO'"></td>
-            <td th:text="${!sp.optionalProducts.isEmpty()} ? ${sp.optionalProducts.get(0).name} : 'NO'"></td>
+            <td th:each="op : ${sp.optionalProducts}"
+                th:text="${!sp.optionalProducts.isEmpty()} ? ${op.name}: 'NO'"></td>
         </tr>
         </tbody>
     </table>
@@ -41,6 +42,7 @@
     <h1>Create a Service Package</h1>
 
     <form th:action="@{CreatePackage}" method="POST">
+        <input type="hidden" name="typeOfProd" th:value="0">
         Name: <input type="text" name="name" required> <br>
         Fixed Phone Included:
         <select name="fixed_phone">
@@ -61,48 +63,53 @@
                      ${mp.extra_sms} + ' EUR/SMS'">
         </select>
         <br>
-        Fixed Internet:
-        <select name="fixed_internet">
-            <option th:disabled="disabled" selected="true" value="">Choose Offer</option>
-            <option value="-1">No</option>
-            <option th:each="fi : ${FixedInternetList}"
-                    th:value="${fi.getid()}"
-                    th:text="${fi.numGB} + ' GB/Month, ' + ${fi.extraGB} + ' EUR/GB'">
-        </select>
+        <label>Fixed Internet:
+            <select name="fixed_internet">
+                <option th:disabled="disabled" selected="true" value="">Choose Offer</option>
+                <option value="-1">No</option>
+                <option th:each="fi : ${FixedInternetList}"
+                        th:value="${fi.getid()}"
+                        th:text="${fi.numGB} + ' GB/Month, ' + ${fi.extraGB} + ' EUR/GB'">
+            </select>
+        </label>
         <br>
-        Mobile Internet:
-        <select name="mobile_internet">
-            <option th:disabled="disabled" selected="true" value="">Choose Offer</option>
-            <option value="-1">No</option>
-            <option th:each="mi : ${MobileInternetList}"
-                    th:value="${mi.getid()}"
-                    th:text="${mi.numGB} + ' EUR/Month, ' + ${mi.extraGB} + ' EUR/GB'">
-        </select>
+        <label>Mobile Internet:
+            <select name="mobile_internet">
+                <option th:disabled="disabled" selected="true" value="">Choose Offer</option>
+                <option value="-1">No</option>
+                <option th:each="mi : ${MobileInternetList}"
+                        th:value="${mi.getid()}"
+                        th:text="${mi.numGB} + ' GB/Month, ' + ${mi.extraGB} + ' EUR/GB'">
+            </select>
+        </label>
         <br>
-        <br>
-        Optional Product:
-        <select name="optional_product">
-            <option th:disabled="disabled" selected="true" value="">Choose Product</option>
-            <option value="No">No</option>
-            <option th:each="op : ${OptionalProductList}"
-                    th:value="${op.getName()}"
-                    th:text="${op.name} + ' - ' + ${op.monthly_fee} + ' EUR/Month'">
-        </select>
+        <p>
+        <label>Optional Product:
+            <input type="checkbox"
+                   th:each="op : ${OptionalProductList}"
+                   th:name="optional_products"
+                   th:text="${op.name} + ' - ' + ${op.monthly_fee} + ' EUR/Month ' "
+                   th:value="${op.name}"
+            />
+        </label>
+        </p>
         <br>
         <input type="submit" value="Create Product">
     </form>
 
     <h1>Create a Mobile Internet Offer</h1>
 
-    <form th:action="@{CreateMI}" method="POST">
-        Numero di Gigabyte: <input type="number" name="num_gb" required> GB <br>
+    <form th:action="@{CreatePackage}" method="POST">
+        <input type="hidden" name="typeOfProd" th:value="1">
+        Number of Gigabytes: <input type="number" name="num_gb" required> GB <br>
         Extra fee for a Gigabyte: <input type="number" name="fee_extra_gb" required> Euros/GB <br>
         <input type="submit" value="Create Offer">
     </form>
 
     <h1>Create a Mobile Phone Offer</h1>
 
-    <form th:action="@{CreateMP}" method="POST">
+    <form th:action="@{CreatePackage}" method="POST">
+        <input type="hidden" name="typeOfProd" th:value="2">
         Number of minutes: <input type="number" name="num_min" required> Minutes<br>
         Number of SMS: <input type="number" name="num_sms" required> SMS<br>
         Fee Extra minutes: <input type="number" name="fee_extra_min" required> Euros/Minute<br>
@@ -112,7 +119,8 @@
 
     <h1>Create a Fixed Internet Offer</h1>
 
-    <form th:action="@{CreateFI}" method="POST">
+    <form th:action="@{CreatePackage}" method="POST">
+        <input type="hidden" name="typeOfProd" th:value="3">
         Number of Gigabyte: <input type="number" name="num_gb" required> GB <br>
         Fee extra Gigabyte: <input type="number" name="fee_extra_gb" required> Euros/GB <br>
         <input type="submit" value="Create Offer">
@@ -120,7 +128,8 @@
 
     <h1>Create an Optional Product</h1>
 
-    <form th:action="@{CreateOP}" method="POST">
+    <form th:action="@{CreatePackage}" method="POST">
+        <input type="hidden" name="typeOfProd" th:value="4">
         Name: <input type="text" name="prod_name" required> <br>
         Monthly Fee: <input type="number" name="monthly_fee" required> Euros/Month <br>
         <input type="submit" value="Create Product">

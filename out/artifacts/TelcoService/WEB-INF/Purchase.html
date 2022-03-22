@@ -20,16 +20,16 @@
             <p>
                 <label th:for="${products}" >Choose one or more optional product:</label>
 
-                <input type="checkbox" th:each="p : ${products}" th:name="${p.name}" th:value="${p.monthly_fee}" th:text="${p.name}">
+                <input type="checkbox" th:each="p : ${products}" th:name="optional_products" th:value="${p.name}" th:text="${p.name}">
                 <br>
             </p>
 
             <p>
             Validity Period:
-                <div data-name="check" id="check">
-                    <input type="checkbox" name="val_period" id="12" th:value="${package.fee12}"/>   <label for="12" th:text="${package.fee12} + ' euros for 12 Months'"> </label> <br>
-                    <input type="checkbox" name="val_period" id="24" th:value="${package.fee24}" />   <label for="24" th:text="${package.fee24} + ' euros for 24 Months'"></label> <br>
-                    <input type="checkbox" name="val_period" id="36" th:value="${package.fee36}" />   <label for="36" th:text="${package.fee36} + ' euros for 36 Months'"></label> <br>
+                <div data-name="check" name="check">
+                    <input type="checkbox" name="val_period" id="12" th:value="12"/>   <label for="12" th:text="${package.fee12} + ' euros for 12 Months'"> </label> <br>
+                    <input type="checkbox" name="val_period" id="24" th:value="24" />   <label for="24" th:text="${package.fee24} + ' euros for 24 Months'"></label> <br>
+                    <input type="checkbox" name="val_period" id="36" th:value="36" />   <label for="36" th:text="${package.fee36} + ' euros for 36 Months'"></label> <br>
                 </div>
             </p>
 
