@@ -46,18 +46,6 @@
         <servlet-class>it.polimi.telcoservice.TelcoServiceWEB.controllers.CreatePackage</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>CreateMI</servlet-name>
-        <servlet-class>it.polimi.telcoservice.TelcoServiceWEB.controllers.CreateMI</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>CreateMP</servlet-name>
-        <servlet-class>it.polimi.telcoservice.TelcoServiceWEB.controllers.CreateMP</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>CreateFI</servlet-name>
-        <servlet-class>it.polimi.telcoservice.TelcoServiceWEB.controllers.CreateFI</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>CreateSubscription</servlet-name>
         <servlet-class>it.polimi.telcoservice.TelcoServiceWEB.controllers.CreateSubscription</servlet-class>
     </servlet>
@@ -85,7 +73,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>GoToPackageDetails</servlet-name>
-        <url-pattern>/GoTOPackageDetails</url-pattern>
+        <url-pattern>/PackageDetails</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>GoToPurchase</servlet-name>
@@ -98,18 +86,6 @@
     <servlet-mapping>
         <servlet-name>CreatePackage</servlet-name>
         <url-pattern>/CreatePackage</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>CreateMI</servlet-name>
-        <url-pattern>/CreateMI</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>CreateMP</servlet-name>
-        <url-pattern>/CreateMP</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>CreateFI</servlet-name>
-        <url-pattern>/CreateFI</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Confirmation</servlet-name>

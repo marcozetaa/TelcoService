@@ -8,11 +8,15 @@
 </head>
 <body>
     <div align="right">
-        <a th:href="@{/GoToHomePage}">Homepage</a>
+        <a th:href="@{/Home}">Homepage</a>
+        <div th:if="${session.user == null}">
+            <a th:href="@{CheckLogin}">Login</a>
+        </div>
+        <div th:if="${session.user != null}">
+            <a th:href="@{Logout}">Logout</a>
+        </div>
     </div>
-    <div align="right">
-        <a th:href="@{/Logout}">Logout</a>
-    </div>
+
     <h1> Package Details</h1>
     <table>
         <thead>
@@ -28,15 +32,15 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="sp : ${packages}">
+        <tr>
             <td th:text="${sp.name}"></td>
             <td th:text="${sp.fixed_phone}"></td>
             <td th:text="${sp.fee12}"></td>
             <td th:text="${sp.fee24}"></td>
             <td th:text="${sp.fee36}"></td>
-            <td th:text="${sp.mobileInternet != null} ? ${sp.mobileInternet.getid()} : 'NO'"></td>
-            <td th:text="${sp.mobilePhone != null} ? ${sp.mobilePhone.getid()} : 'NO'"></td>
-            <td th:text="${sp.fixedInternet != null} ? ${sp.fixedInternet.getid()} : 'NO'"></td>
+            <td th:text="${sp.mobileInternet != null} ? ${sp.mobileInternet.numGB} +' GB, ' + ${sp.mobileInternet.extraGB} + ' GB/Euro' : 'NO'"></td>
+            <td th:text="${sp.mobilePhone != null} ? ${sp.mobilePhone.num_min} +' Min, ' + ${sp.mobilePhone.num_min} + ' SMS'  : 'NO'"></td>
+            <td th:text="${sp.fixedInternet != null} ? ${sp.fixedInternet.numGB}  +' GB, ' + ${sp.fixedInternet.extraGB} + ' GB/Euro' : 'NO'"></td>
         </tr>
         </tbody>
     </table>

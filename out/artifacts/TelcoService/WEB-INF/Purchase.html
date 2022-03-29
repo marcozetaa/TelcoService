@@ -11,7 +11,7 @@
 
     <h1>"Purchase form"</h1>
 
-    <form th:action="@{/Confirmation(package_id=${package.getid()},user=${session.user})}" method="POST">
+    <form th:action="@{/Confirmation(package_id=${package.getid()})}" method="POST">
         <fieldset>
             <p>
                 Package:  <input type="text" th:name="package_id" th:id="${package.getid()}" th:value="${package.name}" disabled> <br>
@@ -41,7 +41,13 @@
             </p>
 
             <br>
-            <input type="submit" value="Purchase">
+            <div th:if="${session.user != null}">
+                <input type="submit" value="Purchase">
+            </div>
+            <div th:if="${session.user == null}">
+                Access to buy
+                <a th:href="@{/CheckLogin(package_id=${package.getid()})}">Login</a>
+            </div>
             <p th:text=" ${errorMsg}"></p>
         </fieldset>
     </form>

@@ -58,35 +58,41 @@ public class Confirmation extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String path = "WEB-INF/Home.html";
-        ServletContext servletContext = getServletContext();
-        final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
+        String path = getServletContext().getContextPath()+"/Home?";
 
         //In case of explicit buying commands
         //String result = request.getParameter("result");
-        int package_id = Integer.parseInt(request.getParameter("package_id"));
-        int period = Integer.parseInt(request.getParameter("val_period"));
-        String[] o_products = request.getParameterValues("optional_products");
+        int user_id;
+        int package_id;
+        int period;
+        int order_id;
 
-        LocalDate date = LocalDate.parse(request.getParameter("date"));
-        LocalTime time = LocalTime.now();
+        float tot_value;
 
-        float tot_value = 0;
+        boolean isValid;
 
-        try {
-            tot_value = spService.getFee(package_id, period);
-        } catch (BadPackagePhoneChange e) {
-            e.printStackTrace();
-        }
+        String[] o_products;
 
-        tot_value += opService.getTotValue(o_products);
+        LocalDate date;
+        LocalTime time;
 
-        int order_id = oService.createOrder(user,date,time,tot_value);
+        User user;
 
-        boolean isValid = true;
+        user_id = Integer.parseInt(request.getParameter("user"));
+        package_id = Integer.parseInt(request.getParameter("package_id"));
+        period = Integer.parseInt(request.getParameter("val_period"));
+
+        o_products = request.getParameterValues("optional_products");
+
+        date = LocalDate.parse(request.getParameter("date"));
+        time = LocalTime.now();
+
+        tot_value = computeOrderValue(package_id,period,o_products);
+
+        order_id = oService.createOrder(user_id,date,time,tot_value);
+
+        isValid = true;
         /* IN CASE OF EXPLICIT COMMANDS
         switch (result) {
             case "success":
@@ -103,44 +109,23 @@ public class Confirmation extends HttpServlet {
         }
 */
 
-        List<ServicePackage> packages = null;
-        List<Order> orderList = null;
-        try{
+        user = userService.getUser(user_id);
 
-            packages = spService.findAll();
-            orderList = oService.findByUserNoCache(user.getUserID());
-
-        } catch (OrderException | ServicePackageException e) {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,"Not possible to get services");
-        }
+        path += "user="+user.getUserID()+"&";
 
         if(isValid){
 
             // Create Subscription in DB
-
-            int sub_id;
-
             try {
-                sub_id = subService.createSubscription(period,opService.getTotValue(o_products),package_id,order_id);
+                subService.createSubscription(period,opService.getTotValue(o_products),package_id,order_id);
             } catch (Exception e) {
                 response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to create subscription");
                 return;
             }
 
-            //Connect order to subscription
+            path += "payment="+true;
 
-            try {
-                oService.updateOrder(order_id);
-            } catch (UpdateProfileException e) {
-                e.printStackTrace();
-            }
-
-            ctx.setVariable("user",user);
-            ctx.setVariable("my_orders",orderList);
-            ctx.setVariable("packages", packages);
-            ctx.setVariable("payment",true);
-            templateEngine.process(path, ctx, response.getWriter());
-
+            response.sendRedirect(path);
         } else{
 
             //Order did not went well, control of insolvency
@@ -169,17 +154,33 @@ public class Confirmation extends HttpServlet {
                 }
             }
 
-            ctx.setVariable("user",user);
-            ctx.setVariable("my_orders",orderList);
-            ctx.setVariable("packages", packages);
-            ctx.setVariable("payment",false);
-            templateEngine.process(path, ctx, response.getWriter());
+            path += "payment="+false;
 
+            response.sendRedirect(path);
         }
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    }
+
+    @Override
+    public void destroy() {
+    }
+
+    public float computeOrderValue(int package_id, int period, String[] o_products){
+
+        float tot_value = 0;
+
+        try {
+            tot_value = spService.getFee(package_id, period);
+        } catch (BadPackagePhoneChange e) {
+            e.printStackTrace();
+        }
+
+        tot_value += opService.getTotValue(o_products);
+
+        return tot_value;
     }
 }
 

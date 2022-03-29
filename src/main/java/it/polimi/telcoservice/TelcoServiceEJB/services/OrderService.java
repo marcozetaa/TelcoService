@@ -23,9 +23,9 @@ public class OrderService {
     public OrderService() {
     }
 
-    public int createOrder(User user, LocalDate date_of_creation, LocalTime hour_of_creation, float tot_value){
+    public int createOrder(int user_id, LocalDate date_of_creation, LocalTime hour_of_creation, float tot_value){
 
-        User client = em.find(User.class, user.getUserID());
+        User client = em.find(User.class, user_id);
 
         Order order = new Order(client, date_of_creation, hour_of_creation, tot_value);
 

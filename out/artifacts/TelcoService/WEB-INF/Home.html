@@ -8,7 +8,12 @@
 </head>
 <body>
     <div align="right">
-        <a th:href="@{Logout}">Logout</a>
+        <div th:if="${session.user == null}">
+            <a th:href="@{CheckLogin}">Login</a>
+        </div>
+        <div th:if="${session.user != null}">
+            <a th:href="@{Logout}">Logout</a>
+        </div>
     </div>
 <!--
     <div th:switch="">
@@ -80,7 +85,7 @@
         <tr th:each="sp : ${packages}">
             <td th:text="${sp.name}"></td>
             <td th:text="${sp.fixed_phone}"></td>
-            <td><a th:href="@{/GoToPackageDetails(package_id=${sp.getid()})}">Details</a></td>
+            <td><a th:href="@{/PackageDetails(package_id=${sp.getid()})}">Details</a></td>
             <td><a th:href="@{/Purchase(package_id=${sp.getid()})}" th:value="package_id">Buy</a></td>
         </tr>
         </tbody>

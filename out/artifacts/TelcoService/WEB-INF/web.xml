@@ -46,10 +46,6 @@
         <servlet-class>it.polimi.telcoservice.TelcoServiceWEB.controllers.CreatePackage</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>Confirmation</servlet-name>
-        <servlet-class>it.polimi.telcoservice.TelcoServiceWEB.controllers.Confirmation</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>CreateSubscription</servlet-name>
         <servlet-class>it.polimi.telcoservice.TelcoServiceWEB.controllers.CreateSubscription</servlet-class>
     </servlet>
@@ -77,7 +73,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>GoToPackageDetails</servlet-name>
-        <url-pattern>/GoTOPackageDetails</url-pattern>
+        <url-pattern>/PackageDetails</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>GoToPurchase</servlet-name>
@@ -90,10 +86,6 @@
     <servlet-mapping>
         <servlet-name>CreatePackage</servlet-name>
         <url-pattern>/CreatePackage</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Confirmation</servlet-name>
-        <url-pattern>/Confirmation</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Confirmation</servlet-name>

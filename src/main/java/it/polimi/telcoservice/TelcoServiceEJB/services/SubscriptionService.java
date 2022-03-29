@@ -20,7 +20,7 @@ public class SubscriptionService {
     public SubscriptionService(){
     }
 
-    public int createSubscription(int validity_period, float fee, int package_id, int order_id) {
+    public void createSubscription(int validity_period, float fee, int package_id, int order_id) {
         ServicePackage servicePackage = em.find(ServicePackage.class, package_id);
         Order order = em.find(Order.class, order_id);
 
@@ -32,15 +32,15 @@ public class SubscriptionService {
         System.out.println("Method createSubscription before servicePackage.addSubscription(subscription)");
         System.out.println("Is subscription object managed?  " + em.contains(subscription));
 
-        servicePackage.addSubscriptions(subscription);
         subscription.setOrder(order);
+        order.setSubscription(subscription);
 
         em.persist(subscription);
+        em.merge(order);
 
         System.out.println("Method createSubscription after servicePackage.addSubscription(subscription)");
         System.out.println("Is subscription object managed?  " + em.contains(subscription));
 
-        return subscription.getid();
     }
 
     public List<Subscription> findByPackage(int id) throws SubscriptionException {

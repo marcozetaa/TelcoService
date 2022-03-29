@@ -4,6 +4,8 @@ import it.polimi.telcoservice.TelcoServiceEJB.entities.ServicePackage;
 import it.polimi.telcoservice.TelcoServiceEJB.services.ServicePackageService;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import javax.ejb.EJB;
 import javax.servlet.*;
@@ -12,7 +14,7 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "GoToPackageDetails", value = "/GoToPackageDetails")
+@WebServlet(name = "GoToPackageDetails", value = "/PackageDetails")
 public class GoToPackageDetails extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private TemplateEngine templateEngine;
@@ -24,7 +26,21 @@ public class GoToPackageDetails extends HttpServlet {
     }
 
     @Override
+    public void init() throws ServletException {
+        ServletContext servletContext = getServletContext();
+        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
+        templateResolver.setTemplateMode(TemplateMode.HTML);
+        this.templateEngine = new TemplateEngine();
+        this.templateEngine.setTemplateResolver(templateResolver);
+        templateResolver.setSuffix(".html");
+    }
+
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        String path = "WEB-INF/PackageDetails.html";
+        ServletContext servletContext = getServletContext();
+        final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 
         // get and check params
         Integer packageId = null;
@@ -36,20 +52,17 @@ public class GoToPackageDetails extends HttpServlet {
             return;
         }
 
-        List<ServicePackage> packages = null;
+        ServicePackage service_package = null;
 
         try{
 
-            packages = pService.findAll();
+            service_package = pService.findByID(packageId);
 
         } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,"Not possible to get services");
         }
 
-        String path = "/PackageDetails.html";
-        ServletContext servletContext = getServletContext();
-        final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-        ctx.setVariable("packages", packages);
+        ctx.setVariable("sp", service_package);
 
         templateEngine.process(path, ctx, response.getWriter());
 

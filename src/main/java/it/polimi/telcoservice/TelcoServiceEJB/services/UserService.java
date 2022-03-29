@@ -83,4 +83,12 @@ public class UserService {
         User user = em.find(User.class,u.getUserID());
         user.setInsolvent(status);
     }
+
+    public User getUser(int user_id){
+
+
+        User user = em.find(User.class,user_id);
+
+        return user;
+    }
 }

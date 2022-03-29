@@ -1,8 +1,11 @@
 package it.polimi.telcoservice.TelcoServiceWEB.controllers;
 
 import it.polimi.telcoservice.TelcoServiceEJB.entities.Employee;
+import it.polimi.telcoservice.TelcoServiceEJB.entities.Order;
 import it.polimi.telcoservice.TelcoServiceEJB.entities.User;
+import it.polimi.telcoservice.TelcoServiceEJB.exceptions.OrderException;
 import it.polimi.telcoservice.TelcoServiceEJB.services.EmployeeService;
+import it.polimi.telcoservice.TelcoServiceEJB.services.OrderService;
 import it.polimi.telcoservice.TelcoServiceEJB.services.UserService;
 import it.polimi.telcoservice.TelcoServiceEJB.exceptions.CredentialException;
 
@@ -19,6 +22,9 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @WebServlet(name = "CheckLogin", value = "/CheckLogin")
 public class CheckLogin extends HttpServlet{
@@ -71,6 +77,8 @@ public class CheckLogin extends HttpServlet{
         User user = null;
         Employee employee = null;
 
+        List<Order> orderList = null;
+
         if(is_emp == null){
             try {
                 user = usrService.checkCredentials(usrn,pwd);
@@ -101,17 +109,36 @@ public class CheckLogin extends HttpServlet{
         // show login page with error message
 
         String path = "";
+
+        String package_id;
+
+        try {
+            package_id = StringEscapeUtils.escapeJava(request.getParameter("package_id"));
+        } catch (NumberFormatException | NullPointerException e) {
+            // only for debugging e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect param values");
+            return;
+        }
+
+        if(package_id != null) {
+
+            path = getServletContext().getContextPath()+"/Purchase?";
+            path += "package_id="+package_id;
+
+            response.sendRedirect(path);
+        }
+
         if( user == null && employee == null ){
             path = getServletContext().getContextPath()+"index.html";;
         }
         else {
             if( employee == null) {
-                path = getServletContext().getContextPath()+"/Home";
-                request.getSession().setAttribute("user", user);
+                path = getServletContext().getContextPath()+"/Home?";
+                path += "user="+user.getUserID();
             }
             if( user == null) {
-                path = getServletContext().getContextPath()+"/WorkArea";
-                request.getSession().setAttribute("employee", employee);
+                path = getServletContext().getContextPath()+"/WorkArea?";
+                path += "emp="+employee.getEmployeeID();
             }
         }
         response.sendRedirect(path);

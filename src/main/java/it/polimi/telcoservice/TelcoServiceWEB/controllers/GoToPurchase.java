@@ -3,6 +3,7 @@ package it.polimi.telcoservice.TelcoServiceWEB.controllers;
 import it.polimi.telcoservice.TelcoServiceEJB.entities.*;
 import it.polimi.telcoservice.TelcoServiceEJB.services.OptionalProductService;
 import it.polimi.telcoservice.TelcoServiceEJB.services.ServicePackageService;
+import it.polimi.telcoservice.TelcoServiceEJB.services.UserService;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -14,7 +15,10 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @WebServlet(name = "GoToPurchase", value = "/Purchase")
 public class GoToPurchase extends HttpServlet {
@@ -24,6 +28,8 @@ public class GoToPurchase extends HttpServlet {
     private ServicePackageService spService;
     @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/OptionalProductService")
     private OptionalProductService opService;
+    @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/UserService")
+    private UserService userService;
 
     public GoToPurchase(){ super(); }
 
@@ -41,8 +47,14 @@ public class GoToPurchase extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         // get and check params
-        Integer package_id;
+        int package_id;
+        int user_id;
+
+        User user;
+        HttpSession session = request.getSession();
+
         try {
+            user = (User) session.getAttribute("user");
             package_id = Integer.parseInt(request.getParameter("package_id"));
         } catch (NumberFormatException | NullPointerException e) {
             // only for debugging e.printStackTrace();
@@ -52,6 +64,7 @@ public class GoToPurchase extends HttpServlet {
 
         ServicePackage sel_package = null;
         List<OptionalProduct> o_products = null;
+
         try {
             sel_package = spService.findByID(package_id);
             o_products = opService.findAll();
@@ -62,6 +75,7 @@ public class GoToPurchase extends HttpServlet {
         String path = "WEB-INF/Purchase.html";
         ServletContext servletContext = getServletContext();
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+        session.setAttribute("user",user);
         ctx.setVariable("package_id", sel_package.getid());
         ctx.setVariable("package", sel_package);
         ctx.setVariable("products", o_products);
