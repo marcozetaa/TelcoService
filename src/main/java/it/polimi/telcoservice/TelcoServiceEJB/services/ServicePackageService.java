@@ -17,7 +17,7 @@ public class ServicePackageService {
     public ServicePackageService(){
     }
 
-    public void createPackage(String name, FixedPhoneStatus status, int  fee12, int fee24, int fee36, int mobile_phone_id, int mobile_internet_id, int fixed_internet_id, String o_product){
+    public void createPackage(String name, FixedPhoneStatus status, int  fee12, int fee24, int fee36, int mobile_phone_id, int mobile_internet_id, int fixed_internet_id, String[] o_products){
 
         ServicePackage servicePackage = new ServicePackage(name,status,fee12, fee24, fee36);
 
@@ -44,13 +44,21 @@ public class ServicePackageService {
             System.out.println("Is MobilePhone object managed?  " + em.contains(mp));
 
         }
+
+        if(o_products.length != 0){
+            for (String o_product : o_products){
+                servicePackage.addOptionalProduct(em.find(OptionalProduct.class, o_product));
+            }
+        }
+
+        /*
         if(!o_product.equals("No")){
             OptionalProduct op = em.find(OptionalProduct.class, o_product);
             servicePackage.addOptionalProduct(op);
             System.out.println("Method createOptional after em.persist()");
             System.out.println("Is Optional object managed?  " + em.contains(op));
         }
-
+*/
         em.persist(servicePackage);
 
         //TODO: Should we add also optional product and all other services lists?

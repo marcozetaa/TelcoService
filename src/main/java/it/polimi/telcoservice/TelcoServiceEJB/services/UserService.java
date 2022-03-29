@@ -23,9 +23,9 @@ public class UserService {
     public User checkCredentials(String usrn, String pwd) throws CredentialException {
         List<User> uList = null;
         try{
-            uList = em.createNamedQuery("User.checkCredentials", User.class)
-                    .setParameter(1,usrn).setParameter(2,pwd).getResultList();
+            uList = em.createNamedQuery("User.checkCredentials", User.class).setParameter(1,usrn).setParameter(2,pwd).getResultList();
         } catch (PersistenceException e) {
+            e.printStackTrace();
             throw new CredentialException("Could not verify credentials");
         }
 

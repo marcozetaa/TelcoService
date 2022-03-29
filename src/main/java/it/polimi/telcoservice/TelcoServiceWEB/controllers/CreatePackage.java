@@ -54,82 +54,40 @@ public class CreatePackage extends HttpServlet {
         ServletContext servletContext = getServletContext();
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 
-        // obtain and escape params
+        int production = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("typeOfProd")));
 
-        String name, o_product;
-        Integer fixed_phone;
-        Integer fee12;
-        Integer fee24;
-        Integer fee36;
-        Integer mobile_phone;
-        Integer fixed_internet;
-        Integer mobile_internet;
+        switch (production){
 
-        try {
-
-            name = StringEscapeUtils.escapeJava(request.getParameter("name"));
-            fixed_phone = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("fixed_phone")));
-            fee12 = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("fee12")));
-            fee24 = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("fee24")));
-            fee36 = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("fee36")));
-            mobile_phone = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("mobile_phone")));
-            fixed_internet = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("fixed_internet")));
-            mobile_internet = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("mobile_internet")));
-            o_product = StringEscapeUtils.escapeJava(request.getParameter("optional_product"));
-/*
-            if (name == null || fixed_phone == null || mobile_phone == null || fixed_internet == null || mobile_internet == null ||
-                    name.isEmpty() || fixed_phone.isEmpty() ||  mobile_phone.isEmpty() || fixed_internet.isEmpty() || mobile_internet.isEmpty()) {
-                throw new Exception("Missing or empty credential value");
-            }
-*/
-        }catch (Exception e) {
-            // for debugging only e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing Package Details");
-            return;
+            case 0:
+                createServicePackage(request, response);
+                break;
+            case 1:
+                createMI(request, response);
+                break;
+            case 2:
+                createMP(request, response);
+                break;
+            case 3:
+                createFI(request, response);
+                break;
+            case 4:
+                createOP(request, response);
+                break;
         }
 
-        FixedPhoneStatus status;
-        if(fixed_phone == 0)
-            status = FixedPhoneStatus.EXCLUDED;
-        else
-            status = FixedPhoneStatus.INCLUDED;
-
-        List<ServicePackage> packages;
-        try {
-            // query db to authenticate for user
-            pService.createPackage(name,status,fee12,fee24,fee36,mobile_phone,mobile_internet,fixed_internet, o_product);
-            packages =  pService.findAll();
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_CREATED, "Could not create package");
-            return;
-        }
-
+        List<ServicePackage> packages = null;
         List<FixedInternet> fiList = null;
-        try {
-            fiList = fiService.findAll();
-        } catch (ServicePackageException e) {
-            e.printStackTrace();
-        }
-
         List<MobileInternet> miList = null;
-        try {
-            miList = miService.findAll();
-        } catch (ServicePackageException e) {
-            e.printStackTrace();
-        }
-
         List<MobilePhone> mpList = null;
-        try {
-            mpList = mpService.findAll();
-        } catch (ServicePackageException e) {
-            e.printStackTrace();
-        }
-
         List<OptionalProduct> opList = null;
+
         try {
+            packages = pService.findAll();
+            fiList = fiService.findAll();
+            miList = miService.findAll();
+            mpList = mpService.findAll();
             opList = opService.findAll();
-        } catch (OrderException e) {
+        } catch (ServicePackageException | OrderException e) {
             e.printStackTrace();
         }
 
@@ -141,4 +99,111 @@ public class CreatePackage extends HttpServlet {
 
         templateEngine.process(path, ctx, response.getWriter());
     }
+
+    private void createServicePackage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String name = StringEscapeUtils.escapeJava(request.getParameter("name"));
+        int fixed_phone = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("fixed_phone")));
+        int fee12 = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("fee12")));
+        int fee24 = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("fee24")));
+        int fee36 = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("fee36")));
+        int mobile_phone = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("mobile_phone")));
+        int fixed_internet = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("fixed_internet")));
+        int mobile_internet = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("mobile_internet")));
+        String[] o_products = request.getParameterValues("optional_products");
+
+        FixedPhoneStatus status;
+        if (fixed_phone == 0)
+            status = FixedPhoneStatus.EXCLUDED;
+        else
+            status = FixedPhoneStatus.INCLUDED;
+
+        try {
+            // query db to authenticate for user
+            pService.createPackage(name, status, fee12, fee24, fee36, mobile_phone, mobile_internet, fixed_internet, o_products);
+        } catch (Exception e) {
+            response.sendError(HttpServletResponse.SC_CREATED, "Could not create package");
+        }
+    }
+
+    private void createMI(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        int num_gb = 0;
+        int extra_fee_gb = 0;
+
+        try {
+            num_gb = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("num_gb")));
+            extra_fee_gb = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("fee_extra_gb")));
+        } catch (Exception e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing Mobile Internet detail");
+        }
+
+        try {
+            miService.createMI(num_gb, extra_fee_gb);
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_CREATED, "Could not create Mobile Internet");
+        }
+    }
+
+    private void createMP(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Integer num_min = null;
+        Integer num_sms = null;
+        Integer extra_fee_min = null;
+        Integer extra_fee_sms = null;
+
+        try {
+            num_min = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("num_min")));
+            num_sms = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("num_sms")));
+            extra_fee_min = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("fee_extra_min")));
+            extra_fee_sms = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("fee_extra_sms")));
+        } catch (Exception e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing Mobile Phone detail");
+        }
+
+        try {
+            mpService.createMP(num_min, num_sms, extra_fee_min, extra_fee_sms);
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_CREATED, "Could not create Mobile Phone");
+        }
+    }
+
+    private void createFI(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Integer num_gb = null;
+        Integer extra_fee_gb = null;
+
+        try{
+            num_gb = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("num_gb")));
+            extra_fee_gb = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("fee_extra_gb")));
+        }catch (Exception e){
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST,"Missing Fixed Internet detail");
+        }
+
+        try{
+            fiService.createFI(num_gb,extra_fee_gb);
+        }catch (Exception e){
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_CREATED, "Could not create Fixed Internet");
+        }
+
+    }
+
+    private void createOP(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String prod_name = null;
+        Integer monthly_fee = null;
+
+        try{
+            prod_name = StringEscapeUtils.escapeJava(request.getParameter("prod_name"));
+            monthly_fee = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("monthly_fee")));
+        }catch (Exception e){
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST,"Missing Product detail");
+        }
+
+        try{
+            opService.createOptionalProduct(prod_name, monthly_fee);
+        }catch (Exception e){
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_CREATED, "Could not create Optional Product");
+        }
+    }
+
 }
