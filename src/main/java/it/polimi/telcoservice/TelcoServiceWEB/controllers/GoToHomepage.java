@@ -1,6 +1,9 @@
 package it.polimi.telcoservice.TelcoServiceWEB.controllers;
 
+import it.polimi.telcoservice.TelcoServiceEJB.entities.Order;
 import it.polimi.telcoservice.TelcoServiceEJB.entities.ServicePackage;
+import it.polimi.telcoservice.TelcoServiceEJB.exceptions.OrderException;
+import it.polimi.telcoservice.TelcoServiceEJB.exceptions.ServicePackageException;
 import it.polimi.telcoservice.TelcoServiceEJB.services.ServicePackageService;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -44,6 +47,7 @@ public class GoToHomepage extends HttpServlet {
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 
         List<ServicePackage> packages = null;
+        List<Order> orderList = null;
 
         try{
 
@@ -52,6 +56,8 @@ public class GoToHomepage extends HttpServlet {
         } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,"Not possible to get services");
         }
+
+
 
         ctx.setVariable("packages", packages);
         templateEngine.process(path, ctx, response.getWriter());

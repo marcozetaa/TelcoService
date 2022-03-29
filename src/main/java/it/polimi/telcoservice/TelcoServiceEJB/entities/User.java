@@ -2,6 +2,7 @@ package it.polimi.telcoservice.TelcoServiceEJB.entities;
 
 import javax.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -35,14 +36,13 @@ public class User {
     @JoinColumn(name = "num_failed_payments")
     private int num_failed_payments;
 
-    @OneToMany(mappedBy ="client", fetch = FetchType.LAZY , cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy ="client", fetch = FetchType.EAGER , cascade = CascadeType.REMOVE)
     private List<Order> orders;
 
     public User() {
     }
 
     public User(String username, String password, String email, String name, String surname){
-        this.orders = orders;
         this.username = username;
         this.password = password;
         this.name = name;
@@ -97,12 +97,20 @@ public class User {
     }
 
     public void addOrder(Order order){
-        getOrders().add((order));
-        order.setUser(this);
+        this.orders.add(order);
+        order.setClient(this);
     }
 
     public void deleteOrder(Order order){
         getOrders().remove(order);
+    }
+
+    public UserStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(UserStatus status) {
+        this.status = status;
     }
 
     public int getNumFailedPayments() {

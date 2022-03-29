@@ -4,6 +4,9 @@
     <title>Login Page</title>
 </head>
 <body>
+    <div align="right">
+        <a th:href="@{Home}">Homepage</a>
+    </div>
     <h1>Welcome to Telco Service!!!</h1>
     <form th:action="@{CheckLogin}" method="POST">
         Username: <input type="text" name="username" required> <br>

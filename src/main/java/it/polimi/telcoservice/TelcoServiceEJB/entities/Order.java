@@ -6,15 +6,16 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "order", schema = "telco_service_db")
+@Table(name = "orders", schema = "telco_service_db")
 @NamedQueries({
-        @NamedQuery(name = "Order.findByUser", query = "SELECT o FROM Order o WHERE o.client.userID = ?1 AND o.status = ?2 ORDER BY o.date_of_creation DESC"),
-        @NamedQuery(name = "Order.findByID", query = "SELECT o FROM Order o WHERE o.orderID = ?1 ORDER BY o.date_of_creation DESC")
+        @NamedQuery(name = "Order.findByUser", query = "SELECT o FROM Order o WHERE o.client.userID = ?1 ORDER BY o.date_of_creation DESC"),
+        @NamedQuery(name = "Order.findByID", query = "SELECT o FROM Order o WHERE o.id = ?1 ORDER BY o.date_of_creation DESC")
 })
 
 public class Order {
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    private int orderID;
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @JoinColumn(name = "date_of_creation")
     private LocalDate date_of_creation;
@@ -46,44 +47,36 @@ public class Order {
         this.status = OrderStatus.VALID;
     }
 
-    public int getOrderID() {
-        return orderID;
+    public int getid() {
+        return this.id;
     }
 
-    public void setOrderID(int orderID) {
-        this.orderID = orderID;
+    public void setid(int id) {
+        this.id = id;
     }
 
     public LocalDate getDate_of_creation() {
-        return date_of_creation;
+        return this.date_of_creation;
     }
 
     public void setDate_of_creation(LocalDate date_of_creation) {  this.date_of_creation = date_of_creation; }
 
     public LocalTime getHour_of_creation() {
-        return hour_of_creation;
+        return this.hour_of_creation;
     }
 
     public void setHour_of_creation(LocalTime hour_of_creation) { this.hour_of_creation = hour_of_creation; }
 
     public float getTot_value() {
-        return tot_value;
+        return this.tot_value;
     }
 
     public void setTot_value(float tot_value) {
         this.tot_value = tot_value;
     }
 
-    public User getUser() {
-        return client;
-    }
-
-    public void setUser(User client){
-        this.client = client;
-    }
-
     public Subscription getSubscription() {
-        return subscription;
+        return this.subscription;
     }
 
     public void setSubscription(Subscription subscription) {

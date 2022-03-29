@@ -57,8 +57,8 @@ public class GoToOrders extends HttpServlet {
         List<Order> invalid_orders = null;
         try{
 
-            valid_orders = oService.findByUserNoCache(user.getUserID(), OrderStatus.VALID);
-            invalid_orders = oService.findByUserNoCache(user.getUserID(), OrderStatus.INVALID);
+            //valid_orders = oService.findByUserNoCache(user.getUserID(), OrderStatus.VALID);
+            //invalid_orders = oService.findByUserNoCache(user.getUserID(), OrderStatus.INVALID);
 
         } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,"Not possible to get user orders");

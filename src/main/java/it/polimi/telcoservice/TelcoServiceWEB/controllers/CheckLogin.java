@@ -106,11 +106,11 @@ public class CheckLogin extends HttpServlet{
         }
         else {
             if( employee == null) {
-                path= getServletContext().getContextPath()+"/Home";
+                path = getServletContext().getContextPath()+"/Home";
                 request.getSession().setAttribute("user", user);
             }
             if( user == null) {
-                path   = getServletContext().getContextPath()+"/WorkArea";
+                path = getServletContext().getContextPath()+"/WorkArea";
                 request.getSession().setAttribute("employee", employee);
             }
         }

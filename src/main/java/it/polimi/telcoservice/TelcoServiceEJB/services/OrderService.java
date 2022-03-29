@@ -2,11 +2,10 @@ package it.polimi.telcoservice.TelcoServiceEJB.services;
 
 import it.polimi.telcoservice.TelcoServiceEJB.entities.Order;
 import it.polimi.telcoservice.TelcoServiceEJB.entities.OrderStatus;
+import it.polimi.telcoservice.TelcoServiceEJB.entities.Subscription;
 import it.polimi.telcoservice.TelcoServiceEJB.entities.User;
-import it.polimi.telcoservice.TelcoServiceEJB.exceptions.BadOrderClient;
-import it.polimi.telcoservice.TelcoServiceEJB.exceptions.BadOrderStatusChange;
-import it.polimi.telcoservice.TelcoServiceEJB.exceptions.InvalidStatusChange;
-import it.polimi.telcoservice.TelcoServiceEJB.exceptions.OrderException;
+import it.polimi.telcoservice.TelcoServiceEJB.exceptions.*;
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -24,9 +23,10 @@ public class OrderService {
     public OrderService() {
     }
 
-    public void createOrder(int userID, int subscriptionID, LocalDate date_of_creation, LocalTime hour_of_creation, float tot_value){
+    public int createOrder(User user, LocalDate date_of_creation, LocalTime hour_of_creation, float tot_value){
 
-        User client = em.find(User.class, userID);
+        User client = em.find(User.class, user.getUserID());
+
         Order order = new Order(client, date_of_creation, hour_of_creation, tot_value);
 
         // for debugging: let's check if order is managed
@@ -35,20 +35,18 @@ public class OrderService {
 
         client.addOrder(order); // updates both sides of the relationship
 
-        System.out.println("Method createOrder AFTER client.addOrder(order)");
-        System.out.println("Is mission object managed?  " + em.contains(order));
-
-
         em.persist(order); // makes also order object managed via cascading
 
         System.out.println("Method createOrder after em.persist()");
         System.out.println("Is mission object managed?  " + em.contains(order));
+
+        return order.getid();
     }
 
-    public List<Order> findByUserNoCache(int userid, OrderStatus status) throws OrderException {
+    public List<Order> findByUserNoCache(int userid) throws OrderException {
         List<Order> oList = null;
         try {
-            oList = em.createNamedQuery("Order.findByUser", Order.class).setHint("javax.persistence.cache.storeMode", "REFRESH").setParameter(1,userid).setParameter(2, status).getResultList();
+            oList = em.createNamedQuery("Order.findByUser", Order.class).setHint("javax.persistence.cache.storeMode", "REFRESH").setParameter(1,userid).getResultList();
         } catch (PersistenceException e){
             throw new OrderException("Could not load orders");
         }
@@ -89,6 +87,25 @@ public class OrderService {
             throw new InvalidStatusChange("Status update failed");
         }
         System.out.println("Exiting changeOrderStatus() method of OrderService component");
+
+    }
+
+    public void updateOrder(int id) throws UpdateProfileException {
+        Order o = em.find(Order.class,id);
+
+        try {
+            em.merge(o);
+        } catch (PersistenceException e){
+            throw new UpdateProfileException("Could not update order");
+        }
+    }
+
+    public void setSubcription(int order_id, int subscription_id){
+
+        Subscription subscription = em.find(Subscription.class,subscription_id);
+        Order order = em.find(Order.class,order_id);
+
+        order.setSubscription(subscription);
 
     }
 

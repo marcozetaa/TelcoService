@@ -12,10 +12,13 @@ import javax.persistence.*;
 public class Subscription {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int subID;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
+    @JoinColumn(name = "validity_period")
     private int validity_period;
+
+    @JoinColumn(name = "fee")
     private float fee;
 
     @OneToOne
@@ -35,12 +38,12 @@ public class Subscription {
         this.servicePackage = servicePackage;
     }
 
-    public int getSubID() {
-        return subID;
+    public int getid() {
+        return id;
     }
 
-    public void setSubID(int subID) {
-        this.subID = subID;
+    public void setid(int id) {
+        this.id = id;
     }
 
     public int getValidity_period() {

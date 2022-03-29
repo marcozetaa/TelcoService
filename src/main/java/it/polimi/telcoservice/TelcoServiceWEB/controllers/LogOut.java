@@ -1,7 +1,12 @@
 package it.polimi.telcoservice.TelcoServiceWEB.controllers;
 
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
+
 import java.io.IOException;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,8 +18,20 @@ import javax.servlet.http.HttpSession;
 public class LogOut extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    private TemplateEngine templateEngine;
+
     public LogOut() {
         super();
+    }
+
+    public void init() throws ServletException {
+        ServletContext servletContext = getServletContext();
+
+        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
+        templateResolver.setTemplateMode(TemplateMode.HTML);
+        this.templateEngine = new TemplateEngine();
+        this.templateEngine.setTemplateResolver(templateResolver);
+        templateResolver.setSuffix(".html");
     }
 
     @Override
@@ -26,6 +43,8 @@ public class LogOut extends HttpServlet {
             session.invalidate();
         }
         String path = getServletContext().getContextPath() + "/index.html";
+
+        path= getServletContext().getContextPath()+"/CheckLogin";
         response.sendRedirect(path);
     }
 

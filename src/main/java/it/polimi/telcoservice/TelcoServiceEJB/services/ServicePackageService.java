@@ -144,6 +144,37 @@ public class ServicePackageService {
 
     }
 
+    public float getFee(int package_id, int period) throws BadPackagePhoneChange {
+
+        float fee;
+
+        ServicePackage servicePackage = null;
+        try {
+            servicePackage = em.find(ServicePackage.class, package_id);
+        } catch (PersistenceException e) {
+            throw new BadPackagePhoneChange("Could not fetch the package");
+        }
+
+        switch (period){
+            case 12:
+                assert servicePackage != null;
+                fee = (float) servicePackage.getFee12();
+                break;
+            case 24:
+                assert servicePackage != null;
+                fee = (float) servicePackage.getFee24();
+                break;
+            case 36:
+                assert servicePackage != null;
+                fee = (float) servicePackage.getFee36();
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + period);
+        }
+
+        return fee;
+    }
+
     //TODO: deleteServicePackage should include to eliminate also in Optional Product, FI, MP and MI?
 
 }

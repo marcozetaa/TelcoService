@@ -29,7 +29,7 @@ public class GoToPackageDetails extends HttpServlet {
         // get and check params
         Integer packageId = null;
         try {
-            packageId = Integer.parseInt(request.getParameter("packageid"));
+            packageId = Integer.parseInt(request.getParameter("package_id"));
         } catch (NumberFormatException | NullPointerException e) {
             // only for debugging e.printStackTrace();
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect param values");

@@ -11,10 +11,10 @@
 
     <h1>"Purchase form"</h1>
 
-    <form th:action="@{/Confirmation}" method="POST">
+    <form th:action="@{/Confirmation(package_id=${package.getid()},user=${session.user})}" method="POST">
         <fieldset>
             <p>
-                Package:  <input type="text" name="package_id" th:id="${package.getid()}" th:value="${package.name}" disabled> <br>
+                Package:  <input type="text" th:name="package_id" th:id="${package.getid()}" th:value="${package.name}" disabled> <br>
             </p>
 
             <p>

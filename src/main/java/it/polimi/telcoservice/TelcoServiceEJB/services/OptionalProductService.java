@@ -13,6 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Stateless
@@ -53,6 +54,32 @@ public class OptionalProductService {
             throw new OptionalProductException("Could not load optional products");
         }
         return op;
+    }
+
+    public float getTotValue(String[] o_products){
+
+        float tot_value = 0;
+
+        if(o_products == null)
+            return tot_value;
+
+        List<OptionalProduct> opList = new ArrayList<>();
+
+        for(int i = 0; i < o_products.length; i++) {
+            OptionalProduct op = null;
+            try {
+                op = findByName(o_products[i]);
+            } catch (OptionalProductException e) {
+                e.printStackTrace();
+            }
+            opList.add(op);
+        }
+
+        for (int i = 0; i < opList.size(); i++){
+            tot_value += opList.get(i).getMonthly_fee();
+        }
+
+        return tot_value;
     }
 
     public void deleteOptionalProduct(int optionalProductId, int servicePackageId)  {

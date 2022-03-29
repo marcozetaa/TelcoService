@@ -58,9 +58,14 @@
         <servlet-class>it.polimi.telcoservice.TelcoServiceWEB.controllers.CreateFI</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>CreateSubscription</servlet-name>
+        <servlet-class>it.polimi.telcoservice.TelcoServiceWEB.controllers.CreateSubscription</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>Confirmation</servlet-name>
         <servlet-class>it.polimi.telcoservice.TelcoServiceWEB.controllers.Confirmation</servlet-class>
     </servlet>
+
 
     <servlet-mapping>
         <servlet-name>CheckLogin</servlet-name>
@@ -109,6 +114,10 @@
     <servlet-mapping>
         <servlet-name>Confirmation</servlet-name>
         <url-pattern>/Confirmation</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateSubscription</servlet-name>
+        <url-pattern>/Subscription</url-pattern>
     </servlet-mapping>
 
     <welcome-file-list>

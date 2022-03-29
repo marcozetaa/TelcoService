@@ -43,7 +43,7 @@ public class GoToPurchase extends HttpServlet {
         // get and check params
         Integer package_id;
         try {
-            package_id = Integer.parseInt(request.getParameter("id"));
+            package_id = Integer.parseInt(request.getParameter("package_id"));
         } catch (NumberFormatException | NullPointerException e) {
             // only for debugging e.printStackTrace();
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect param values");

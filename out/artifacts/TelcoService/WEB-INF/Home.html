@@ -10,9 +10,62 @@
     <div align="right">
         <a th:href="@{Logout}">Logout</a>
     </div>
+<!--
+    <div th:switch="">
+        <p th:case="'INSOLVENT'">ALERT! Too many fail payments </p>
+        <table>
+            <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Amount</th>
+                <th>Date of rejection</th>
+                <th>Time of rejection</th>
+            </tr>
+            </thead>
+            <tbody>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tbody>
+        </table>
+        <p th:case="'SOLVENT'"></p>
+    </div>
+-->
+
+    <p th:text="${session.user != null} ? ${'Nice to see you again '+ session.user.username} : 'nononono'"></p>
+
+    <h1>My subscriptions</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Fee</th>
+            <th>Validity Period</th>
+            <th>Order number</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="o : ${my_orders}">
+            <td th:text="${o.subscription != null and o.subscription.servicePackage != null} ? ${o.subscription.servicePackage.name} : 'NO'"></td>
+            <td th:text="${o.subscription != null} ? ${o.subscription.fee} : 'NO'"></td>
+            <td th:text="${o.subscription != null} ? ${o.subscription.validity_period} : 'NO'"></td>
+            <td th:text="${o.getid()}"></td>
+        <!--
+            <span th:switch="${o.status}">
+                <td><a th:case="INVALID" th:href="@{/GoToPurchase(order_id=${o.getid()})}">Reorder</a></td>
+                <td th:case="VALID"></td>
+            </span>
+        -->
+        </tr>
+        </tbody>
+    </table>
+
     <h1>Packages List</h1>
-    <p
-            th:text="${'Nice to see you again ' + session.user.username}"></p>
 
     <table>
         <thead>
@@ -27,10 +80,16 @@
         <tr th:each="sp : ${packages}">
             <td th:text="${sp.name}"></td>
             <td th:text="${sp.fixed_phone}"></td>
-            <td><a th:href="@{/GoToPackageDetails(packageid=${sp.getid()})}">Details</a></td>
-            <td><a th:href="@{/Purchase(id=${sp.getid()})}" th:value="package_id">Buy</a></td>
+            <td><a th:href="@{/GoToPackageDetails(package_id=${sp.getid()})}">Details</a></td>
+            <td><a th:href="@{/Purchase(package_id=${sp.getid()})}" th:value="package_id">Buy</a></td>
         </tr>
         </tbody>
     </table>
+
+    <span th:switch="${payment}">
+        <i th:case="true" class="fas fa-check green-text"> Payment confirmed! Subscription added to profile </i>
+        <i th:case="false" class="fas fa-times red-text"> Payment not confirmed, please try again</i>
+        <i th:case="*"></i>
+    </span>
 </body>
 </html>
