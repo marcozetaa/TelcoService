@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "orders", schema = "telco_service_db")
+@Table(name = "Order", schema = "telco_service_db")
 @NamedQueries({
         @NamedQuery(name = "Order.findByUser", query = "SELECT o FROM Order o WHERE o.client.userID = ?1 ORDER BY o.date_of_creation DESC"),
         @NamedQuery(name = "Order.findByID", query = "SELECT o FROM Order o WHERE o.id = ?1 ORDER BY o.date_of_creation DESC")
@@ -30,7 +30,7 @@ public class Order {
     private OrderStatus status;
 
     @ManyToOne
-    @JoinColumn(name = "id_costumer")
+    @JoinColumn(name = "customer_id")
     private User client;
 
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)

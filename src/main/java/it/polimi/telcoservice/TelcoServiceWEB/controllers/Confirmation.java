@@ -92,7 +92,9 @@ public class Confirmation extends HttpServlet {
 
         order_id = oService.createOrder(user_id,date,time,tot_value);
 
-        isValid = true;
+        isValid = false;
+
+
         /* IN CASE OF EXPLICIT COMMANDS
         switch (result) {
             case "success":
@@ -130,12 +132,12 @@ public class Confirmation extends HttpServlet {
 
             //Order did not went well, control of insolvency
             try {
-                oService.changeOrderStatus(order_id,user.getUserID(),OrderStatus.INVALID);
+                oService.changeOrderStatus(order_id,user.getUserID());
             } catch (BadOrderStatusChange | BadOrderClient | InvalidStatusChange e) {
                 e.printStackTrace();
             }
 
-            userService.incrementsFailedPayments(user);
+            /*userService.incrementsFailedPayments(user);
 
             try {
                 userService.updateProfile(user);
@@ -152,7 +154,7 @@ public class Confirmation extends HttpServlet {
                 } catch (UpdateProfileException e) {
                     e.printStackTrace();
                 }
-            }
+            }*/
 
             path += "payment="+false;
 

@@ -60,12 +60,12 @@
             <td th:text="${o.subscription != null} ? ${o.subscription.fee} : 'NO'"></td>
             <td th:text="${o.subscription != null} ? ${o.subscription.validity_period} : 'NO'"></td>
             <td th:text="${o.getid()}"></td>
-        <!--
+
             <span th:switch="${o.status}">
                 <td><a th:case="INVALID" th:href="@{/GoToPurchase(order_id=${o.getid()})}">Reorder</a></td>
                 <td th:case="VALID"></td>
             </span>
-        -->
+
         </tr>
         </tbody>
     </table>

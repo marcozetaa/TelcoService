@@ -14,7 +14,9 @@ import java.util.Random;
 })
 public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JoinColumn(name = "ID")
     private int userID;
+
     @JoinColumn(name = "username")
     private String username;
 

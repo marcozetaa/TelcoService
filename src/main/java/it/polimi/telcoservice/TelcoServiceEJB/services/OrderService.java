@@ -63,7 +63,7 @@ public class OrderService {
         return oList;
     }
 
-    public void changeOrderStatus(int orderId, int clientId, OrderStatus status) throws BadOrderStatusChange, BadOrderClient, InvalidStatusChange {
+    public void changeOrderStatus(int orderId, int clientId) throws BadOrderStatusChange, BadOrderClient, InvalidStatusChange {
         System.out.println("Entering changeOrderStatus() method of OrderService component");
 
         Order order = null;
@@ -79,20 +79,23 @@ public class OrderService {
 
         System.out.println("Method changeOrderStatus: Change the orders status");
 
-        order.setStatus(status); // this could be encapsulated into a method
+        order.setStatus(OrderStatus.INVALID); // this could be encapsulated into a method
 
-        try {
-            em.flush(); // ensures status updated in the database before expenseReport addition
+        System.out.println("Method changeOrderStatus after setStatus");
+        System.out.println("Is order object managed?  " + em.contains(order));
+
+        /*try {
+            //em.refresh(order); // ensures status updated in the database before expenseReport addition
         } catch (PersistenceException e) {
+            e.printStackTrace();
             throw new InvalidStatusChange("Status update failed");
-        }
+        }*/
         System.out.println("Exiting changeOrderStatus() method of OrderService component");
 
     }
 
     public void updateOrder(int id) throws UpdateProfileException {
         Order o = em.find(Order.class,id);
-
         try {
             em.merge(o);
         } catch (PersistenceException e){
