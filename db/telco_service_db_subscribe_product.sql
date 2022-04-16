@@ -16,35 +16,32 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `subscription`
+-- Table structure for table `subscribe_product`
 --
 
-DROP TABLE IF EXISTS `subscription`;
+DROP TABLE IF EXISTS `subscribe_product`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `subscription` (
+CREATE TABLE `subscribe_product` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `validity_period` decimal(10,0) NOT NULL,
-  `fee` decimal(10,0) NOT NULL,
-  `id_package` int NOT NULL,
-  `id_order` int NOT NULL,
+  `id_subscribe` int NOT NULL,
+  `name_product` varchar(45) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `service_fk` (`id_package`),
-  KEY `order_fk_idx` (`id_order`),
-  KEY `package_fk` (`id_order`),
-  CONSTRAINT `order_fk` FOREIGN KEY (`id_order`) REFERENCES `Order` (`id`),
-  CONSTRAINT `service_fk` FOREIGN KEY (`id_package`) REFERENCES `packages` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `product2_fk` (`name_product`),
+  KEY `subscribe_fk` (`id_subscribe`),
+  CONSTRAINT `product2_fk` FOREIGN KEY (`name_product`) REFERENCES `product` (`name`),
+  CONSTRAINT `subscribe_fk` FOREIGN KEY (`id_subscribe`) REFERENCES `subscription` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `subscription`
+-- Dumping data for table `subscribe_product`
 --
 
-LOCK TABLES `subscription` WRITE;
-/*!40000 ALTER TABLE `subscription` DISABLE KEYS */;
-INSERT INTO `subscription` VALUES (1,36,58,61,1);
-/*!40000 ALTER TABLE `subscription` ENABLE KEYS */;
+LOCK TABLES `subscribe_product` WRITE;
+/*!40000 ALTER TABLE `subscribe_product` DISABLE KEYS */;
+INSERT INTO `subscribe_product` VALUES (1,1,'Amazon'),(2,1,'DAZN'),(3,1,'Netflix');
+/*!40000 ALTER TABLE `subscribe_product` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -56,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-04-16 18:21:26
+-- Dump completed on 2022-04-16 18:21:25

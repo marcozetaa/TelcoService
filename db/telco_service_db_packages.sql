@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.26, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.26, for macos11 (x86_64)
 --
 -- Host: localhost    Database: telco_service_db
 -- ------------------------------------------------------
@@ -39,7 +39,7 @@ CREATE TABLE `packages` (
   CONSTRAINT `fixed_internet_fk` FOREIGN KEY (`fixed_internet_id`) REFERENCES `fixed_internet` (`id`),
   CONSTRAINT `mobile_internet_fk` FOREIGN KEY (`mobile_internet_id`) REFERENCES `mobile_internet` (`id`),
   CONSTRAINT `mobile_phone_fk` FOREIGN KEY (`mobile_phone_id`) REFERENCES `mobile_phone` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -48,7 +48,7 @@ CREATE TABLE `packages` (
 
 LOCK TABLES `packages` WRITE;
 /*!40000 ALTER TABLE `packages` DISABLE KEYS */;
-INSERT INTO `packages` VALUES (47,'Summer Young',0,10,15,20,5,4,3),(48,'Michele Terziani Special',0,2,1,1,5,4,3),(49,'Michele Terziani Special',0,2,1,1,5,4,3);
+INSERT INTO `packages` VALUES (59,'Base',0,6,3,2,5,NULL,3),(60,'Extra',0,9,6,3,5,4,4),(61,'Super Extra',0,30,20,15,6,5,4);
 /*!40000 ALTER TABLE `packages` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -61,4 +61,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-03-19 14:51:48
+-- Dump completed on 2022-04-16 18:21:26
