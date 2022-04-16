@@ -1,5 +1,6 @@
 package it.polimi.telcoservice.TelcoServiceEJB.services;
 
+import it.polimi.telcoservice.TelcoServiceEJB.entities.OptionalProduct;
 import it.polimi.telcoservice.TelcoServiceEJB.entities.Order;
 import it.polimi.telcoservice.TelcoServiceEJB.entities.ServicePackage;
 import it.polimi.telcoservice.TelcoServiceEJB.entities.Subscription;
@@ -20,11 +21,16 @@ public class SubscriptionService {
     public SubscriptionService(){
     }
 
-    public void createSubscription(int validity_period, float fee, int package_id, int order_id) {
+    public void createSubscription(int validity_period, float fee, int package_id, int order_id, String[] o_products) {
         ServicePackage servicePackage = em.find(ServicePackage.class, package_id);
         Order order = em.find(Order.class, order_id);
 
         Subscription subscription = new Subscription(validity_period, fee, servicePackage);
+        if(o_products.length != 0){
+            for (String o_product : o_products){
+                subscription.addOptionalProduct(em.find(OptionalProduct.class, o_product));
+            }
+        }
 
         em.persist(subscription);
 

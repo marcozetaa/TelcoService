@@ -19,15 +19,19 @@ public class ServicePackage {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     private int id;
+
+    @JoinColumn(name = "name")
     private String name;
     private FixedPhoneStatus fixed_phone;
+    @JoinColumn(name = "fee12")
     private double fee12;
+    @JoinColumn(name = "fee24")
     private double fee24;
+    @JoinColumn(name = "fee36")
     private double fee36;
 
     @OneToMany(mappedBy = "servicePackage", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Subscription> subscriptions;
-
 
     @ManyToOne(targetEntity = FixedInternet.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "fixed_internet")

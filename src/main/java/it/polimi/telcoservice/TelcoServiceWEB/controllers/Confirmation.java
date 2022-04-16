@@ -92,7 +92,7 @@ public class Confirmation extends HttpServlet {
 
         order_id = oService.createOrder(user_id,date,time,tot_value);
 
-        isValid = false;
+        isValid = true;
 
 
         /* IN CASE OF EXPLICIT COMMANDS
@@ -119,7 +119,7 @@ public class Confirmation extends HttpServlet {
 
             // Create Subscription in DB
             try {
-                subService.createSubscription(period,opService.getTotValue(o_products),package_id,order_id);
+                subService.createSubscription(period,tot_value,package_id,order_id,o_products);
             } catch (Exception e) {
                 response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to create subscription");
                 return;

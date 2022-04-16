@@ -19,6 +19,9 @@ public class OptionalProduct {
     @ManyToMany(mappedBy = "optionalProducts")
     private List<ServicePackage> servicePackage;
 
+    @ManyToMany(mappedBy = "optionalProductsSub")
+    private List<Subscription> subscriptions;
+
     public OptionalProduct(){
     }
 
@@ -45,6 +48,10 @@ public class OptionalProduct {
 
     public List<ServicePackage> getServicePackage() {
         return servicePackage;
+    }
+
+    public List<Subscription> getSubscriptions() {
+        return subscriptions;
     }
 
     public void addServicePackage(ServicePackage sp){

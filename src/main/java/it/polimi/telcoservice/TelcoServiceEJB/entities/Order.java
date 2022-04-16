@@ -23,7 +23,7 @@ public class Order {
     @JoinColumn(name = "hour_of_creation")
     private LocalTime hour_of_creation;
 
-    @JoinColumn(name = "total value")
+    @JoinColumn(name = "total_value")
     private float tot_value;
 
     @JoinColumn(name = "valid")
@@ -33,7 +33,7 @@ public class Order {
     @JoinColumn(name = "customer_id")
     private User client;
 
-    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "order",fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Subscription subscription;
 
     public Order() {

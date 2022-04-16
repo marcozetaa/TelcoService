@@ -1,6 +1,8 @@
 package it.polimi.telcoservice.TelcoServiceEJB.entities;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "subscription", schema = "telco_service_db")
@@ -28,6 +30,14 @@ public class Subscription {
     @ManyToOne
     @JoinColumn(name = "id_package")
     private ServicePackage servicePackage;
+
+    @ManyToMany( fetch = FetchType.EAGER )
+    @JoinTable(
+            name = "subscribe_product",
+            joinColumns = { @JoinColumn(name = "id_subscribe") },
+            inverseJoinColumns = { @JoinColumn(name = "name_product") }
+    )
+    private ArrayList<OptionalProduct> optionalProductsSub = new ArrayList<>();
 
     public Subscription(){
     }
@@ -69,6 +79,14 @@ public class Subscription {
     public void setOrder(Order order) {
         this.order = order;
         //order.setSubscription(this);
+    }
+    public void addOptionalProduct(OptionalProduct op){
+        getOptionalProducts().add(op);
+        op.getSubscriptions().add(this);
+    }
+
+    public List<OptionalProduct> getOptionalProducts() {
+        return optionalProductsSub;
     }
 
     public ServicePackage getServicePackage() {
