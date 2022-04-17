@@ -16,35 +16,36 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `subscription`
+-- Table structure for table `Order`
 --
 
-DROP TABLE IF EXISTS `subscription`;
+DROP TABLE IF EXISTS `Order`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `subscription` (
+CREATE TABLE `Order` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `validity_period` decimal(10,0) NOT NULL,
-  `fee` decimal(10,0) NOT NULL,
-  `id_package` int NOT NULL,
-  `id_order` int NOT NULL,
+  `customer_id` int NOT NULL,
+  `subscription` int DEFAULT NULL,
+  `date_of_creation` date NOT NULL,
+  `hour_of_creation` time NOT NULL,
+  `total_value` decimal(10,0) NOT NULL,
+  `valid` int NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `service_fk` (`id_package`),
-  KEY `order_fk_idx` (`id_order`),
-  KEY `package_fk` (`id_order`),
-  CONSTRAINT `order_fk` FOREIGN KEY (`id_order`) REFERENCES `Order` (`id`),
-  CONSTRAINT `service_fk` FOREIGN KEY (`id_package`) REFERENCES `packages` (`id`)
+  KEY `order_ibfk_1_idx` (`customer_id`),
+  KEY `subscription` (`subscription`),
+  CONSTRAINT `order_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `user` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `order_ibfk_2` FOREIGN KEY (`subscription`) REFERENCES `subscription` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `subscription`
+-- Dumping data for table `Order`
 --
 
-LOCK TABLES `subscription` WRITE;
-/*!40000 ALTER TABLE `subscription` DISABLE KEYS */;
-INSERT INTO `subscription` VALUES (1,36,58,61,1);
-/*!40000 ALTER TABLE `subscription` ENABLE KEYS */;
+LOCK TABLES `Order` WRITE;
+/*!40000 ALTER TABLE `Order` DISABLE KEYS */;
+INSERT INTO `Order` VALUES (1,999999,NULL,'2022-04-18','18:17:58',58,0);
+/*!40000 ALTER TABLE `Order` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
