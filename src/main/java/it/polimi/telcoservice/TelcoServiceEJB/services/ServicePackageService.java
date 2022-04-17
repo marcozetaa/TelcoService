@@ -45,7 +45,7 @@ public class ServicePackageService {
 
         }
 
-        if(o_products.length != 0){
+        if(o_products != null){
             for (String o_product : o_products){
                 servicePackage.addOptionalProduct(em.find(OptionalProduct.class, o_product));
             }

@@ -26,7 +26,7 @@ public class SubscriptionService {
         Order order = em.find(Order.class, order_id);
 
         Subscription subscription = new Subscription(validity_period, fee, servicePackage);
-        if(o_products.length != 0){
+        if(o_products != null){
             for (String o_product : o_products){
                 subscription.addOptionalProduct(em.find(OptionalProduct.class, o_product));
             }
