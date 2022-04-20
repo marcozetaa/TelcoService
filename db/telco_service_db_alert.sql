@@ -16,36 +16,31 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `salesreport`
+-- Table structure for table `alert`
 --
 
-DROP TABLE IF EXISTS `salesreport`;
+DROP TABLE IF EXISTS `alert`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `salesreport` (
-  `ID` int NOT NULL AUTO_INCREMENT,
-  `id_package` int DEFAULT NULL,
-  `PackageName` varchar(45) DEFAULT NULL,
-  `TotalPurchase` int DEFAULT '0',
-  `TotalFor12` int DEFAULT '0',
-  `TotalFor24` int DEFAULT '0',
-  `TotalFor36` int DEFAULT '0',
-  `NetValue` decimal(10,0) DEFAULT '0',
-  `TotalValue` decimal(10,0) DEFAULT '0',
-  PRIMARY KEY (`ID`),
-  KEY `sales_package_idx` (`id_package`),
-  CONSTRAINT `sales_package` FOREIGN KEY (`id_package`) REFERENCES `packages` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `alert` (
+  `ID` int NOT NULL,
+  `ID_Client` int DEFAULT NULL,
+  `Username` varchar(45) DEFAULT NULL,
+  `Email` varchar(45) DEFAULT NULL,
+  `TotalAmount` decimal(10,0) DEFAULT NULL,
+  `DateOfCreation` date DEFAULT NULL,
+  `HourOfCreation` time DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `salesreport`
+-- Dumping data for table `alert`
 --
 
-LOCK TABLES `salesreport` WRITE;
-/*!40000 ALTER TABLE `salesreport` DISABLE KEYS */;
-INSERT INTO `salesreport` VALUES (10,59,'Base',0,0,0,0,0,0),(11,60,'Extra',0,0,0,0,0,0),(12,61,'Super Extra',1,0,0,1,15,58);
-/*!40000 ALTER TABLE `salesreport` ENABLE KEYS */;
+LOCK TABLES `alert` WRITE;
+/*!40000 ALTER TABLE `alert` DISABLE KEYS */;
+/*!40000 ALTER TABLE `alert` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
