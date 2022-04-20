@@ -33,6 +33,8 @@ public class WorkArea extends HttpServlet {
     private MobilePhoneService mpService;
     @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/OptionalProductService")
     private OptionalProductService opService;
+    @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/EmployeeService")
+    private EmployeeService emService;
 
 
     public WorkArea() { super(); }
@@ -64,14 +66,6 @@ public class WorkArea extends HttpServlet {
         List<SalesReport> salesReports = null;
 
         try {
-            packages = pService.findAll();
-            fiList = fiService.findAll();
-            miList = miService.findAll();
-            mpList = mpService.findAll();
-        List<ServicePackage> packages = null;
-        List<OptionalProduct> opList = null;
-
-        try {
             fiList = fiService.findAll();
             miList = miService.findAll();
             mpList = mpService.findAll();
@@ -80,7 +74,6 @@ public class WorkArea extends HttpServlet {
             alerts = emService.findAllInsolvent();
             salesReports = emService.findAllSalesReport();
         } catch (ServicePackageException | OrderException | AlertException | SalesReportException e) {
-        } catch (ServicePackageException | OrderException e) {
             e.printStackTrace();
         }
 
