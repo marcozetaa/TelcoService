@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.26, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.26, for macos11 (x86_64)
 --
 -- Host: localhost    Database: telco_service_db
 -- ------------------------------------------------------
@@ -16,13 +16,13 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `salesreport`
+-- Table structure for table `salesReport`
 --
 
-DROP TABLE IF EXISTS `salesreport`;
+DROP TABLE IF EXISTS `salesReport`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `salesreport` (
+CREATE TABLE `salesReport` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `id_package` int DEFAULT NULL,
   `PackageName` varchar(45) DEFAULT NULL,
@@ -32,6 +32,7 @@ CREATE TABLE `salesreport` (
   `TotalFor36` int DEFAULT '0',
   `NetValue` decimal(10,0) DEFAULT '0',
   `TotalValue` decimal(10,0) DEFAULT '0',
+  `productPurchased` int DEFAULT '0',
   PRIMARY KEY (`ID`),
   KEY `sales_package_idx` (`id_package`),
   CONSTRAINT `sales_package` FOREIGN KEY (`id_package`) REFERENCES `packages` (`id`)
@@ -39,13 +40,13 @@ CREATE TABLE `salesreport` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `salesreport`
+-- Dumping data for table `salesReport`
 --
 
-LOCK TABLES `salesreport` WRITE;
-/*!40000 ALTER TABLE `salesreport` DISABLE KEYS */;
-INSERT INTO `salesreport` VALUES (10,59,'Base',0,0,0,0,0,0),(11,60,'Extra',0,0,0,0,0,0),(12,61,'Super Extra',1,0,0,1,15,58);
-/*!40000 ALTER TABLE `salesreport` ENABLE KEYS */;
+LOCK TABLES `salesReport` WRITE;
+/*!40000 ALTER TABLE `salesReport` DISABLE KEYS */;
+INSERT INTO `salesReport` VALUES (10,59,'Base',0,0,0,0,0,0,0),(11,60,'Extra',3,1,0,2,15,21,0),(12,61,'Super Extra',6,1,1,4,110,328,3);
+/*!40000 ALTER TABLE `salesReport` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -57,4 +58,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-04-20  4:11:12
+-- Dump completed on 2022-04-20 15:04:37

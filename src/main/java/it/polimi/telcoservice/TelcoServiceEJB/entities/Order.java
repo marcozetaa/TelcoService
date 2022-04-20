@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "Order", schema = "telco_service_db")
+@Table(name = "order", schema = "telco_service_db")
 @NamedQueries({
         @NamedQuery(name = "Order.findByUser", query = "SELECT o FROM Order o WHERE o.client.userID = ?1 ORDER BY o.date_of_creation DESC"),
         @NamedQuery(name = "Order.findByID", query = "SELECT o FROM Order o WHERE o.id = ?1 ORDER BY o.date_of_creation DESC"),
