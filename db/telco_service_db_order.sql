@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.26, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.26, for macos11 (x86_64)
 --
 -- Host: localhost    Database: telco_service_db
 -- ------------------------------------------------------
@@ -16,35 +16,36 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `order`
+-- Table structure for table `Order`
 --
 
-DROP TABLE IF EXISTS `order`;
+DROP TABLE IF EXISTS `Order`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `order` (
+CREATE TABLE `Order` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `id_costumer` int DEFAULT NULL,
-  `id_subscription` int DEFAULT NULL,
+  `customer_id` int NOT NULL,
+  `subscription` int DEFAULT NULL,
   `date_of_creation` date NOT NULL,
   `hour_of_creation` time NOT NULL,
-  `total value` decimal(10,0) NOT NULL,
-  `valid` binary(1) NOT NULL,
+  `total_value` decimal(10,0) NOT NULL,
+  `valid` int NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `costumer_fk` (`id_costumer`),
-  KEY `subscription_fk` (`id_subscription`),
-  CONSTRAINT `costumer_fk` FOREIGN KEY (`id_costumer`) REFERENCES `user` (`userid`),
-  CONSTRAINT `subscription_fk` FOREIGN KEY (`id_subscription`) REFERENCES `subscription` (`idsubscription`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `order_ibfk_1_idx` (`customer_id`),
+  KEY `subscription` (`subscription`),
+  CONSTRAINT `order_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `user` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `order_ibfk_2` FOREIGN KEY (`subscription`) REFERENCES `subscription` (`id`) ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `order`
+-- Dumping data for table `Order`
 --
 
-LOCK TABLES `order` WRITE;
-/*!40000 ALTER TABLE `order` DISABLE KEYS */;
-/*!40000 ALTER TABLE `order` ENABLE KEYS */;
+LOCK TABLES `Order` WRITE;
+/*!40000 ALTER TABLE `Order` DISABLE KEYS */;
+INSERT INTO `Order` VALUES (1,999999,NULL,'2022-04-18','18:17:58',58,0);
+/*!40000 ALTER TABLE `Order` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -56,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-03-19 14:51:48
+-- Dump completed on 2022-04-16 18:21:26
