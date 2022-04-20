@@ -35,7 +35,7 @@ public class SubscriptionService {
         em.persist(subscription);
 
         // for debugging: let's check if subscription is managed
-        System.out.println("Method createSubscription before servicePackage.addSubscription(subscription)");
+                                                                                                                System.out.println("Method createSubscription before servicePackage.addSubscription(subscription)");
         System.out.println("Is subscription object managed?  " + em.contains(subscription));
 
         subscription.setOrder(order);

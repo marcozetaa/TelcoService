@@ -42,9 +42,7 @@ public class LogOut extends HttpServlet {
         if (session != null) {
             session.invalidate();
         }
-        String path = getServletContext().getContextPath() + "/index.html";
-
-        path= getServletContext().getContextPath()+"/CheckLogin";
+        String path= getServletContext().getContextPath()+"/CheckLogin";
         response.sendRedirect(path);
     }
 

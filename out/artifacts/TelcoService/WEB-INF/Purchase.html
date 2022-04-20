@@ -11,12 +11,20 @@
 
     <h1>"Purchase form"</h1>
 
-
     <form th:action="@{/Confirmation(package_id=${package.getid()})}" method="POST">
+
+        <p th:text="${session.user != null} ? ${'User: '+ session.user.username} : ''"></p>
+
         <fieldset>
-            <p>
-                Package:  <input type="text" th:name="package_id" th:id="${package.getid()}" th:value="${package.name}" disabled> <br>
-            </p>
+            <span th:switch="${is_reorder}">
+                <p th:case="true">
+                    Package:  <input type="text" th:name="name_package" th:value="${order.name_package}" disabled> <br>
+                </p>
+                <p th:case="false">
+                    Package:  <input type="text" th:name="name_package" th:value="${package.name}" disabled> <br>
+                </p>
+
+            </span>
 
             <p>
                 <label th:for="${products}" >Choose one or more optional product:</label>
@@ -26,34 +34,37 @@
             </p>
 
             <p>
-            Validity Period:
-                <div data-name="check" name="check">
-                    <input type="checkbox" name="val_period" id="12" th:value="12"/>   <label for="12" th:text="${package.fee12} + ' euros for 12 Months'"> </label> <br>
-                    <input type="checkbox" name="val_period" id="24" th:value="24" />   <label for="24" th:text="${package.fee24} + ' euros for 24 Months'"></label> <br>
-                    <input type="checkbox" name="val_period" id="36" th:value="36" />   <label for="36" th:text="${package.fee36} + ' euros for 36 Months'"></label> <br>
-                </div>
+                Validity Period:
+            <div data-name="check" name="check" required>
+                <input type="checkbox" name="val_period" id="12" th:value="12"/>   <label for="12" th:text="${package.fee12} + ' euros for 12 Months'"></label> <br>
+                <input type="checkbox" name="val_period" id="24" th:value="24"/>   <label for="24" th:text="${package.fee24} + ' euros for 24 Months'"></label> <br>
+                <input type="checkbox" name="val_period" id="36" th:value="36"/>   <label for="36" th:text="${package.fee36} + ' euros for 36 Months'"></label> <br>
+            </div>
             </p>
 
             <p>
-            Start Day:
+                Start Day:
                 <input type="date" name="date"
-                      th:attr="min=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}"
-                      placeholder="yyyy-mm-dd" required />
+                       th:attr="min=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}"
+                       placeholder="yyyy-mm-dd" required />
             </p>
 
-            <input type="hidden" name="user" th:value="${session.user.getUserID}">
-
             <br>
-            <div th:if="${session.user != null}">
-                <input type="submit" value="Purchase">
-            </div>
-            <div th:if="${session.user == null}">
-                Access to buy
-                <a th:href="@{/CheckLogin(package_id=${package.getid()})}">Login</a>
-            </div>
+            <button th:disabled="${session.user == null}" type="submit" name="purchase" value="success" >Purchase [Valid sell]</button>
+            <button th:disabled="${session.user == null}" type="submit" name="purchase" value="fail">Purchase [Invalid sell]</button>
+            <button th:disabled="${session.user == null}" type="submit" name="purchase" value="random">Purchase [Random sell]</button>
             <p th:text=" ${errorMsg}"></p>
         </fieldset>
+        <div th:if="${session.user != null}">
+            <input type="hidden" name="user" th:value="${session.user.getUserID}">
+        </div>
+        <div th:if="${session.user == null}">
+            Access to buy
+            <a th:href="@{/CheckLogin(service_id=${package.getid()})}">Login</a>
+        </div>
+
     </form>
+
 </body>
 <script>
     var last;

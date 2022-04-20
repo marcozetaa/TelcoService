@@ -10,6 +10,7 @@ public class Alert {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @JoinColumn(name = "ID_Client")
     private int id_client;
     @JoinColumn(name = "Username")

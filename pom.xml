@@ -46,11 +46,6 @@
             <artifactId>thymeleaf</artifactId>
             <version>3.0.14.RELEASE</version>
         </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.27</version>
-        </dependency>
     </dependencies>
 
     <build>

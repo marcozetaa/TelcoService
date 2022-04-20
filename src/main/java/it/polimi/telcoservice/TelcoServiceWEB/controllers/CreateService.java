@@ -17,8 +17,8 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "CreatePackage", value = "/CreatePackage")
-public class CreatePackage extends HttpServlet {
+@WebServlet(name = "CreateService", value = "/CreateService")
+public class CreateService extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private TemplateEngine templateEngine;
     @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/ServicePackageService")
@@ -32,7 +32,7 @@ public class CreatePackage extends HttpServlet {
     @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/OptionalProductService")
     private OptionalProductService opService;
 
-    public CreatePackage() { super(); }
+    public CreateService() { super(); }
 
     @Override
     public void init() {
@@ -50,6 +50,7 @@ public class CreatePackage extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         String path = "WEB-INF/EmployeeHome.html";
         ServletContext servletContext = getServletContext();
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
@@ -123,6 +124,7 @@ public class CreatePackage extends HttpServlet {
         } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_CREATED, "Could not create package");
         }
+
     }
 
     private void createMI(HttpServletRequest request, HttpServletResponse response) throws IOException {

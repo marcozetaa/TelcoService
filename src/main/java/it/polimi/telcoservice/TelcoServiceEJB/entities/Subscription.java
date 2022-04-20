@@ -78,7 +78,6 @@ public class Subscription {
 
     public void setOrder(Order order) {
         this.order = order;
-        //order.setSubscription(this);
     }
     public void addOptionalProduct(OptionalProduct op){
         getOptionalProducts().add(op);

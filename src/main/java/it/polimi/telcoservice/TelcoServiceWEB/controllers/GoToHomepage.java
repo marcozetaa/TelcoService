@@ -58,6 +58,7 @@ public class GoToHomepage extends HttpServlet {
         ServletContext servletContext = getServletContext();
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 
+        HttpSession session = request.getSession();
         String query = request.getQueryString();
 
         if(query != null) {
@@ -75,7 +76,6 @@ public class GoToHomepage extends HttpServlet {
                 params.put(name, value);
             }
 
-
             if(params.containsKey("user")) {
                 user_id = Integer.parseInt(params.get("user"));
                 user = userService.getUser(user_id);
@@ -89,7 +89,6 @@ public class GoToHomepage extends HttpServlet {
                     payment = Boolean.parseBoolean(params.get("payment"));
                 }
 
-                HttpSession session = request.getSession();
                 session.setAttribute("user",user);
                 ctx.setVariable("my_orders",orderList);
             }

@@ -20,10 +20,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @WebServlet(name = "Confirmation", value = "/Confirmation")
 public class Confirmation extends HttpServlet {
@@ -61,8 +58,6 @@ public class Confirmation extends HttpServlet {
 
         String path = getServletContext().getContextPath()+"/Home?";
 
-        //In case of explicit buying commands
-        //String result = request.getParameter("result");
         int user_id;
         int package_id;
         int period;
@@ -72,6 +67,9 @@ public class Confirmation extends HttpServlet {
 
         boolean isValid;
 
+        String result;
+        String name_package;
+
         String[] o_products;
 
         LocalDate date;
@@ -79,23 +77,45 @@ public class Confirmation extends HttpServlet {
 
         User user;
 
+        // get all parameter names
+        Set<String> paramNames = request.getParameterMap().keySet();
+
         user_id = Integer.parseInt(request.getParameter("user"));
+
+        user = userService.getUser(user_id);
+
+        path += "user=" + user.getUserID() + "&";
+
+        result = StringEscapeUtils.escapeJava(request.getParameter("purchase"));
+        name_package = request.getParameter("name_package");
         package_id = Integer.parseInt(request.getParameter("package_id"));
         period = Integer.parseInt(request.getParameter("val_period"));
-
         o_products = request.getParameterValues("optional_products");
-
         date = LocalDate.parse(request.getParameter("date"));
         time = LocalTime.now();
 
-        tot_value = computeOrderValue(package_id,period,o_products);
+        tot_value = computeOrderValue(package_id, period, o_products);
 
-        order_id = oService.createOrder(user_id,date,time,tot_value);
+        //Reorder submit
+        if (paramNames.contains("order_id")){
 
-        isValid = true;
+            order_id = Integer.parseInt(request.getParameter("order_id"));
 
+            try {
+                Order order = oService.findByID(order_id);
+                order.setDate_of_creation(date);
+                order.setHour_of_creation(time);
+                order.setTot_value(tot_value);
+                oService.updateOrder(order_id);
+            } catch (OrderException | UpdateProfileException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            //Purchase submit
+            order_id = oService.createOrder(user_id, date, time, tot_value, name_package);
+        }
 
-        /* IN CASE OF EXPLICIT COMMANDS
         switch (result) {
             case "success":
                 isValid = true;
@@ -109,57 +129,40 @@ public class Confirmation extends HttpServlet {
             default:
                 throw new IllegalStateException("Unexpected value: " + result);
         }
-*/
 
-        user = userService.getUser(user_id);
-
-        path += "user="+user.getUserID()+"&";
-
-        if(isValid){
+        if (isValid) {
 
             // Create Subscription in DB
             try {
-                subService.createSubscription(period,tot_value,package_id,order_id,o_products);
+                oService.changeOrderStatus(order_id,user_id,OrderStatus.VALID);
+            } catch (BadOrderStatusChange | BadOrderClient | InvalidStatusChange e) {
+                e.printStackTrace();
+            }
+
+            try {
+                subService.createSubscription(period, tot_value, package_id, order_id, o_products);
             } catch (Exception e) {
                 response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to create subscription");
                 return;
             }
 
-            path += "payment="+true;
+            path += "payment=" + true;
 
             response.sendRedirect(path);
-        } else{
+        } else {
 
             //Order did not went well, control of insolvency
             try {
-                oService.changeOrderStatus(order_id,user.getUserID());
+                oService.changeOrderStatus(order_id, user.getUserID(),OrderStatus.INVALID);
             } catch (BadOrderStatusChange | BadOrderClient | InvalidStatusChange e) {
                 e.printStackTrace();
             }
 
-            /*userService.incrementsFailedPayments(user);
-
-            try {
-                userService.updateProfile(user);
-                oService.updateOrder(order_id);
-            } catch (UpdateProfileException e) {
-                e.printStackTrace();
-            }
-
-            if(user.getNumFailedPayments() == 3 && user.isInsolvent() == UserStatus.SOLVENT){
-                userService.setInsolvent(user,UserStatus.INSOLVENT);
-                userService.setNumFailedPayments(user);
-                try {
-                    userService.updateProfile(user);
-                } catch (UpdateProfileException e) {
-                    e.printStackTrace();
-                }
-            }*/
-
-            path += "payment="+false;
+            path += "payment=" + false;
 
             response.sendRedirect(path);
         }
+
     }
 
     @Override

@@ -1,7 +1,10 @@
 package it.polimi.telcoservice.TelcoServiceWEB.controllers;
 
 import it.polimi.telcoservice.TelcoServiceEJB.entities.*;
+import it.polimi.telcoservice.TelcoServiceEJB.exceptions.OrderException;
+import it.polimi.telcoservice.TelcoServiceEJB.exceptions.ServicePackageException;
 import it.polimi.telcoservice.TelcoServiceEJB.services.OptionalProductService;
+import it.polimi.telcoservice.TelcoServiceEJB.services.OrderService;
 import it.polimi.telcoservice.TelcoServiceEJB.services.ServicePackageService;
 import it.polimi.telcoservice.TelcoServiceEJB.services.UserService;
 import org.thymeleaf.TemplateEngine;
@@ -19,6 +22,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @WebServlet(name = "GoToPurchase", value = "/Purchase")
 public class GoToPurchase extends HttpServlet {
@@ -26,6 +30,8 @@ public class GoToPurchase extends HttpServlet {
     private TemplateEngine templateEngine;
     @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/ServicePackageService")
     private ServicePackageService spService;
+    @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/OrderService")
+    private OrderService oService;
     @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/OptionalProductService")
     private OptionalProductService opService;
     @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/UserService")
@@ -46,39 +52,68 @@ public class GoToPurchase extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        String path = "WEB-INF/Purchase.html";
+        ServletContext servletContext = getServletContext();
+        final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+
         // get and check params
         int package_id;
-        int user_id;
+        int order_id;
+
+        boolean is_reorder = false;
+        boolean redirect = false;
 
         User user;
         HttpSession session = request.getSession();
 
+        // get all parameter names
+        Set<String> paramNames = request.getParameterMap().keySet();
+
+        ServicePackage sel_package = null;
+        Order reorder = null;
+        List<OptionalProduct> o_products = null;
+
         try {
             user = (User) session.getAttribute("user");
-            package_id = Integer.parseInt(request.getParameter("package_id"));
         } catch (NumberFormatException | NullPointerException e) {
             // only for debugging e.printStackTrace();
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect param values");
             return;
         }
 
-        ServicePackage sel_package = null;
-        List<OptionalProduct> o_products = null;
+        if (paramNames.contains("order_id")) {
+            is_reorder = true;
+            order_id = Integer.parseInt(request.getParameter("order_id"));
+            try {
+                reorder = oService.findByID(order_id);
+                sel_package = spService.findByName(reorder.getName_package());
+            } catch (OrderException | ServicePackageException e) {
+                e.printStackTrace();
+            }
+        } else if (paramNames.contains("package_id")){
+            package_id = Integer.parseInt(request.getParameter("package_id"));
+            try {
+                sel_package = spService.findByID(package_id);
+            } catch (ServicePackageException e) {
+                e.printStackTrace();
+            }
+            if(paramNames.contains("redirect"))
+                redirect = true;
+        }
 
         try {
-            sel_package = spService.findByID(package_id);
             o_products = opService.findAll();
         } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to get Package offer");
         }
 
-        String path = "WEB-INF/Purchase.html";
-        ServletContext servletContext = getServletContext();
-        final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
         session.setAttribute("user",user);
         ctx.setVariable("package_id", sel_package.getid());
         ctx.setVariable("package", sel_package);
         ctx.setVariable("products", o_products);
+        ctx.setVariable("is_reorder",is_reorder);
+        ctx.setVariable("redirect",redirect);
+        ctx.setVariable("order", reorder);
 
         templateEngine.process(path, ctx, response.getWriter());
 

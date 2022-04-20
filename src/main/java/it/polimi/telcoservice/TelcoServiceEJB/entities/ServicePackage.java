@@ -8,6 +8,7 @@ import java.util.List;
 @Table(name = "packages", schema = "telco_service_db")
 @NamedQueries({
         @NamedQuery(name = "ServicePackage.findAll", query = "SELECT sp FROM ServicePackage sp"),
+        @NamedQuery(name = "ServicePackage.findByName", query = "SELECT sp FROM ServicePackage sp WHERE sp.name=?1"),
         @NamedQuery(name = "ServicePackage.findByOptionalProduct", query = "SELECT sp FROM ServicePackage sp WHERE sp.optionalProducts=?1"),
         @NamedQuery(name = "ServicePackage.findByID", query = "SELECT sp FROM ServicePackage sp WHERE sp.id=?1"),
         @NamedQuery(name = "ServicePackage.findByFI", query = "SELECT sp FROM ServicePackage sp WHERE sp.fixed_internet=?1"),

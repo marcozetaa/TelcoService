@@ -43,7 +43,7 @@ public class GoToPackageDetails extends HttpServlet {
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 
         // get and check params
-        Integer packageId = null;
+        int packageId;
         try {
             packageId = Integer.parseInt(request.getParameter("package_id"));
         } catch (NumberFormatException | NullPointerException e) {
@@ -53,11 +53,8 @@ public class GoToPackageDetails extends HttpServlet {
         }
 
         ServicePackage service_package = null;
-
         try{
-
             service_package = pService.findByID(packageId);
-
         } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,"Not possible to get services");
         }
