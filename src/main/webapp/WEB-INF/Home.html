@@ -61,12 +61,12 @@
         <tbody>
         <tr th:each="o : ${my_orders}">
             <td th:text="${o.name_package}"></td>
-            <td th:text="${o.subscription != null} ? ${o.subscription.fee} : ''"></td>
-            <td th:text="${o.subscription != null} ? ${o.subscription.validity_period} : ''"></td>
+            <td th:text="${o.subscription != null} ? ${o.subscription.fee} : 'X'"></td>
+            <td th:text="${o.subscription != null} ? ${o.subscription.validity_period} : 'X'"></td>
             <td th:text="${o.getid()}"></td>
             <td th:text="${o.getStatus()}"></td>
             <span th:switch="${o.status.getStatus()}">
-                <td><a th:case="1" th:href="@{/Purchase(order_id=${o.getid()},name=${o.getName_package()})}">Reorder</a></td>
+                <td><a th:case="1" th:href="@{/Purchase(order_id=${o.getid()},name=${o.name_package})}">Reorder</a></td>
                 <td th:case="0"></td>
             </span>
 

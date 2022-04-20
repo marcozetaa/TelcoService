@@ -59,16 +59,16 @@ public class Confirmation extends HttpServlet {
         String path = getServletContext().getContextPath()+"/Home?";
 
         int user_id;
-        int package_id;
+        int package_id = 0;
         int period;
-        int order_id;
+        int order_id = 0;
 
-        float tot_value;
+        float tot_value = 0;
 
         boolean isValid;
 
         String result;
-        String name_package;
+        String name_package = "";
 
         String[] o_products;
 
@@ -87,32 +87,39 @@ public class Confirmation extends HttpServlet {
         path += "user=" + user.getUserID() + "&";
 
         result = StringEscapeUtils.escapeJava(request.getParameter("purchase"));
-        name_package = request.getParameter("name_package");
-        package_id = Integer.parseInt(request.getParameter("package_id"));
         period = Integer.parseInt(request.getParameter("val_period"));
         o_products = request.getParameterValues("optional_products");
         date = LocalDate.parse(request.getParameter("date"));
         time = LocalTime.now();
 
-        tot_value = computeOrderValue(package_id, period, o_products);
+        if (paramNames.contains("order_id")) {
+            //Reorder submit
+            name_package = StringEscapeUtils.escapeJava(request.getParameter("name_package"));
+            try {
+                package_id = spService.findByName(name_package).getid();
+            } catch (ServicePackageException e) {
+                e.printStackTrace();
+            }
 
-        //Reorder submit
-        if (paramNames.contains("order_id")){
+            tot_value = computeOrderValue(package_id, period, o_products);
 
             order_id = Integer.parseInt(request.getParameter("order_id"));
 
             try {
                 Order order = oService.findByID(order_id);
-                order.setDate_of_creation(date);
-                order.setHour_of_creation(time);
-                order.setTot_value(tot_value);
-                oService.updateOrder(order_id);
+                oService.updateOrder(order_id, date, time, tot_value);
             } catch (OrderException | UpdateProfileException e) {
                 e.printStackTrace();
             }
-        }
-        else {
+        } else if(paramNames.contains("package_id")){
             //Purchase submit
+            package_id = Integer.parseInt(request.getParameter("package_id"));
+            try {
+                name_package = spService.findByID(package_id).getName();
+            } catch (ServicePackageException e) {
+                e.printStackTrace();
+            }
+            tot_value = computeOrderValue(package_id, period, o_products);
             order_id = oService.createOrder(user_id, date, time, tot_value, name_package);
         }
 

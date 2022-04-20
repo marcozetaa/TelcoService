@@ -5,9 +5,14 @@
     <title>Purchase</title>
 </head>
 <body>
-    <div align="right">
+<div align="right">
+    <div th:if="${session.user == null}">
         <a th:href="@{/Home}">Homepage</a>
     </div>
+    <div th:if="${session.user != null}">
+        <a th:href="@{/Home(user=${session.user.getUserID()})}">Homepage</a>
+    </div>
+</div>
 
     <h1>"Purchase form"</h1>
 
@@ -18,10 +23,10 @@
         <fieldset>
             <span th:switch="${is_reorder}">
                 <p th:case="true">
-                    Package:  <input type="text" th:name="name_package" th:value="${order.name_package}" disabled> <br>
+                    Package:  <input type="text" name="name_package" th:value="${order.name_package}" readonly="true"> <br>
                 </p>
                 <p th:case="false">
-                    Package:  <input type="text" th:name="name_package" th:value="${package.name}" disabled> <br>
+                    Package:  <input type="text" name="name_package" th:value="${package.name}" readonly="true"> <br>
                 </p>
 
             </span>
@@ -50,9 +55,20 @@
             </p>
 
             <br>
-            <button th:disabled="${session.user == null}" type="submit" name="purchase" value="success" >Purchase [Valid sell]</button>
-            <button th:disabled="${session.user == null}" type="submit" name="purchase" value="fail">Purchase [Invalid sell]</button>
-            <button th:disabled="${session.user == null}" type="submit" name="purchase" value="random">Purchase [Random sell]</button>
+            <span th:switch="${is_reorder}">
+                <span th:case="false">
+                    <button th:disabled="${session.user == null}" type="submit" name="purchase" value="success" >Purchase [Valid sell]</button>
+                    <button th:disabled="${session.user == null}" type="submit" name="purchase" value="fail">Purchase [Invalid sell]</button>
+                    <button th:disabled="${session.user == null}" type="submit" name="purchase" value="random">Purchase [Random sell]</button>
+                </span>
+
+                <span th:case="true">
+                    <button th:disabled="${session.user == null}" th:formaction="@{/Confirmation(order_id=${order.getid()})}" type="submit" name="purchase" value="success" >Reorder [Valid sell]</button>
+                    <button th:disabled="${session.user == null}" th:formaction="@{/Confirmation(order_id=${order.getid()})}"type="submit" name="purchase" value="fail">Reorder [Invalid sell]</button>
+                    <button th:disabled="${session.user == null}" th:formaction="@{/Confirmation(order_id=${order.getid()})}" type="submit" name="purchase" value="random">Reorder [Random sell]</button>
+                </span>
+            </span>
+
             <p th:text=" ${errorMsg}"></p>
         </fieldset>
         <div th:if="${session.user != null}">

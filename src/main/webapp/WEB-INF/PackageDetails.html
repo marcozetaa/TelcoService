@@ -8,11 +8,12 @@
 </head>
 <body>
     <div align="right">
-        <a th:href="@{/Home}">Homepage</a>
         <div th:if="${session.user == null}">
+            <a th:href="@{/Home}">Homepage</a>
             <a th:href="@{CheckLogin}">Login</a>
         </div>
         <div th:if="${session.user != null}">
+            <a th:href="@{/Home(user=${session.user.getUserID()})}">Homepage</a>
             <a th:href="@{Logout}">Logout</a>
         </div>
     </div>

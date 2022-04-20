@@ -104,10 +104,14 @@ public class OrderService {
 
     }
 
-    public void updateOrder(int id) throws UpdateProfileException {
-        Order o = em.find(Order.class,id);
+    public void updateOrder(int id, LocalDate date, LocalTime time, float tot_value) throws UpdateProfileException {
+        Order order = em.find(Order.class,id);
+        order.setDate_of_creation(date);
+        order.setHour_of_creation(time);
+        order.setTot_value(tot_value);
         try {
-            em.merge(o);
+            em.persist(order);
+            em.refresh(order);
         } catch (PersistenceException e){
             throw new UpdateProfileException("Could not update order");
         }

@@ -37,7 +37,7 @@ public class Order {
     @JoinColumn(name = "customer_id")
     private User client;
 
-    @OneToOne(mappedBy = "order",fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "order",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Subscription subscription;
 
     public Order() {

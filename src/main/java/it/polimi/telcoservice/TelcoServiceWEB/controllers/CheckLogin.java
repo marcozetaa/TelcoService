@@ -97,7 +97,7 @@ public class CheckLogin extends HttpServlet{
             } catch (CredentialException | NonUniqueResultException e) {
                 e.printStackTrace();
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Could not check credentials");
-                return;
+                response.sendRedirect(getServletContext().getContextPath()+"/CheckLogin");
             }
         } else{
             try {
@@ -121,7 +121,7 @@ public class CheckLogin extends HttpServlet{
         // show login page with error message
         String path = "";
 
-        if(service_id != null){
+        if(service_id != ""){
 
             path = getServletContext().getContextPath()+"/Purchase?";
             path += "package_id="+service_id;
@@ -133,7 +133,7 @@ public class CheckLogin extends HttpServlet{
         }
 
         if( user == null && employee == null ){
-            path = getServletContext().getContextPath()+"index.html";;
+            path = getServletContext().getContextPath()+"/CheckLogin"   ;;
         }
         else {
             if( employee == null) {

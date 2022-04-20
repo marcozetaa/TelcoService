@@ -7,6 +7,7 @@ import it.polimi.telcoservice.TelcoServiceEJB.services.OptionalProductService;
 import it.polimi.telcoservice.TelcoServiceEJB.services.OrderService;
 import it.polimi.telcoservice.TelcoServiceEJB.services.ServicePackageService;
 import it.polimi.telcoservice.TelcoServiceEJB.services.UserService;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -63,6 +64,8 @@ public class GoToPurchase extends HttpServlet {
         boolean is_reorder = false;
         boolean redirect = false;
 
+        String name_package;
+
         User user;
         HttpSession session = request.getSession();
 
@@ -84,9 +87,10 @@ public class GoToPurchase extends HttpServlet {
         if (paramNames.contains("order_id")) {
             is_reorder = true;
             order_id = Integer.parseInt(request.getParameter("order_id"));
+            name_package = StringEscapeUtils.escapeJava(request.getParameter("name"));
             try {
                 reorder = oService.findByID(order_id);
-                sel_package = spService.findByName(reorder.getName_package());
+                sel_package = spService.findByName(name_package);
             } catch (OrderException | ServicePackageException e) {
                 e.printStackTrace();
             }

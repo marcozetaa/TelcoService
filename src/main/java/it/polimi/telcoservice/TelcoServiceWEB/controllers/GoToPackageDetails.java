@@ -59,6 +59,7 @@ public class GoToPackageDetails extends HttpServlet {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,"Not possible to get services");
         }
 
+
         ctx.setVariable("sp", service_package);
 
         templateEngine.process(path, ctx, response.getWriter());
