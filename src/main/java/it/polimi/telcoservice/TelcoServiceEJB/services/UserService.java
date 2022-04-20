@@ -85,8 +85,6 @@ public class UserService {
     }
 
     public User getUser(int user_id){
-
-
         User user = em.find(User.class,user_id);
 
         return user;

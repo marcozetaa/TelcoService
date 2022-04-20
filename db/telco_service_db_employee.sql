@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.26, for macos11 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.26, for Win64 (x86_64)
 --
 -- Host: localhost    Database: telco_service_db
 -- ------------------------------------------------------
@@ -35,7 +35,7 @@ CREATE TABLE `employee` (
 
 LOCK TABLES `employee` WRITE;
 /*!40000 ALTER TABLE `employee` DISABLE KEYS */;
-INSERT INTO `employee` VALUES (10617090,'micheke99');
+INSERT INTO `employee` VALUES (10588478,'MaxEcho'),(10617090,'micheke99');
 /*!40000 ALTER TABLE `employee` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -48,4 +48,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-04-16 18:21:25
+-- Dump completed on 2022-04-20  4:11:11

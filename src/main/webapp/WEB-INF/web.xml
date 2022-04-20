@@ -42,12 +42,8 @@
         <servlet-class>it.polimi.telcoservice.TelcoServiceWEB.controllers.WorkArea</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>CreatePackage</servlet-name>
-        <servlet-class>it.polimi.telcoservice.TelcoServiceWEB.controllers.CreatePackage</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>CreateSubscription</servlet-name>
-        <servlet-class>it.polimi.telcoservice.TelcoServiceWEB.controllers.CreateSubscription</servlet-class>
+        <servlet-name>CreateService</servlet-name>
+        <servlet-class>it.polimi.telcoservice.TelcoServiceWEB.controllers.CreateService</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Confirmation</servlet-name>
@@ -84,16 +80,12 @@
         <url-pattern>/WorkArea</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>CreatePackage</servlet-name>
-        <url-pattern>/CreatePackage</url-pattern>
+        <servlet-name>CreateService</servlet-name>
+        <url-pattern>/CreateService</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Confirmation</servlet-name>
         <url-pattern>/Confirmation</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>CreateSubscription</servlet-name>
-        <url-pattern>/Subscription</url-pattern>
     </servlet-mapping>
 
     <welcome-file-list>

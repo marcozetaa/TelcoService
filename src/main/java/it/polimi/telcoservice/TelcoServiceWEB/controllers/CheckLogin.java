@@ -3,9 +3,7 @@ package it.polimi.telcoservice.TelcoServiceWEB.controllers;
 import it.polimi.telcoservice.TelcoServiceEJB.entities.Employee;
 import it.polimi.telcoservice.TelcoServiceEJB.entities.Order;
 import it.polimi.telcoservice.TelcoServiceEJB.entities.User;
-import it.polimi.telcoservice.TelcoServiceEJB.exceptions.OrderException;
 import it.polimi.telcoservice.TelcoServiceEJB.services.EmployeeService;
-import it.polimi.telcoservice.TelcoServiceEJB.services.OrderService;
 import it.polimi.telcoservice.TelcoServiceEJB.services.UserService;
 import it.polimi.telcoservice.TelcoServiceEJB.exceptions.CredentialException;
 
@@ -25,6 +23,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @WebServlet(name = "CheckLogin", value = "/CheckLogin")
 public class CheckLogin extends HttpServlet{
@@ -54,19 +53,33 @@ public class CheckLogin extends HttpServlet{
         ServletContext servletContext = getServletContext();
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 
+        // get all parameter names
+        Set<String> paramNames = request.getParameterMap().keySet();
+
+        if( paramNames.contains("service_id")){
+            String service_id = request.getParameter("service_id");
+
+            ctx.setVariable("service_id",service_id);
+        }
+
         templateEngine.process(path, ctx, response.getWriter());
     }
 
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        HttpSession session = request.getSession();
+
         //obtain and escape params
         String usrn = null;
         String pwd = null;
         String is_emp = null;
+        String service_id = null;
         try{
             usrn = StringEscapeUtils.escapeJava(request.getParameter("username"));
             pwd = StringEscapeUtils.escapeJava(request.getParameter("pwd"));
             is_emp = StringEscapeUtils.escapeJava(request.getParameter("emp"));
+            service_id = StringEscapeUtils.escapeJava(request.getParameter("service_id"));
             if(usrn == null || pwd == null || usrn.isEmpty() || pwd.isEmpty()){
                 throw new Exception("Missing or empty credential value");
             }
@@ -76,7 +89,6 @@ public class CheckLogin extends HttpServlet{
 
         User user = null;
         Employee employee = null;
-
         List<Order> orderList = null;
 
         if(is_emp == null){
@@ -107,25 +119,17 @@ public class CheckLogin extends HttpServlet{
 
         // If the user exists, add info to the session and go to home page, otherwise
         // show login page with error message
-
         String path = "";
 
-        String package_id;
-
-        try {
-            package_id = StringEscapeUtils.escapeJava(request.getParameter("package_id"));
-        } catch (NumberFormatException | NullPointerException e) {
-            // only for debugging e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect param values");
-            return;
-        }
-
-        if(package_id != null) {
+        if(service_id != null){
 
             path = getServletContext().getContextPath()+"/Purchase?";
-            path += "package_id="+package_id;
+            path += "package_id="+service_id;
+            path += "&redirect="+true;
 
+            session.setAttribute("user",user);
             response.sendRedirect(path);
+            return;
         }
 
         if( user == null && employee == null ){

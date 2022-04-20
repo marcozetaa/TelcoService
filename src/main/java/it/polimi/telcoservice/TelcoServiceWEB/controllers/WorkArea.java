@@ -33,8 +33,6 @@ public class WorkArea extends HttpServlet {
     private MobilePhoneService mpService;
     @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/OptionalProductService")
     private OptionalProductService opService;
-    @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/EmployeeService")
-    private EmployeeService emService;
 
 
     public WorkArea() { super(); }
@@ -52,6 +50,7 @@ public class WorkArea extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         String path = "WEB-INF/EmployeeHome.html";
         ServletContext servletContext = getServletContext();
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
@@ -69,10 +68,19 @@ public class WorkArea extends HttpServlet {
             fiList = fiService.findAll();
             miList = miService.findAll();
             mpList = mpService.findAll();
+        List<ServicePackage> packages = null;
+        List<OptionalProduct> opList = null;
+
+        try {
+            fiList = fiService.findAll();
+            miList = miService.findAll();
+            mpList = mpService.findAll();
+            packages = pService.findAll();
             opList = opService.findAll();
             alerts = emService.findAllInsolvent();
             salesReports = emService.findAllSalesReport();
         } catch (ServicePackageException | OrderException | AlertException | SalesReportException e) {
+        } catch (ServicePackageException | OrderException e) {
             e.printStackTrace();
         }
 

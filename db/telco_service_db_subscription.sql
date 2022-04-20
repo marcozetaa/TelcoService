@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.26, for macos11 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.26, for Win64 (x86_64)
 --
 -- Host: localhost    Database: telco_service_db
 -- ------------------------------------------------------
@@ -32,9 +32,9 @@ CREATE TABLE `subscription` (
   KEY `service_fk` (`id_package`),
   KEY `order_fk_idx` (`id_order`),
   KEY `package_fk` (`id_order`),
-  CONSTRAINT `order_fk` FOREIGN KEY (`id_order`) REFERENCES `Order` (`id`),
+  CONSTRAINT `order_fk` FOREIGN KEY (`id_order`) REFERENCES `order` (`id`),
   CONSTRAINT `service_fk` FOREIGN KEY (`id_package`) REFERENCES `packages` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `subscription` (
 
 LOCK TABLES `subscription` WRITE;
 /*!40000 ALTER TABLE `subscription` DISABLE KEYS */;
-INSERT INTO `subscription` VALUES (1,36,58,61,1);
+INSERT INTO `subscription` VALUES (1,36,58,61,1),(2,24,3,59,5),(3,12,30,64,6),(4,12,12,60,9),(5,12,6,59,11),(6,12,6,59,12);
 /*!40000 ALTER TABLE `subscription` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-04-16 18:21:26
+-- Dump completed on 2022-04-20  4:11:12

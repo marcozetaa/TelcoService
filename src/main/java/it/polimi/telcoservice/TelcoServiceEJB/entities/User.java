@@ -108,7 +108,7 @@ public class User {
     }
 
     public UserStatus getStatus() {
-        return status;
+        return this.status;
     }
 
     public void setStatus(UserStatus status) {

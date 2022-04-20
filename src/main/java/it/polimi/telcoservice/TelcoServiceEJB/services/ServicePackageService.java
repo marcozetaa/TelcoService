@@ -51,14 +51,6 @@ public class ServicePackageService {
             }
         }
 
-        /*
-        if(!o_product.equals("No")){
-            OptionalProduct op = em.find(OptionalProduct.class, o_product);
-            servicePackage.addOptionalProduct(op);
-            System.out.println("Method createOptional after em.persist()");
-            System.out.println("Is Optional object managed?  " + em.contains(op));
-        }
-*/
         em.persist(servicePackage);
 
         //TODO: Should we add also optional product and all other services lists?
@@ -83,6 +75,16 @@ public class ServicePackageService {
         ServicePackage sp = null;
         try {
             sp = em.createNamedQuery("ServicePackage.findByID", ServicePackage.class).setParameter(1,id).getSingleResult();
+        } catch (PersistenceException e){
+            throw new ServicePackageException("Could not load selected packages");
+        }
+        return sp;
+    }
+
+    public ServicePackage findByName(String name) throws ServicePackageException {
+        ServicePackage sp = null;
+        try {
+            sp = em.createNamedQuery("ServicePackage.findByName", ServicePackage.class).setParameter(1,name).getSingleResult();
         } catch (PersistenceException e){
             throw new ServicePackageException("Could not load selected packages");
         }

@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.26, for macos11 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.26, for Win64 (x86_64)
 --
 -- Host: localhost    Database: telco_service_db
 -- ------------------------------------------------------
@@ -31,7 +31,7 @@ CREATE TABLE `subscribe_product` (
   KEY `subscribe_fk` (`id_subscribe`),
   CONSTRAINT `product2_fk` FOREIGN KEY (`name_product`) REFERENCES `product` (`name`),
   CONSTRAINT `subscribe_fk` FOREIGN KEY (`id_subscribe`) REFERENCES `subscription` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `subscribe_product` (
 
 LOCK TABLES `subscribe_product` WRITE;
 /*!40000 ALTER TABLE `subscribe_product` DISABLE KEYS */;
-INSERT INTO `subscribe_product` VALUES (1,1,'Amazon'),(2,1,'DAZN'),(3,1,'Netflix');
+INSERT INTO `subscribe_product` VALUES (1,1,'Amazon'),(2,1,'DAZN'),(3,1,'Netflix'),(4,4,'Amazon');
 /*!40000 ALTER TABLE `subscribe_product` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -53,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-04-16 18:21:25
+-- Dump completed on 2022-04-20  4:11:11

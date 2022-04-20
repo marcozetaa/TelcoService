@@ -15,34 +15,37 @@
             <a th:href="@{Logout}">Logout</a>
         </div>
     </div>
-<!--
-    <div th:switch="">
-        <p th:case="'INSOLVENT'">ALERT! Too many fail payments </p>
-        <table>
-            <thead>
-            <tr>
-                <th>User ID</th>
-                <th>Username</th>
-                <th>Email</th>
-                <th>Amount</th>
-                <th>Date of rejection</th>
-                <th>Time of rejection</th>
-            </tr>
-            </thead>
-            <tbody>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tbody>
-        </table>
-        <p th:case="'SOLVENT'"></p>
-    </div>
--->
 
-    <p th:text="${session.user != null} ? ${'Nice to see you again '+ session.user.username} : 'nononono'"></p>
+    <div th:if="${session.user != null}">
+        <div th:switch="${session.user.status}">
+            <p th:case="'0'">ALERT! Too many fail payments </p>
+            <table th:case="'INSOLVENT'">
+                <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Amount</th>
+                    <th>Date of rejection</th>
+                    <th>Time of rejection</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tbody>
+            </table>
+            <p th:case="'1'"></p>
+        </div>
+    </div>
+
+
+
+    <p th:text="${session.user != null} ? ${'Nice to see you again '+ session.user.username} : ''"></p>
 
     <h1>My subscriptions</h1>
     <table>
@@ -52,17 +55,18 @@
             <th>Fee</th>
             <th>Validity Period</th>
             <th>Order number</th>
+            <th>Status</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="o : ${my_orders}">
-            <td th:text="${o.subscription != null and o.subscription.servicePackage != null} ? ${o.subscription.servicePackage.name} : 'NO'"></td>
-            <td th:text="${o.subscription != null} ? ${o.subscription.fee} : 'NO'"></td>
-            <td th:text="${o.subscription != null} ? ${o.subscription.validity_period} : 'NO'"></td>
+            <td th:text="${o.name_package}"></td>
+            <td th:text="${o.subscription != null} ? ${o.subscription.fee} : ''"></td>
+            <td th:text="${o.subscription != null} ? ${o.subscription.validity_period} : ''"></td>
             <td th:text="${o.getid()}"></td>
-
+            <td th:text="${o.getStatus()}"></td>
             <span th:switch="${o.status.getStatus()}">
-                <td><a th:case="1" th:href="@{/Purchase(order_id=${o.getid()})}">Reorder</a></td>
+                <td><a th:case="1" th:href="@{/Purchase(order_id=${o.getid()},name=${o.getName_package()})}">Reorder</a></td>
                 <td th:case="0"></td>
             </span>
 
@@ -91,10 +95,10 @@
         </tbody>
     </table>
 
-    <span th:switch="${payment}">
-        <i th:case="true" class="fas fa-check green-text"> Payment confirmed! Subscription added to profile </i>
-        <i th:case="false" class="fas fa-times red-text"> Payment not confirmed, please try again</i>
-        <i th:case="*"></i>
+    <span th:switch="payment">
+        <p th:case="true" class="fas fa-check green-text"> Payment confirmed! Subscription added to profile </p>
+        <p th:case="false" class="fas fa-times red-text"> Payment not confirmed, please try again</p>
+        <p th:case="*"></p>
     </span>
 </body>
 </html>

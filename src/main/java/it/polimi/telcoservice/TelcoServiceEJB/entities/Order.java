@@ -9,7 +9,8 @@ import java.time.LocalTime;
 @Table(name = "Order", schema = "telco_service_db")
 @NamedQueries({
         @NamedQuery(name = "Order.findByUser", query = "SELECT o FROM Order o WHERE o.client.userID = ?1 ORDER BY o.date_of_creation DESC"),
-        @NamedQuery(name = "Order.findByID", query = "SELECT o FROM Order o WHERE o.id = ?1 ORDER BY o.date_of_creation DESC")
+        @NamedQuery(name = "Order.findByID", query = "SELECT o FROM Order o WHERE o.id = ?1 ORDER BY o.date_of_creation DESC"),
+        @NamedQuery(name = "Order.findByStatus", query = "SELECT o FROM Order o WHERE o.client=?1 AND o.status=?2")
 })
 
 public class Order {
@@ -29,6 +30,9 @@ public class Order {
     @JoinColumn(name = "valid")
     private OrderStatus status;
 
+    @JoinColumn(name = "name_package")
+    private String name_package;
+
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private User client;
@@ -39,12 +43,13 @@ public class Order {
     public Order() {
     }
 
-    public Order(User client, LocalDate date_of_creation, LocalTime hour_of_creation, float tot_value){
+    public Order(User client, LocalDate date_of_creation, LocalTime hour_of_creation, float tot_value, String name_package){
         this.client = client;
         this.date_of_creation = date_of_creation;
         this.hour_of_creation = hour_of_creation;
         this.tot_value = tot_value;
         this.status = OrderStatus.VALID;
+        this.name_package = name_package;
     }
 
     public int getid() {
@@ -90,4 +95,12 @@ public class Order {
     public User getClient() { return client; }
 
     public void setClient(User client) { this.client = client; }
+
+    public String getName_package() {
+        return name_package;
+    }
+
+    public void setName_package(String name_package) {
+        this.name_package = name_package;
+    }
 }

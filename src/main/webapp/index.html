@@ -13,6 +13,7 @@
         Password: <input type="password" name="pwd" required><br>
         <input type="checkbox" id="emp" name="emp" value="1">
         <label for="emp">Employee</label><br>
+        <input type="hidden" name="service_id" th:value="${service_id}">
         <input type="submit" value="Login">
         <p th:text="${errorMsg}"></p>
     </form>

@@ -7,41 +7,46 @@
 </head>
 <body>
 
+    <div align="right">
+        <a th:href="@{Logout}">Logout</a>
+    </div>
+
     <h1>Packages List</h1>
 
     <table>
         <thead>
-        <tr>
-            <th>Name</th>
-            <th>Fixed Phone</th>
-            <th>Fee12</th>
-            <th>Fee24</th>
-            <th>Fee36</th>
-            <th>Mobile Internet</th>
-            <th>Mobile Phone</th>
-            <th>Fixed Internet</th>
-            <th>Optional Products</th>
-        </tr>
+            <tr>
+                <th>Name</th>
+                <th>Fixed Phone</th>
+                <th>Fee12</th>
+                <th>Fee24</th>
+                <th>Fee36</th>
+                <th>Mobile Internet</th>
+                <th>Mobile Phone</th>
+                <th>Fixed Internet</th>
+                <th>Optional Products</th>
+            </tr>
         </thead>
+
         <tbody>
-        <tr th:each="sp : ${packages}">
-            <td th:text="${sp.name}"></td>
-            <td th:text="${sp.fixed_phone}"></td>
-            <td th:text="${sp.fee12}"></td>
-            <td th:text="${sp.fee24}"></td>
-            <td th:text="${sp.fee36}"></td>
-            <td th:text="${sp.mobileInternet != null} ? ${sp.mobileInternet.numGB} : 'NO'"></td>
-            <td th:text="${sp.mobilePhone != null} ? ${sp.mobilePhone.extra_min} : 'NO'"></td>
-            <td th:text="${sp.fixedInternet != null} ? ${sp.fixedInternet.getNumGB()} : 'NO'"></td>
-            <td th:each="op : ${sp.optionalProducts}"
-                th:text="${!sp.optionalProducts.isEmpty()} ? ${op.name}: 'NO'"></td>
-        </tr>
+            <tr th:each="sp : ${packages}">
+                <td th:text="${sp.name}"></td>
+                <td th:text="${sp.fixed_phone}"></td>
+                <td th:text="${sp.fee12}"></td>
+                <td th:text="${sp.fee24}"></td>
+                <td th:text="${sp.fee36}"></td>
+                <td th:text="${sp.mobileInternet != null} ? ${sp.mobileInternet.numGB} : 'NO'"></td>
+                <td th:text="${sp.mobilePhone != null} ? ${sp.mobilePhone.extra_min} : 'NO'"></td>
+                <td th:text="${sp.fixedInternet != null} ? ${sp.fixedInternet.getNumGB()} : 'NO'"></td>
+                <td th:each="op : ${sp.optionalProducts}"
+                    th:text="${!sp.optionalProducts.isEmpty()} ? ${op.name}: 'NO'"></td>
+            </tr>
         </tbody>
     </table>
 
     <h1>Create a Service Package</h1>
 
-    <form th:action="@{CreatePackage}" method="POST">
+    <form th:action="@{CreateService}" method="POST">
         <input type="hidden" name="typeOfProd" th:value="0">
         Name: <input type="text" name="name" required> <br>
         Fixed Phone Included:

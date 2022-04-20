@@ -21,8 +21,6 @@
           <element id="library" level="project" name="Maven: org.attoparser:attoparser:2.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.unbescape:unbescape:1.1.6.RELEASE" />
           <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.25" />
-          <element id="library" level="project" name="Maven: mysql:mysql-connector-java:8.0.27" />
-          <element id="library" level="project" name="Maven: com.google.protobuf:protobuf-java:3.11.4" />
         </element>
       </element>
       <element id="directory" name="META-INF">

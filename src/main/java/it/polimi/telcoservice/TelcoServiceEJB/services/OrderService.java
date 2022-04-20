@@ -23,11 +23,11 @@ public class OrderService {
     public OrderService() {
     }
 
-    public int createOrder(int user_id, LocalDate date_of_creation, LocalTime hour_of_creation, float tot_value){
+    public int createOrder(int user_id, LocalDate date_of_creation, LocalTime hour_of_creation, float tot_value, String name_package){
 
         User client = em.find(User.class, user_id);
 
-        Order order = new Order(client, date_of_creation, hour_of_creation, tot_value);
+        Order order = new Order(client, date_of_creation, hour_of_creation, tot_value, name_package);
 
         // for debugging: let's check if order is managed
         System.out.println("Method createOrder before client.addorder(order)");
@@ -53,17 +53,27 @@ public class OrderService {
         return oList;
     }
 
-    public List<Order> findByID(String id) throws OrderException {
+    public List<Order> findByValid(int user_id, OrderStatus status) throws OrderException {
         List<Order> oList = null;
         try {
-            oList = em.createNamedQuery("Order.findByUser", Order.class).setParameter(1,id).getResultList();
+            oList = em.createNamedQuery("Order.findByStatus", Order.class).setParameter(1,user_id).setParameter(2,status).getResultList();
         } catch (PersistenceException e){
             throw new OrderException("Could not load orders");
         }
         return oList;
     }
 
-    public void changeOrderStatus(int orderId, int clientId) throws BadOrderStatusChange, BadOrderClient, InvalidStatusChange {
+    public Order findByID(int id) throws OrderException {
+        Order order = null;
+        try {
+            order = em.createNamedQuery("Order.findByID", Order.class).setParameter(1,id).getSingleResult();
+        } catch (PersistenceException e){
+            throw new OrderException("Could not load orders");
+        }
+        return order;
+    }
+
+    public void changeOrderStatus(int orderId, int clientId, OrderStatus status) throws BadOrderStatusChange, BadOrderClient, InvalidStatusChange {
         System.out.println("Entering changeOrderStatus() method of OrderService component");
 
         Order order = null;
@@ -79,7 +89,7 @@ public class OrderService {
 
         System.out.println("Method changeOrderStatus: Change the orders status");
 
-        order.setStatus(OrderStatus.INVALID); // this could be encapsulated into a method
+        order.setStatus(status); // this could be encapsulated into a method
 
         System.out.println("Method changeOrderStatus after setStatus");
         System.out.println("Is order object managed?  " + em.contains(order));
