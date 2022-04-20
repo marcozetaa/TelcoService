@@ -6,6 +6,7 @@ import java.time.LocalTime;
 
 @Entity
 @Table(name = "Alert", schema = "telco_service_db")
+@NamedQuery(name = "Alert.findAll", query = "SELECT a FROM Alert a")
 public class Alert {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

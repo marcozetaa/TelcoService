@@ -1,7 +1,9 @@
 package it.polimi.telcoservice.TelcoServiceWEB.controllers;
 
 import it.polimi.telcoservice.TelcoServiceEJB.entities.*;
+import it.polimi.telcoservice.TelcoServiceEJB.exceptions.AlertException;
 import it.polimi.telcoservice.TelcoServiceEJB.exceptions.OrderException;
+import it.polimi.telcoservice.TelcoServiceEJB.exceptions.SalesReportException;
 import it.polimi.telcoservice.TelcoServiceEJB.exceptions.ServicePackageException;
 import it.polimi.telcoservice.TelcoServiceEJB.services.*;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -31,6 +33,8 @@ public class WorkArea extends HttpServlet {
     private MobilePhoneService mpService;
     @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/OptionalProductService")
     private OptionalProductService opService;
+    @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/EmployeeService")
+    private EmployeeService emService;
 
 
     public WorkArea() { super(); }
@@ -48,44 +52,27 @@ public class WorkArea extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-
         String path = "WEB-INF/EmployeeHome.html";
         ServletContext servletContext = getServletContext();
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 
-        List<FixedInternet> fiList = null;
-        try {
-            fiList = fiService.findAll();
-        } catch (ServicePackageException e) {
-            e.printStackTrace();
-        }
-
-        List<MobileInternet> miList = null;
-        try {
-            miList = miService.findAll();
-        } catch (ServicePackageException e) {
-            e.printStackTrace();
-        }
-
-        List<MobilePhone> mpList = null;
-        try {
-            mpList = mpService.findAll();
-        } catch (ServicePackageException e) {
-            e.printStackTrace();
-        }
-
         List<ServicePackage> packages = null;
+        List<FixedInternet> fiList = null;
+        List<MobileInternet> miList = null;
+        List<MobilePhone> mpList = null;
+        List<OptionalProduct> opList = null;
+        List<Alert> alerts = null;
+        List<SalesReport> salesReports = null;
+
         try {
             packages = pService.findAll();
-        } catch (ServicePackageException e) {
-            e.printStackTrace();
-        }
-
-        List<OptionalProduct> opList = null;
-        try {
+            fiList = fiService.findAll();
+            miList = miService.findAll();
+            mpList = mpService.findAll();
             opList = opService.findAll();
-        } catch (OrderException e) {
+            alerts = emService.findAllInsolvent();
+            salesReports = emService.findAllSalesReport();
+        } catch (ServicePackageException | OrderException | AlertException | SalesReportException e) {
             e.printStackTrace();
         }
 
@@ -94,6 +81,8 @@ public class WorkArea extends HttpServlet {
         ctx.setVariable("MobileInternetList", miList);
         ctx.setVariable("MobilePhoneList", mpList);
         ctx.setVariable("OptionalProductList", opList);
+        ctx.setVariable("AlertList", alerts);
+        ctx.setVariable("SalesList", salesReports);
         templateEngine.process(path, ctx, response.getWriter());
     }
 

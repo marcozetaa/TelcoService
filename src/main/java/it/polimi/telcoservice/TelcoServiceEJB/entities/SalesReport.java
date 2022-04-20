@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "salesReport", schema = "telco_service_db")
+@NamedQuery(name = "SalesReport.findAll", query = "SELECT sr FROM SalesReport sr")
 public class SalesReport {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,60 +24,38 @@ public class SalesReport {
     private float netValue;
     @JoinColumn(name = "TotalValue")
     private float totalValue;
+    @JoinColumn(name = "productPurchased")
+    private int productPurchased;
 
     public String getPackageName() {
         return packageName;
-    }
-
-    public void setPackageName(String packageName) {
-        this.packageName = packageName;
     }
 
     public int getTotalPurchase() {
         return totalPurchase;
     }
 
-    public void setTotalPurchase(int totalPurchase) {
-        this.totalPurchase = totalPurchase;
-    }
-
     public int getTotal12() {
         return total12;
-    }
-
-    public void setTotal12(int total12) {
-        this.total12 = total12;
     }
 
     public int getTotal24() {
         return total24;
     }
 
-    public void setTotal24(int total24) {
-        this.total24 = total24;
-    }
-
     public int getTotal36() {
         return total36;
-    }
-
-    public void setTotal36(int total36) {
-        this.total36 = total36;
     }
 
     public float getNetValue() {
         return netValue;
     }
 
-    public void setNetValue(float netValue) {
-        this.netValue = netValue;
-    }
-
     public float getTotalValue() {
         return totalValue;
     }
 
-    public void setTotalValue(float totalValue) {
-        this.totalValue = totalValue;
+    public int getProductPurchased() {
+        return productPurchased;
     }
 }

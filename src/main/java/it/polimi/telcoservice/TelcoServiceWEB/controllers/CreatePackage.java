@@ -1,7 +1,9 @@
 package it.polimi.telcoservice.TelcoServiceWEB.controllers;
 
 import it.polimi.telcoservice.TelcoServiceEJB.entities.*;
+import it.polimi.telcoservice.TelcoServiceEJB.exceptions.AlertException;
 import it.polimi.telcoservice.TelcoServiceEJB.exceptions.OrderException;
+import it.polimi.telcoservice.TelcoServiceEJB.exceptions.SalesReportException;
 import it.polimi.telcoservice.TelcoServiceEJB.exceptions.ServicePackageException;
 import it.polimi.telcoservice.TelcoServiceEJB.services.*;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -31,6 +33,8 @@ public class CreatePackage extends HttpServlet {
     private MobilePhoneService mpService;
     @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/OptionalProductService")
     private OptionalProductService opService;
+    @EJB(name = "it.polimi.telcoservice.TelcoServiceEJB.services/EmployeeService")
+    private EmployeeService emService;
 
     public CreatePackage() { super(); }
 
@@ -80,6 +84,8 @@ public class CreatePackage extends HttpServlet {
         List<MobileInternet> miList = null;
         List<MobilePhone> mpList = null;
         List<OptionalProduct> opList = null;
+        List<Alert> alerts = null;
+        List<SalesReport> salesReports = null;
 
         try {
             packages = pService.findAll();
@@ -87,7 +93,9 @@ public class CreatePackage extends HttpServlet {
             miList = miService.findAll();
             mpList = mpService.findAll();
             opList = opService.findAll();
-        } catch (ServicePackageException | OrderException e) {
+            alerts = emService.findAllInsolvent();
+            salesReports = emService.findAllSalesReport();
+        } catch (ServicePackageException | OrderException | AlertException | SalesReportException e) {
             e.printStackTrace();
         }
 
@@ -96,6 +104,8 @@ public class CreatePackage extends HttpServlet {
         ctx.setVariable("MobileInternetList", miList);
         ctx.setVariable("MobilePhoneList", mpList);
         ctx.setVariable("OptionalProductList", opList);
+        ctx.setVariable("AlertList", alerts);
+        ctx.setVariable("SalesList", salesReports);
 
         templateEngine.process(path, ctx, response.getWriter());
     }
