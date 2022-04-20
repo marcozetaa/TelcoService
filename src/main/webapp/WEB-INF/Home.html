@@ -16,33 +16,6 @@
         </div>
     </div>
 
-    <div th:if="${session.user != null}">
-        <div th:switch="${session.user.status}">
-            <p th:case="'0'">ALERT! Too many fail payments </p>
-            <table th:case="'INSOLVENT'">
-                <thead>
-                <tr>
-                    <th>User ID</th>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Amount</th>
-                    <th>Date of rejection</th>
-                    <th>Time of rejection</th>
-                </tr>
-                </thead>
-                <tbody>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tbody>
-            </table>
-            <p th:case="'1'"></p>
-        </div>
-    </div>
-
 
 
     <p th:text="${session.user != null} ? ${'Nice to see you again '+ session.user.username} : ''"></p>
